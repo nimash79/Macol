@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['vite.svg'],
+      includeAssets: ['icon.png'],
       manifest: {
         name: 'Macol',
         short_name: 'Macol',
@@ -21,9 +21,9 @@ export default defineConfig({
         theme_color: '#0f172a',
         icons: [
           {
-            src: 'vite.svg',
+            src: '/icon.png',
             sizes: '192x192',
-            type: 'image/svg',
+            type: 'image/png',
           },
         ],
       },
