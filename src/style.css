@@ -1,0 +1,547 @@
+@font-face {
+  font-family: Shabnam;
+  src: url("/font/Shabnam/Shabnam-FD.ttf") format("truetype"),
+    url("/font/Shabnam/Shabnam-FD.woff") format("woff"),
+    url("/font/Shabnam/Shabnam-FD.woff2") format("woff2"),
+    url("/font/Shabnam/Shabnam-FD.eot") format("embedded-opentype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: Shabnam;
+  src: url("/font/Shabnam/Shabnam-Medium-FD.ttf") format("truetype"),
+    url("/font/Shabnam/Shabnam-Medium-FD.woff") format("woff"),
+    url("/font/Shabnam/Shabnam-Medium-FD.woff2") format("woff2"),
+    url("/font/Shabnam/Shabnam-Medium-FD.eot") format("embedded-opentype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: Shabnam;
+  src: url("/font/Shabnam/Shabnam-Bold-FD.ttf") format("truetype"),
+    url("/font/Shabnam/Shabnam-Bold-FD.woff") format("woff"),
+    url("/font/Shabnam/Shabnam-Bold-FD.woff2") format("woff2"),
+    url("/font/Shabnam/Shabnam-Bold-FD.eot") format("embedded-opentype");
+  font-weight: 700;
+}
+@font-face {
+  font-family: Shabnam;
+  src: url("/font/Shabnam/Shabnam-Light-FD.ttf") format("truetype"),
+    url("/font/Shabnam/Shabnam-Light-FD.woff") format("woff"),
+    url("/font/Shabnam/Shabnam-Light-FD.woff2") format("woff2"),
+    url("/font/Shabnam/Shabnam-Light-FD.eot") format("embedded-opentype");
+  font-weight: 300;
+}
+@font-face {
+  font-family: Shabnam;
+  src: url("/font/Shabnam/Shabnam-Thin-FD.ttf") format("truetype"),
+    url("/font/Shabnam/Shabnam-Thin-FD.woff") format("woff"),
+    url("/font/Shabnam/Shabnam-Thin-FD.woff2") format("woff2"),
+    url("/font/Shabnam/Shabnam-Thin-FD.eot") format("embedded-opentype");
+  font-weight: 100;
+}
+
+:root {
+  --primary_50: #edeff7;
+  --primary_100: #dbdeef;
+  --primary_200: #b6bcdf;
+  --primary_300: #8995d6;
+  --primary_400: #6171c8;
+  --secondary_300: #a385d8;
+  --shade_2: #482ecc;
+  --neutral_f2: #f2f2f2;
+  --neutral_e9: #e9e9e9;
+  --neutral_f9: #f9f9f9;
+  --neutral_ed: #edeff7;
+  --neutral_3d: #3d3d3d;
+  --neutral_200: #d6d6d6;
+  --neutral_600: #7e7e7e;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  direction: rtl;
+  font-family: "Shabnam", sans-serif;
+}
+input {
+  font-family: Shabnam;
+}
+input[type="submit"],
+button {
+  cursor: pointer;
+}
+ul li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+p {
+  margin: 0;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-layout {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  background: linear-gradient(#26316d, #0e1124);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  padding: 0 25px;
+}
+
+@media (max-width: 768px) {
+  .main-layout {
+    max-width: 100%;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-setting-devices {
+    max-width: 370px;
+    margin: 0 auto;
+  }
+  .modal-backdrop {
+    width: 420px;
+    margin: 0 auto;
+  }
+  .edit-name-modal {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+
+/* Splash Screen */
+.splash-screen {
+  background: linear-gradient(180deg, #3F51B5 0%, #0E1124 100%);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.splash-screen-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.app-subject {
+  font-size: 24px;
+  font-weight: 500;
+  color: #F2F2F2;
+  margin-bottom: 16px;
+}
+.app-name {
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--primary_100);
+  margin-bottom: 28px;
+}
+.app-logo {
+  width: 128px;
+  height: 131px;
+}
+/* End Splash Screen */
+
+/* Authentication */
+.login-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 100vh;
+}
+.login {
+  width: 100%;
+}
+.login .header {
+  font-family: Shabnam;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--neutral_f2);
+  margin-bottom: 24px;
+}
+.login .title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--neutral_f2);
+}
+/* End Athentication */
+
+/* Home */
+.home .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 16px;
+}
+.home .header .hello {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--neutral_f2);
+}
+.home .description {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--neutral_ed);
+  margin-top: 8px;
+}
+.separator {
+  height: 1px;
+  background-color: var(--neutral_3d);
+  margin: 16px 0;
+}
+.btn-select-devices {
+  border: none;
+  outline: none;
+  border-radius: 14px;
+  background-color: var(--primary_400);
+  padding: 9px 12.5px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--neutral_f9);
+  border: 3px solid transparent;
+}
+.btn-select-devices.active {
+  background-color: var(--shade_2);
+  border-color: var(--primary_300);
+}
+.devices {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.devices > * {
+  flex: 0 0 calc(50% - 8px);
+}
+.device {
+  position: relative;
+  background: radial-gradient(
+      69.9% 110.16% at 17.58% 4.3%,
+      rgba(46, 167, 255, 0.25) 0%,
+      rgba(28, 27, 51, 0.1) 78.06%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-radius: 20px;
+
+  /* background-blend-mode: overlay; */
+  /* mix-blend-mode: overlay; */
+  border-width: 1px;
+  border-color: #17b9ff1a;
+  border-style: solid;
+}
+
+.device-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15%;
+}
+.device .icon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid var(--primary_200);
+
+  /* background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    #ffffff 100%
+  ); */
+  background-color: var(--primary_300);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05), 0px 4px 4px rgba(0, 0, 0, 0.05),
+    0px 10px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+}
+.device-name {
+  margin-top: 16px;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--neutral_f2);
+}
+.device-temp {
+  margin-top: 8px;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--primary_200);
+  opacity: 0.8;
+}
+.device-devider {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-blend-mode: overlay;
+  height: 1px;
+  width: 100%;
+  margin: 16px 0;
+}
+.device-status {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 16px;
+}
+.device-status p {
+  font-size: 17px;
+  font-weight: 400;
+  color: #ffffff;
+  margin-left: 8px;
+  width: 52px;
+}
+.device-checkbox {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+.btn-setting-devices {
+  position: fixed;
+  left: 25px;
+  right: 25px;
+  bottom: 32px;
+}
+/* End Home */
+
+/* Settings */
+.settings .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+.settings .header .icon {
+  cursor: pointer;
+}
+.settings .header > * {
+  flex: 0.33;
+}
+.settings .header-title {
+  font-size: 20px;
+  font-weight: 700;
+  flex: 1;
+  text-align: center;
+}
+.settings .title {
+  font-size: 16px;
+  font-weight: 700;
+}
+.settings .description {
+  font-size: 13px;
+  font-weight: 300;
+  margin-top: 8px;
+  text-align: justify;
+}
+.economy-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.economy-form > * {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.economy-form label {
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 8px;
+}
+.economy-select-time {
+  position: relative;
+}
+.economy-select-time-button {
+  border: 1px solid var(--neutral_f9);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 71px;
+  height: 38px;
+  padding: 11px 8.5px;
+}
+.economy-select-time-button span {
+  background-color: transparent;
+  color: var(--primary_100);
+  margin-left: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.economy-select-time .options-container {
+  position: absolute;
+  right: 0;
+  left: 0;
+  background: linear-gradient(166.39deg, #6171c8 0.63%, #1c2247 90.36%);
+  border: 1px solid var(--primary_50);
+  border-radius: 14px;
+}
+.economy-select-time .options {
+  height: 150px;
+  overflow-y: scroll;
+  margin: 8px 2px;
+  direction: ltr;
+}
+.economy-select-time .options div {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--neutral_200);
+  border-radius: 14px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--neutral_600);
+  border-radius: 14px;
+  border: 1px solid var(--neutral_200);
+}
+
+.settings-submit {
+  margin-top: 32px;
+}
+/* End Settings */
+
+/* Device Page */
+.device-page .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+.device-page .header .icon {
+  cursor: pointer;
+}
+.device-page .header-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.device-page .header-title p {
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 8px;
+}
+.device-page .edit-button {
+  cursor: pointer;
+}
+.temperature-progress {
+  margin-top: 24px;
+}
+.controller-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: -45px;
+}
+.controller-container > div {
+  cursor: pointer;
+}
+.economy-feature {
+  margin-top: 32px;
+}
+.economy-feature label {
+  margin-right: 8px;
+}
+.device-info-container {
+  width: 100%;
+  height: auto;
+  margin-top: 24px;
+}
+.device-info {
+  margin-top: 24px;
+  background: radial-gradient(
+      89.46% 140.59% at 3.59% 0%,
+      rgba(46, 167, 255, 0.25) 0%,
+      rgba(28, 27, 51, 0.1) 78.06%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px 32px;
+  /* border: 1px solid; */
+}
+.device-info-part {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.device-info-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+.device-info-value {
+  font-size: 22px;
+  font-weight: 500;
+}
+.device-info-label {
+  font-size: 16px;
+  font-weight: 400;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+.edit-name-modal {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: radial-gradient(98% 96.48% at 0% 3.52%, #2989CF 0%, #1C1B33 74.87%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border: 1px solid #17B9FF1A;
+  border-bottom-width: 0;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 0 20px;
+  z-index: 50;
+}
+.edit-name-modal .title {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  margin: 32px 0;
+}
+/* End Device Page */
