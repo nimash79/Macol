@@ -1,7 +1,7 @@
 import * as React from "react";
 import CircularProgress from "./CircularProgress";
 
-const TemperatureProgress = ({ value, min, max, onChange, ...props }) => (
+const TemperatureProgress = ({ value, currentValue, min, max, onChange, ...props }) => (
   <svg
     viewBox="0 0 335 335"
     fill="none"
@@ -258,7 +258,7 @@ const TemperatureProgress = ({ value, min, max, onChange, ...props }) => (
       fontWeight={700}
       fill="white"
     >
-      {value}°C
+      {currentValue}°C
     </text>
     {/* Color filter at the top left */}
     <g filter="url(#filter1_f_21_598)">

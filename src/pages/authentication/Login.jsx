@@ -15,7 +15,7 @@ const Login = () => {
         <CustomInput
           icon={<PhoneIcon />}
           placeholder="شماره موبایل"
-          style={{ marginTop: 40, marginBottom: 32 }}
+          containerStyle={{ marginTop: 40, marginBottom: 32 }}
         />
         <CustomPasswordInput placeholder="رمز عبور" />
         <CustomButton text={"ورود"} style={{ marginTop: 32 }} />

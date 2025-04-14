@@ -47,7 +47,7 @@ const DevicePage = () => {
         </Link>
       </div>
       <div className="temperature-progress">
-        <TemperatureProgress value={temperature} min={minTemperature} max={maxTemperature} onChange={setTemperature} />
+        <TemperatureProgress value={temperature} currentValue={currentTemperature} min={minTemperature} max={maxTemperature} onChange={setTemperature} />
       </div>
       <div className="controller-container">
         <div className="increase-button" data-sound-click onClick={() => setTemperature(t => Math.min(maxTemperature, t + 1))}>
