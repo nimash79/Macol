@@ -18,19 +18,19 @@ const getCirclePosition = (percentage) => {
     case 30:
       return { x: 107, y: 92 };
     case 40:
-      return { x: 135, y: 80 };
+      return { x: 135, y: 78 };
     case 50:
       return { x: 164, y: 73 };
     case 60:
       return { x: 193, y: 78 };
     case 70:
-      return { x: 221, y: 92 };
+      return { x: 221, y: 90 };
     case 80:
-      return { x: 242, y: 113 };
+      return { x: 244, y: 112 };
     case 90:
       return { x: 258, y: 140 };
     case 100:
-      return { x: 265, y: 170 };
+      return { x: 263, y: 170 };
     default:
       return { x: 75, y: 265 };
   }
