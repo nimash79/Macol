@@ -58,7 +58,7 @@ const HomePage = () => {
         </Link>
       </div>
       <div className="description">
-        شما دارای ۷ دستگاه هستید که ۵ مورد از آن ها فعال هستند.
+        شما دارای {devices?.length} دستگاه هستید که {devices?.filter(x => x.on).length} مورد از آن ها فعال هستند.
       </div>
       <div className="separator"></div>
       <button
