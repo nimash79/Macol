@@ -2,27 +2,30 @@ import {toast} from 'react-toastify';
 
 export const notif_error = message => {
     toast.error(message, {
-        position: 'top-right',
+        position: 'top-center',
         delay: 3,
         rtl: true,
-        style: {fontFamily: "VazirMatn", fontSize: 13},
+        style: {fontFamily: "Shabnam", fontSize: 13, maxWidth: 340},
+        theme: "dark",
     })
 }
 
 export const notif_success = message => {
     toast.success(message, {
-        position: 'top-right',
+        position: 'top-center',
         delay: 3,
         rtl: true,
-        style: {fontFamily: "VazirMatn", fontSize: 13},
+        style: {fontFamily: "Shabnam", fontSize: 13, maxWidth: 340},
+        theme: "dark",
     })
 }
 
 export const notif_warning = message => {
     toast.warn(message, {
-        position: 'top-right',
+        position: 'top-center',
         delay: 3,
         rtl: true,
-        style: {fontFamily: "VazirMatn", fontSize: 13},
+        style: {fontFamily: "Shabnam", fontSize: 13, maxWidth: 340},
+        theme: "dark",
     })
 }

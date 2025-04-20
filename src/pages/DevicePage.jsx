@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router";
 
 import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
 import EditIcon from "./../components/icons/EditIcon";
@@ -15,55 +15,176 @@ import DeviceInfoBox from "../components/svgs/DeviceInfoBox";
 import TemperatureProgressMedium from "../components/svgs/TemperatureProgressMedium";
 import TemperatureProgressMax from "../components/svgs/TemperatureProgressMax";
 import CustomCircle from "../components/shared/CustomCircle";
+import {
+  changeDeviceName,
+  changeDeviceValue,
+  getSelectedDevices,
+} from "../services/deviceService";
+import { notif_error } from "../utils/toast";
+import OpenedDoorIcon from "../components/icons/OpenedDoorIcon";
 
 const DevicePage = () => {
   const [editNameModal, setEditNameModal] = useState(false);
+  const [name, setName] = useState();
   const [currentTemperature, setCurrentTemperature] = useState(15);
   const [temperature, setTemperature] = useState(15);
   const [minTemperature, setMinTemperature] = useState(15);
   const [maxTemperature, setMaxTemperature] = useState(25);
-  const [economyFeature, setEconomyFeature] = useState(false);
+  const [economy, setEconomy] = useState(false);
+  const [openedDoor, setOpenedDoor] = useState(false);
+  const [device, setDevice] = useState();
+  const [pageIsReady, setPageIsReady] = useState(false);
+
+  const deviceRef = useRef();
+  const temperatureRef = useRef();
+  const economyRef = useRef();
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const deviceIds = searchParams.getAll("deviceIds");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getSelectedDevices(deviceIds);
+        console.log(data);
+        setDevice(data.data.devices[0]);
+        setName(data.data.devices[0].name);
+        setTemperature(data.data.devices[0].value);
+        setCurrentTemperature(data.data.devices[0].temperature);
+        setEconomy(data.data.devices[0].economy);
+        setOpenedDoor(data.data.devices[0].openedDoor);
+        setPageIsReady(true);
+      } catch (err) {
+        console.log(err);
+        notif_error("مشکلی پیش آمده است!");
+      }
+    })();
+    return async () => {
+      if (deviceRef.current == undefined || temperatureRef.current == undefined)
+        return;
+      try {
+        const { data } = await changeDeviceValue({
+          deviceIds,
+          value: temperatureRef.current,
+          economy: economyRef.current,
+        });
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+        notif_error("درخواست شما برای تنظیم درجه موفقیت آمیز نبود.");
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    deviceRef.current = device;
+    temperatureRef.current = temperature;
+    economyRef.current = economy;
+  }, [device, temperature, economy]);
+
+  const modalSubmit = async () => {
+    try {
+      if (name === "") {
+        notif_error("وارد کردن نام اجباری می باشد!");
+        return;
+      }
+      const {data} = await changeDeviceName({ deviceId: device.deviceId, name });
+      if (data.data.status == 2) {
+        notif_error("نام دستگاه نمیتواند تکراری باشد.");
+        return;
+      }
+      setDevice((d) => {
+        d.name = name;
+        return d;
+      });
+      setEditNameModal(false);
+    } catch (err) {
+      console.log(err);
+      notif_error("مشکلی پیش آمده است!");
+    }
+  };
+
+  if (!pageIsReady) return null;
 
   return (
     <div className="device-page">
       <EditNameModal
         isOpen={editNameModal}
         onClose={() => setEditNameModal(false)}
+        onSubmit={modalSubmit}
+        onChange={(e) => setName(e.target.value)}
+        name={device.name}
       />
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
           <ArrowRightBorderIcon />
         </div>
         <div className="header-title">
-          <p>دستگاه اتاق ۱</p>
-          <div className="edit-button" data-sound-click onClick={() => setEditNameModal(true)}>
-            <EditIcon />
-          </div>
+          {deviceIds.length > 1 ? (
+            <div className="header-title">
+              <p>تنظیم گروهی دستگاه ها</p>
+            </div>
+          ) : (
+            <div className="header-title">
+              <p>{device.name}</p>
+              <div
+                className="edit-button"
+                data-sound-click
+                onClick={() => setEditNameModal(true)}
+              >
+                <EditIcon />
+              </div>
+            </div>
+          )}
         </div>
         <Link to={"/settings"}>
           <SettingsIcon />
         </Link>
       </div>
       <div className="temperature-progress">
-        <TemperatureProgress value={temperature} currentValue={currentTemperature} min={minTemperature} max={maxTemperature} onChange={setTemperature} />
+        <TemperatureProgress
+          value={temperature}
+          currentValue={currentTemperature}
+          min={minTemperature}
+          max={maxTemperature}
+          onChange={setTemperature}
+        />
       </div>
       <div className="controller-container">
-        <div className="increase-button" data-sound-click onClick={() => setTemperature(t => Math.min(maxTemperature, t + 1))}>
+        <div
+          className="increase-button"
+          data-sound-click
+          onClick={() => setTemperature((t) => Math.min(maxTemperature, t + 1))}
+        >
           <IncreaseButton />
         </div>
-        <div className="decrease-button" data-sound-click onClick={() => setTemperature(t => Math.max(minTemperature, t - 1))}>
+        <div
+          className="decrease-button"
+          data-sound-click
+          onClick={() => setTemperature((t) => Math.max(minTemperature, t - 1))}
+        >
           <DecreaseButton />
         </div>
       </div>
-      <div className="economy-feature">
-        <CustomSwitch onChange={() => setEconomyFeature(f => !f)} checked={economyFeature} />
-        <label style={{color: economyFeature ? "#36EDF7" : ""}}>قابلیت اقتصادی</label>
+      <div className="features">
+        <div className="economy-feature">
+          <CustomSwitch
+            onChange={() => setEconomy((f) => !f)}
+            checked={economy}
+          />
+          <label style={{ color: economy ? "#36EDF7" : "" }}>
+            قابلیت اقتصادی
+          </label>
+        </div>
+        <OpenedDoorIcon active={openedDoor} />
       </div>
-      <div className="device-info-container">
-        <DeviceInfoBox temperature={currentTemperature} battery={60} />
-      </div>
+      {/* <div className="device-info-container">
+        <DeviceInfoBox
+          temperature={currentTemperature}
+          battery={device.battery}
+        />
+      </div> */}
       {/* <div className="device-info">
         <div className="device-info-part">
           <div className="device-info-icon">

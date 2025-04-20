@@ -409,6 +409,7 @@ p {
   font-size: 16px;
   font-weight: 400;
   margin-bottom: 8px;
+  cursor: pointer;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -469,8 +470,11 @@ p {
 .controller-container > div {
   cursor: pointer;
 }
-.economy-feature {
+.features {
   margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .economy-feature label {
   margin-right: 8px;

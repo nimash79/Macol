@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CustomCircle from "../shared/CustomCircle";
 
 // Utility: Round to nearest 10%
@@ -36,13 +36,99 @@ const getCirclePosition = (percentage) => {
   }
 };
 
-const CircularProgress = ({ progress = 0 }) => {
-  const percentage = getPercentage(progress);
-  const clipPathId = `paint16_angular_0_${percentage}_clip_path`;
+const getClosestProgress = (x, y) => {
+  let closest = null;
+  let minDistance = Infinity;
 
-  const { x, y } = getCirclePosition(percentage);
-  const offsetX = x - 21.5;
-  const offsetY = y - 11.5;
+  for (let p = 0; p <= 100; p += 10) {
+    const { x: px, y: py } = getCirclePosition(p);
+    const offsetX = px - 21.5;
+    const offsetY = py - 11.5;
+
+    const dx = Math.abs(x - offsetX);
+    const dy = Math.abs(y - offsetY);
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      closest = p;
+    }
+  }
+
+  return closest;
+};
+
+const CircularProgress = ({ min, max, onChange, currentProgress = 0 }) => {
+  const [progress, setProgress] = useState();
+  const [clipPathId, setClipPathId] = useState();
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
+  const dragStart = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    setProgress(currentProgress);
+  }, [currentProgress])
+
+  useEffect(() => {
+    const percentage = getPercentage(progress);
+    setClipPathId(`paint16_angular_0_${percentage}_clip_path`);
+
+    const { x, y } = getCirclePosition(percentage);
+    const offsetX = x - 21.5;
+    const offsetY = y - 11.5;
+    setOffset({ x: offsetX, y: offsetY });
+  }, [progress]);
+
+  const handleStart = (e) => {
+    setIsDragging(true);
+    const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+    const clientY = e.clientY ?? e.touches?.[0]?.clientY;
+  
+    dragStart.current = {
+      x: clientX - offset.x,
+      y: clientY - offset.y,
+    };
+  };
+
+  useEffect(() => {
+    const handleMove = (e) => {
+      if (!isDragging) return;
+      // Prevent scrolling
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+
+      const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+      const clientY = e.clientY ?? e.touches?.[0]?.clientY;
+  
+      const newX = clientX - dragStart.current.x;
+      const newY = clientY - dragStart.current.y;
+
+      const snappedProgress = getClosestProgress(newX, newY);
+      setProgress(snappedProgress / 100);
+      const range = max - min;
+      onChange((snappedProgress / 100) * range + min);
+    };
+  
+    const handleEnd = () => {
+      setIsDragging(false);
+    };
+  
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMove);
+      window.addEventListener('mouseup', handleEnd);
+      window.addEventListener('touchmove', handleMove, { passive: false });
+      window.addEventListener('touchend', handleEnd);
+    }
+  
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('touchend', handleEnd);
+    };
+  }, [isDragging]);
 
   return (
     <>
@@ -67,7 +153,12 @@ const CircularProgress = ({ progress = 0 }) => {
           </foreignObject>
         </g>
       </g>
-      <g transform={`translate(${offsetX}, ${offsetY})`}>
+      <g
+        transform={`translate(${offset.x}, ${offset.y})`}
+        onMouseDown={handleStart}
+        onTouchStart={handleStart}
+        style={{ cursor: "grab" }}
+      >
         <CustomCircle />
       </g>
     </>

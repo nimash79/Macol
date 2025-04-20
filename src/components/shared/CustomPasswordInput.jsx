@@ -9,6 +9,7 @@ import PasswordIcon from "../icons/PasswordIcon";
 const CustomPasswordInput = ({
   style,
   placeholder = "",
+  ...props
 }) => {
   const [visible, setVisible] = useState(false);
   return (
@@ -18,6 +19,7 @@ const CustomPasswordInput = ({
         className="custom-input"
         type={visible ? "text" : "password"}
         placeholder={placeholder}
+        {...props}
       />
       <div className="visible-icon" onClick={() => setVisible(v => !v)}>
         {visible ? <ClosedEyeIcon /> : <OpenedEyeIcon />}

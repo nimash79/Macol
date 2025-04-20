@@ -12,6 +12,7 @@ import { addUser } from "./reducers/userReducer";
 import { decode_token } from "./utils/auth";
 import useClickSound from "./hooks/useClickSound";
 import SplashScreen from "./pages/SplashScreen";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -52,8 +53,9 @@ const App = () => {
           <Route path="/" Component={HomePage} />
           <Route path="/login" Component={Login} />
           <Route path="/settings" Component={SettingsPage} />
-          <Route path="/device/:deviceId" Component={DevicePage} />
+          <Route path="/devices" Component={DevicePage} />
         </Routes>
+        <ToastContainer />
       </BrowserRouter>
     </MainLayout>
   );

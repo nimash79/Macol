@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import CustomInput from "./../shared/CustomInput";
 import CustomButton from './../shared/CustomButton';
 
-const EditNameModal = ({ isOpen, onClose }) => {
+const EditNameModal = ({ isOpen, onClose, onSubmit, name, onChange }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -11,8 +11,9 @@ const EditNameModal = ({ isOpen, onClose }) => {
           {/* Backdrop */}
           <motion.div
             className="modal-backdrop"
-            // initial={{ opacity: 0 }}
-            // animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{opacity: 0}}
             onClick={onClose}
           />
 
@@ -26,10 +27,11 @@ const EditNameModal = ({ isOpen, onClose }) => {
           >
             <p className="title">ویرایش نام دستگاه</p>
             <CustomInput
-              defaultValue={"دستگاه اتاق ۱"}
+              defaultValue={name}
               containerStyle={{ marginBottom: 32 }}
+              onChange={onChange}
             />
-            <CustomButton text={"تایید"} style={{marginBottom: 52}} onClick={onClose} />
+            <CustomButton text={"تایید"} style={{marginBottom: 52}} onClick={onSubmit} />
           </motion.div>
         </>
       )}
