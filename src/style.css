@@ -88,7 +88,7 @@ input::-webkit-inner-spin-button {
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+  --moz-appearance: textfield;
 }
 ul li {
   list-style: none;
@@ -236,6 +236,14 @@ p {
 .btn-select-devices.active {
   background-color: var(--shade_2);
   border-color: var(--primary_300);
+}
+.select-all-devices-container {
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+}
+.select-all-devices-container label {
+  margin-left: 8px;
 }
 .devices {
   margin-top: 24px;

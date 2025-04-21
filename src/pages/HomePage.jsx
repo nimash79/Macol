@@ -58,16 +58,48 @@ const HomePage = () => {
         </Link>
       </div>
       <div className="description">
-        شما دارای {devices?.length} دستگاه هستید که {devices?.filter(x => x.on).length} مورد از آن ها فعال هستند.
+        شما دارای {devices?.length} دستگاه هستید که{" "}
+        {devices?.filter((x) => x.on).length} مورد از آن ها فعال هستند.
       </div>
       <div className="separator"></div>
-      <button
-        type="button"
-        className={toggle ? "btn-select-devices active" : "btn-select-devices"}
-        onClick={() => setToggle((t) => !t)}
-      >
-        تنظیم گروهی دستگاه ها
-      </button>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <button
+          type="button"
+          className={
+            toggle ? "btn-select-devices active" : "btn-select-devices"
+          }
+          onClick={() => setToggle((t) => !t)}
+        >
+          تنظیم گروهی دستگاه ها
+        </button>
+        {toggle && (
+          <div className="select-all-devices-container">
+            {/* <label>انتخاب همه</label> */}
+            <CustomCheckbox
+              checked={
+                devices.length === devices.filter((d) => d.selected).length
+              }
+              onChange={() => {
+                if (
+                  devices.length === devices.filter((d) => d.selected).length
+                ) {
+                  setDevices((ds) =>
+                    ds.map((d) => {
+                      return { ...d, selected: false };
+                    })
+                  );
+                } else {
+                  setDevices((ds) =>
+                    ds.map((d) => {
+                      return { ...d, selected: true };
+                    })
+                  );
+                }
+              }}
+            />
+          </div>
+        )}
+      </div>
       <div className="devices">
         {devices.map((device) => (
           <div className="device" key={device.deviceId}>
