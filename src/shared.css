@@ -20,6 +20,9 @@
 .custom-input::placeholder {
   color: var(--neutral_e9);
 }
+.custom-input.without-margin {
+  margin: 0;
+}
 .custom-button {
   background-color: var(--primary_400);
   border: none;

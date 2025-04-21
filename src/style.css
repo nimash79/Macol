@@ -54,6 +54,14 @@
   --neutral_3d: #3d3d3d;
   --neutral_200: #d6d6d6;
   --neutral_600: #7e7e7e;
+  --warning: #A9791C;
+  --warning_light1: #F4B740;
+  --warning_light2: #FFF8E1;
+  --error: #C30000;
+  --error_light1: #ED2E2E;
+  --error_light2: #FFF2F2;
+  --success: #00966D;
+  --success_light2: #F3FDFA;
 }
 * {
   margin: 0;
@@ -70,6 +78,17 @@ input {
 input[type="submit"],
 button {
   cursor: pointer;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 ul li {
   list-style: none;
@@ -124,7 +143,7 @@ p {
 
 /* Splash Screen */
 .splash-screen {
-  background: linear-gradient(180deg, #3F51B5 0%, #0E1124 100%);
+  background: linear-gradient(180deg, #3f51b5 0%, #0e1124 100%);
   width: 100%;
   height: 100vh;
   display: flex;
@@ -140,7 +159,7 @@ p {
 .app-subject {
   font-size: 24px;
   font-weight: 500;
-  color: #F2F2F2;
+  color: #f2f2f2;
   margin-bottom: 16px;
 }
 .app-name {
@@ -354,15 +373,23 @@ p {
   text-align: justify;
 }
 .economy-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   margin-top: 16px;
 }
-.economy-form > * {
+.economy-field {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-top: 12px;
+}
+.economy-field-guide {
+  font-size: 11px;
+  margin: 8px 0;
+  color: var(--error);
+}
+.economy-date-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .economy-form label {
   font-size: 12px;
@@ -534,8 +561,13 @@ p {
   bottom: 0;
   right: 0;
   left: 0;
-  background: radial-gradient(98% 96.48% at 0% 3.52%, #2989CF 0%, #1C1B33 74.87%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  border: 1px solid #17B9FF1A;
+  background: radial-gradient(
+      98% 96.48% at 0% 3.52%,
+      #2989cf 0%,
+      #1c1b33 74.87%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border: 1px solid #17b9ff1a;
   border-bottom-width: 0;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;

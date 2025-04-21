@@ -14,6 +14,7 @@ import useClickSound from "./hooks/useClickSound";
 import SplashScreen from "./pages/SplashScreen";
 import { ToastContainer } from "react-toastify";
 import Logout from "./pages/authentication/Logout";
+import EconomyPage from "./pages/EconomyPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -56,6 +57,7 @@ const App = () => {
           <Route path="/logout" Component={Logout} />
           <Route path="/settings" Component={SettingsPage} />
           <Route path="/devices" Component={DevicePage} />
+          <Route path="/economy" Component={EconomyPage} />
         </Routes>
         <ToastContainer />
       </BrowserRouter>

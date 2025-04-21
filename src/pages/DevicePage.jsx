@@ -89,7 +89,10 @@ const DevicePage = () => {
         notif_error("وارد کردن نام اجباری می باشد!");
         return;
       }
-      const {data} = await changeDeviceName({ deviceId: device.deviceId, name });
+      const { data } = await changeDeviceName({
+        deviceId: device.deviceId,
+        name,
+      });
       if (data.data.status == 2) {
         notif_error("نام دستگاه نمیتواند تکراری باشد.");
         return;
@@ -103,6 +106,14 @@ const DevicePage = () => {
       console.log(err);
       notif_error("مشکلی پیش آمده است!");
     }
+  };
+
+  const goToEconomyPage = () => {
+    let url = "/economy?";
+    deviceIds.forEach((deviceId) => {
+      url += `deviceIds=${deviceId}&`;
+    });
+    navigate(url);
   };
 
   if (!pageIsReady) return null;
@@ -138,9 +149,13 @@ const DevicePage = () => {
             </div>
           )}
         </div>
-        <Link to={"/settings"}>
+        <div
+          onClick={goToEconomyPage}
+          data-sound-click
+          style={{ cursor: "pointer" }}
+        >
           <SettingsIcon />
-        </Link>
+        </div>
       </div>
       <div className="temperature-progress">
         <TemperatureProgress
