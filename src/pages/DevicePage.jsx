@@ -25,6 +25,7 @@ import OpenedDoorIcon from "../components/icons/OpenedDoorIcon";
 
 const DevicePage = () => {
   const [editNameModal, setEditNameModal] = useState(false);
+  const [devices, setDevices] = useState([]);
   const [name, setName] = useState();
   const [currentTemperature, setCurrentTemperature] = useState(15);
   const [temperature, setTemperature] = useState(15);
@@ -48,6 +49,7 @@ const DevicePage = () => {
       try {
         const { data } = await getSelectedDevices(deviceIds);
         console.log(data);
+        setDevices(data.data.devices);
         setDevice(data.data.devices[0]);
         setName(data.data.devices[0].name);
         setTemperature(data.data.devices[0].value);
@@ -113,7 +115,7 @@ const DevicePage = () => {
     deviceIds.forEach((deviceId) => {
       url += `deviceIds=${deviceId}&`;
     });
-    navigate(url);
+    navigate(url, { state: {devices} });
   };
 
   if (!pageIsReady) return null;

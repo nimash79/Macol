@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 
 import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import CustomButton from "../components/shared/CustomButton";
 import CustomInput from "../components/shared/CustomInput";
+import { twoDigit } from "./../utils/helper";
+import { notif_error, notif_success } from "../utils/toast";
+import { changeDeviceSettings } from "../services/deviceService";
 
 const EconomyPage = () => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [startToggle, setStartToggle] = useState(false);
   const [endToggle, setEndToggle] = useState(false);
+  const [temperature, setTemperature] = useState();
 
   const startSelectButton = useRef(null);
   const endSelectButton = useRef(null);
@@ -19,6 +23,7 @@ const EconomyPage = () => {
   const deviceIds = searchParams.getAll("deviceIds");
 
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -43,9 +48,41 @@ const EconomyPage = () => {
   }, []);
 
   useEffect(() => {
+    if (state.devices.length === 1) {
+      setStart(twoDigit(state.devices[0].economy_start));
+      setEnd(twoDigit(state.devices[0].economy_end));
+      setTemperature(state.devices[0].economy_value);
+    }
+  }, [state]);
+
+  useEffect(() => {
     setStartToggle(false);
     setEndToggle(false);
   }, [start, end]);
+
+  const submit = async () => {
+    try {
+      if (!start || !end) {
+        notif_error("لطفا شروع و پایان را مشخص کنید.");
+        return;
+      }
+      if (!temperature || temperature < 15 || temperature > 30) {
+        notif_error("لطفا مقدار دمای موردنظر را به درستی مشخص کنید.");
+        return;
+      }
+      await changeDeviceSettings({
+        deviceIds,
+        economy_value: temperature,
+        economy_start: parseInt(start),
+        economy_end: parseInt(end),
+      });
+      notif_success("تنظیمات با موفقیت اعمال شد.");
+      navigate(-1);
+    } catch (err) {
+      console.log(err);
+      notif_error("مشکلی به وجود آمده است.");
+    }
+  };
 
   return (
     <div className="settings">
@@ -53,7 +90,9 @@ const EconomyPage = () => {
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
           <ArrowRightBorderIcon />
         </div>
-        <p className="header-title">{deviceIds.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}</p>
+        <p className="header-title">
+          {deviceIds.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
+        </p>
         <div></div>
       </div>
       <div className="separator"></div>
@@ -68,14 +107,21 @@ const EconomyPage = () => {
         <div className="economy-field">
           <label>مقدار دمای موردنظر :</label>
           <CustomInput
-            containerStyle={{ width: 71, height: 38, borderRadius: 14, borderWidth: 1, borderColor: "#f9f9f9" }}
-            defaultValue={15}
+            containerStyle={{
+              width: 71,
+              height: 38,
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: "#f9f9f9",
+            }}
+            value={temperature}
             type={"number"}
+            onChange={(event) => setTemperature(event.target.value)}
           />
         </div>
-        {/* <p className="economy-field-guide">
-            مقدار دما باید بین ۱۵ تا ۳۰ درجه باشد.
-        </p> */}
+        <p className="economy-field-guide">
+          مقدار دما باید بین ۱۵ تا ۳۰ درجه باشد.
+        </p>
         <div className="economy-date-form">
           <div className="economy-field">
             <label>شروع از ساعت :</label>
@@ -263,7 +309,7 @@ const EconomyPage = () => {
           </div>
         </div>
       </div>
-      <CustomButton text={"تایید"} style={{ marginTop: 32 }} />
+      <CustomButton text={"تایید"} style={{ marginTop: 32 }} onClick={submit} />
     </div>
   );
 };
