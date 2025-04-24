@@ -45,6 +45,8 @@
   --primary_200: #b6bcdf;
   --primary_300: #8995d6;
   --primary_400: #6171c8;
+  --primary_600: #6171c8;
+  --primary_800: #1C2247;
   --secondary_300: #a385d8;
   --shade_2: #482ecc;
   --neutral_f2: #f2f2f2;
@@ -493,6 +495,18 @@ p {
 .device-page .edit-button {
   cursor: pointer;
 }
+.battery-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+.battery-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--neutral_f2);
+  margin-right: 8px;
+}
 .temperature-progress {
   margin-top: 24px;
 }
@@ -504,6 +518,37 @@ p {
 }
 .controller-container > div {
   cursor: pointer;
+}
+.minmax-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.minmax-container button {
+  outline: none;
+  padding: 8.5px 24px;
+  background-color: transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.min-btn {
+  border: 1px solid var(--primary_600);
+  color: var(--primary_600);
+}
+.max-btn {
+  border: 1px solid #83160D;
+  color: #F3B8B4;
+}
+.min-btn.active {
+  background-color: var(--primary_200);
+  color: var(--primary_800);
+  border-width: 0px;
+}
+.max-btn.active {
+  background-color: #F3B8B4;
+  color: #69120B;
+  border-width: 0px;
 }
 .features {
   margin-top: 32px;

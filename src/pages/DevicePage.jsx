@@ -6,15 +6,10 @@ import EditIcon from "./../components/icons/EditIcon";
 import SettingsIcon from "../components/icons/SettingsIcon";
 import CustomSwitch from "../components/shared/CustomSwitch";
 import BatteryIcon from "./../components/icons/BatteryIcon";
-import TemperatureIcon from "./../components/icons/TemperatureIcon";
 import IncreaseButton from "../components/svgs/IncreaseButton";
 import DecreaseButton from "./../components/svgs/DecreaseButton";
 import EditNameModal from "../components/modals/EditNameModal";
 import TemperatureProgress from "../components/svgs/TemperatureProgress";
-import DeviceInfoBox from "../components/svgs/DeviceInfoBox";
-import TemperatureProgressMedium from "../components/svgs/TemperatureProgressMedium";
-import TemperatureProgressMax from "../components/svgs/TemperatureProgressMax";
-import CustomCircle from "../components/shared/CustomCircle";
 import {
   changeDeviceName,
   changeDeviceValue,
@@ -27,10 +22,11 @@ const DevicePage = () => {
   const [editNameModal, setEditNameModal] = useState(false);
   const [devices, setDevices] = useState([]);
   const [name, setName] = useState();
-  const [currentTemperature, setCurrentTemperature] = useState(15);
-  const [temperature, setTemperature] = useState(15);
+  const [currentTemperature, setCurrentTemperature] = useState();
+  const [temperature, setTemperature] = useState();
   const [minTemperature, setMinTemperature] = useState(15);
-  const [maxTemperature, setMaxTemperature] = useState(25);
+  const [maxTemperature, setMaxTemperature] = useState(30);
+  const [battery, setBattery] = useState();
   const [economy, setEconomy] = useState(false);
   const [openedDoor, setOpenedDoor] = useState(false);
   const [device, setDevice] = useState();
@@ -54,6 +50,7 @@ const DevicePage = () => {
         setName(data.data.devices[0].name);
         setTemperature(data.data.devices[0].value);
         setCurrentTemperature(data.data.devices[0].temperature);
+        setBattery(data.data.devices[0].battery);
         setEconomy(data.data.devices[0].economy);
         setOpenedDoor(data.data.devices[0].openedDoor);
         setPageIsReady(true);
@@ -115,7 +112,7 @@ const DevicePage = () => {
     deviceIds.forEach((deviceId) => {
       url += `deviceIds=${deviceId}&`;
     });
-    navigate(url, { state: {devices} });
+    navigate(url, { state: { devices } });
   };
 
   if (!pageIsReady) return null;
@@ -159,6 +156,12 @@ const DevicePage = () => {
           <SettingsIcon />
         </div>
       </div>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div className="battery-container">
+          <BatteryIcon width={21.5} height={17.5} />
+          <p className="battery-value">{battery}%</p>
+        </div>
+      </div>
       <div className="temperature-progress">
         <TemperatureProgress
           value={temperature}
@@ -183,6 +186,26 @@ const DevicePage = () => {
         >
           <DecreaseButton />
         </div>
+      </div>
+      <div className="minmax-container">
+        <button
+          type="button"
+          className={
+            temperature >= maxTemperature ? "max-btn active" : "max-btn"
+          }
+          onClick={() => setTemperature(maxTemperature)}
+        >
+          Max
+        </button>
+        <button
+          type="button"
+          className={
+            temperature <= minTemperature ? "min-btn active" : "min-btn"
+          }
+          onClick={() => setTemperature(minTemperature)}
+        >
+          Min
+        </button>
       </div>
       <div className="features">
         <div className="economy-feature">

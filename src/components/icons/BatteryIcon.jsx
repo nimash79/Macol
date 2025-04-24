@@ -1,9 +1,9 @@
 import * as React from "react";
 
-const BatteryIcon = (props) => (
+const BatteryIcon = ({ width = 29, height = 25, ...props }) => (
   <svg
-    width={29}
-    height={25}
+    width={width}
+    height={height}
     viewBox="0 0 29 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
