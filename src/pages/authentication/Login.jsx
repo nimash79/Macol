@@ -60,7 +60,6 @@ const Login = () => {
         />
         <CustomPasswordInput
           placeholder="رمز عبور"
-          onChange={(e) => setPassword(e.target.value)}
           ref={passwordRef}
         />
         <CustomButton
