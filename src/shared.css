@@ -44,6 +44,6 @@
   cursor: pointer;
 }
 .custom-checkbox.active {
-    border: 2px solid var(--secondary_300);
+  border: 2px solid var(--secondary_300);
 }
 /* End Forms */

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
 import EditIcon from "./../components/icons/EditIcon";
@@ -17,6 +17,9 @@ import {
 } from "../services/deviceService";
 import { notif_error } from "../utils/toast";
 import OpenedDoorIcon from "../components/icons/OpenedDoorIcon";
+import ReportIcon from "./../components/icons/ReportIcon";
+import CustomBarChart from "../components/shared/CustomBarChart";
+import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 
 const DevicePage = () => {
   const [editNameModal, setEditNameModal] = useState(false);
@@ -30,11 +33,14 @@ const DevicePage = () => {
   const [economy, setEconomy] = useState(false);
   const [openedDoor, setOpenedDoor] = useState(false);
   const [device, setDevice] = useState();
+  const [reportType, setReportType] = useState("هفتگی");
+  const [reportToggle, setReportToggle] = useState(false);
   const [pageIsReady, setPageIsReady] = useState(false);
 
   const deviceRef = useRef();
   const temperatureRef = useRef();
   const economyRef = useRef();
+  const reportSelectButton = useRef();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -59,6 +65,16 @@ const DevicePage = () => {
         notif_error("مشکلی پیش آمده است!");
       }
     })();
+
+    function handleClickOutside(event) {
+      if (
+        reportSelectButton.current &&
+        !reportSelectButton.current.contains(event.target)
+      )
+        setReportToggle(false);
+    }
+
+    document.addEventListener("click", handleClickOutside);
     return async () => {
       if (deviceRef.current == undefined || temperatureRef.current == undefined)
         return;
@@ -72,6 +88,8 @@ const DevicePage = () => {
       } catch (err) {
         console.log(err);
         notif_error("درخواست شما برای تنظیم درجه موفقیت آمیز نبود.");
+      } finally {
+        document.removeEventListener("click", handleClickOutside);
       }
     };
   }, []);
@@ -245,7 +263,57 @@ const DevicePage = () => {
           </div>
         </div>
       </div> */}
-      <div className="report-container"></div>
+      <div className="report-container">
+        <div className="report-header">
+          <div className="report-title">
+            <ReportIcon />
+            <p>گزارش دما</p>
+          </div>
+          <div className="report-filter">
+            <div
+              ref={reportSelectButton}
+              className="report-select"
+              data-sound-click
+              onClick={() => setReportToggle((t) => !t)}
+            >
+              <div className="report-select-button">
+                <span>{reportType}</span>
+                <ArrowDownIcon />
+              </div>
+              {reportToggle && (
+                <div className="options-container">
+                  <div className="options">
+                    <div
+                      onClick={() => setReportType("روزانه")}
+                      data-sound-click
+                    >
+                      روزانه
+                    </div>
+                    <div
+                      onClick={() => setReportType("هفتگی")}
+                      data-sound-click
+                    >
+                      هفتگی
+                    </div>
+                    <div
+                      onClick={() => setReportType("ماهانه")}
+                      data-sound-click
+                    >
+                      ماهانه
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="report-chart-container">
+          <CustomBarChart
+            type={reportType}
+            dataValues={[15, 20, 25, 22, 30, 24, 28]}
+          />
+        </div>
+      </div>
     </div>
   );
 };

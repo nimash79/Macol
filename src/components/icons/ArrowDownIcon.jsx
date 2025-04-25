@@ -1,6 +1,6 @@
 import React from "react";
 
-const ArrowDownIcon = () => {
+const ArrowDownIcon = ({ ...props }) => {
   return (
     <svg
       width="13"
@@ -8,6 +8,7 @@ const ArrowDownIcon = () => {
       viewBox="0 0 13 8"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         fillRule="evenodd"

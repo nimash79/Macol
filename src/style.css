@@ -46,7 +46,7 @@
   --primary_300: #8995d6;
   --primary_400: #6171c8;
   --primary_600: #6171c8;
-  --primary_800: #1C2247;
+  --primary_800: #1c2247;
   --secondary_300: #a385d8;
   --shade_2: #482ecc;
   --neutral_f2: #f2f2f2;
@@ -56,14 +56,14 @@
   --neutral_3d: #3d3d3d;
   --neutral_200: #d6d6d6;
   --neutral_600: #7e7e7e;
-  --warning: #A9791C;
-  --warning_light1: #F4B740;
-  --warning_light2: #FFF8E1;
-  --error: #C30000;
-  --error_light1: #ED2E2E;
-  --error_light2: #FFF2F2;
-  --success: #00966D;
-  --success_light2: #F3FDFA;
+  --warning: #a9791c;
+  --warning_light1: #f4b740;
+  --warning_light2: #fff8e1;
+  --error: #c30000;
+  --error_light1: #ed2e2e;
+  --error_light2: #fff2f2;
+  --success: #00966d;
+  --success_light2: #f3fdfa;
 }
 * {
   margin: 0;
@@ -89,7 +89,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   --moz-appearance: textfield;
 }
 ul li {
@@ -537,8 +537,8 @@ p {
   color: var(--primary_600);
 }
 .max-btn {
-  border: 1px solid #83160D;
-  color: #F3B8B4;
+  border: 1px solid #83160d;
+  color: #f3b8b4;
 }
 .min-btn.active {
   background-color: var(--primary_200);
@@ -546,8 +546,8 @@ p {
   border-width: 0px;
 }
 .max-btn.active {
-  background-color: #F3B8B4;
-  color: #69120B;
+  background-color: #f3b8b4;
+  color: #69120b;
   border-width: 0px;
 }
 .features {
@@ -598,6 +598,87 @@ p {
 .device-info-label {
   font-size: 16px;
   font-weight: 400;
+}
+.report-container {
+  background: linear-gradient(
+    180deg,
+    rgba(46, 167, 255, 0) 57.41%,
+    rgba(46, 167, 255, 0.1) 100%
+  );
+  border: 1px solid #17b9ff1a;
+  backdrop-filter: blur(20px);
+  box-shadow: 0px 15px 30px 0px #00000026;
+  box-shadow: 0px 5px 10px 0px #0000001a;
+  box-shadow: 0px 2px 4px 0px #0000001a;
+  border-radius: 30px;
+  margin-top: 32px;
+  margin-bottom: 54px;
+}
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  margin-right: 24px;
+  margin-left: 16px;
+}
+.report-title {
+  display: flex;
+  align-items: center;
+}
+.report-title p {
+  font-size: 16px;
+  font-weight: 400;
+  margin-right: 16px;
+  color: var(--primary_50);
+}
+.report-chart-container {
+  background: radial-gradient(69.9% 110.16% at 17.58% 4.3%, rgba(46, 167, 255, 0.25) 0%, rgba(28, 27, 51, 0.1) 78.06%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border: 1px solid #17b9ff1a; 
+  border-radius: 30px;
+  margin: 0 20px;
+  margin-top: 32px;
+  padding: 10px;
+  margin-bottom: 24px;
+}
+.report-select {
+  position: relative;
+}
+.report-select-button {
+  border: 1px solid var(--neutral_f9);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 93px;
+  height: 40px;
+  padding: 11px 8.5px;
+}
+.report-select-button span {
+  background-color: transparent;
+  color: var(--primary_100);
+  margin-left: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.report-select .options-container {
+  position: absolute;
+  right: 0;
+  left: 0;
+  background: linear-gradient(166.39deg, #6171c8 0.63%, #1c2247 90.36%);
+  border: 1px solid var(--primary_50);
+  border-radius: 14px;
+}
+.report-select .options {
+  margin: 8px 2px;
+  direction: ltr;
+}
+.report-select .options div {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  cursor: pointer;
 }
 .modal-backdrop {
   position: fixed;
