@@ -20,6 +20,7 @@ import OpenedDoorIcon from "../components/icons/OpenedDoorIcon";
 import ReportIcon from "./../components/icons/ReportIcon";
 import CustomBarChart from "../components/shared/CustomBarChart";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
+import { getReports } from "./../services/reportService";
 
 const DevicePage = () => {
   const [editNameModal, setEditNameModal] = useState(false);
@@ -35,6 +36,7 @@ const DevicePage = () => {
   const [device, setDevice] = useState();
   const [reportType, setReportType] = useState("هفتگی");
   const [reportToggle, setReportToggle] = useState(false);
+  const [reportData, setReportData] = useState([]);
   const [pageIsReady, setPageIsReady] = useState(false);
 
   const deviceRef = useRef();
@@ -99,6 +101,27 @@ const DevicePage = () => {
     temperatureRef.current = temperature;
     economyRef.current = economy;
   }, [device, temperature, economy]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getReports({
+          deviceId: deviceIds[0],
+          type:
+            reportType == "روزانه"
+              ? "daily"
+              : reportType == "هفتگی"
+              ? "weekly"
+              : "monthly",
+        });
+        console.log(data);
+        setReportData(data.data.reports);
+      } catch (err) {
+        console.log(err);
+        notif_error("در دریافت گزارشات مشکلی به وجود آمده است.");
+      }
+    })();
+  }, [reportType]);
 
   const modalSubmit = async () => {
     try {
@@ -308,10 +331,7 @@ const DevicePage = () => {
           </div>
         </div>
         <div className="report-chart-container">
-          <CustomBarChart
-            type={reportType}
-            dataValues={[15, 20, 25, 22, 30, 24, 28]}
-          />
+          <CustomBarChart type={reportType} dataValues={reportData} />
         </div>
       </div>
     </div>
