@@ -3,7 +3,6 @@ import MainLayout from "./layouts/MainLayout";
 
 import HomePage from "./pages/HomePage";
 import Login from "./pages/authentication/Login";
-import SettingsPage from "./pages/SettingsPage";
 import DevicePage from "./pages/DevicePage";
 
 import { useEffect, useState } from "react";
@@ -55,7 +54,6 @@ const App = () => {
           <Route path="/" Component={HomePage} />
           <Route path="/login" Component={Login} />
           <Route path="/logout" Component={Logout} />
-          <Route path="/settings" Component={SettingsPage} />
           <Route path="/devices" Component={DevicePage} />
           <Route path="/economy" Component={EconomyPage} />
         </Routes>

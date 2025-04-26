@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 import { isAuthenticated } from "../utils/auth";
-import SettingsIcon from "../components/icons/SettingsIcon";
 import TempDeviceIcon from "../components/icons/TempDeviceIcon";
 import DeviceDevider from "../components/svgs/DeviceDevider";
 import CustomCheckbox from "../components/shared/CustomCheckbox";
@@ -10,6 +9,7 @@ import CustomButton from "../components/shared/CustomButton";
 import CustomSwitch from "../components/shared/CustomSwitch";
 import { useSelector } from "react-redux";
 import { getMyDevices } from "./../services/deviceService";
+import LogoutIcon from './../components/icons/LogoutIcon';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -53,8 +53,8 @@ const HomePage = () => {
     <div className="home">
       <div className="header">
         <span className="hello">سلام!</span>
-        <Link to={"/settings"}>
-          <SettingsIcon />
+        <Link to={"/logout"}>
+          <LogoutIcon />
         </Link>
       </div>
       <div className="description">
