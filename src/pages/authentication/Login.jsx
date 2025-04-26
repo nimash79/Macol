@@ -41,6 +41,7 @@ const Login = () => {
         const user = decode_token(data.data.token);
         dispatch(addUser(user));
         navigate("/");
+        notif_success("خوش آمدید!");
       }
     } catch (err) {
       console.log(err);
