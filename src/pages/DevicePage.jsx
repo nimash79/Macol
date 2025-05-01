@@ -228,26 +228,6 @@ const DevicePage = () => {
           <DecreaseButton />
         </div>
       </div>
-      <div className="minmax-container">
-        <button
-          type="button"
-          className={
-            temperature >= maxTemperature ? "max-btn active" : "max-btn"
-          }
-          onClick={() => setTemperature(maxTemperature)}
-        >
-          Max
-        </button>
-        <button
-          type="button"
-          className={
-            temperature <= minTemperature ? "min-btn active" : "min-btn"
-          }
-          onClick={() => setTemperature(minTemperature)}
-        >
-          Min
-        </button>
-      </div>
       <div className="features">
         <div className="economy-feature">
           <CustomSwitch
