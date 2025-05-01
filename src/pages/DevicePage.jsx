@@ -21,6 +21,8 @@ import ReportIcon from "./../components/icons/ReportIcon";
 import CustomBarChart from "../components/shared/CustomBarChart";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import { getReports } from "./../services/reportService";
+import LoadingModal from "./../components/modals/LoadingModal";
+import RefreshIcon from "./../components/icons/RefreshIcon";
 
 const DevicePage = () => {
   const [editNameModal, setEditNameModal] = useState(false);
@@ -37,6 +39,7 @@ const DevicePage = () => {
   const [reportType, setReportType] = useState("هفتگی");
   const [reportToggle, setReportToggle] = useState(false);
   const [reportData, setReportData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [pageIsReady, setPageIsReady] = useState(false);
 
   const deviceRef = useRef();
@@ -50,22 +53,8 @@ const DevicePage = () => {
 
   useEffect(() => {
     (async () => {
-      try {
-        const { data } = await getSelectedDevices(deviceIds);
-        console.log(data);
-        setDevices(data.data.devices);
-        setDevice(data.data.devices[0]);
-        setName(data.data.devices[0].name);
-        setTemperature(data.data.devices[0].value);
-        setCurrentTemperature(data.data.devices[0].temperature);
-        setBattery(data.data.devices[0].battery);
-        setEconomy(data.data.devices[0].economy);
-        setOpenedDoor(data.data.devices[0].openedDoor);
-        setPageIsReady(true);
-      } catch (err) {
-        console.log(err);
-        notif_error("مشکلی پیش آمده است!");
-      }
+      await fetchSelectedDevices();
+      setPageIsReady(true);
     })();
 
     function handleClickOutside(event) {
@@ -123,6 +112,27 @@ const DevicePage = () => {
     })();
   }, [reportType]);
 
+  const fetchSelectedDevices = async () => {
+    try {
+      setLoading(true);
+      const { data } = await getSelectedDevices(deviceIds);
+      console.log(data);
+      setDevices(data.data.devices);
+      setDevice(data.data.devices[0]);
+      setName(data.data.devices[0].name);
+      setTemperature(data.data.devices[0].value);
+      setCurrentTemperature(data.data.devices[0].temperature);
+      setBattery(data.data.devices[0].battery);
+      setEconomy(data.data.devices[0].economy);
+      setOpenedDoor(data.data.devices[0].openedDoor);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      notif_error("مشکلی پیش آمده است!");
+    }
+  };
+
   const modalSubmit = async () => {
     try {
       if (name === "") {
@@ -160,6 +170,7 @@ const DevicePage = () => {
 
   return (
     <div className="device-page">
+      <LoadingModal isOpen={loading} />
       <EditNameModal
         isOpen={editNameModal}
         onClose={() => setEditNameModal(false)}
@@ -197,10 +208,24 @@ const DevicePage = () => {
           <SettingsIcon />
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: 16,
+        }}
+      >
         <div className="battery-container">
           <BatteryIcon width={21.5} height={17.5} />
           <p className="battery-value">{battery}%</p>
+        </div>
+        <div
+          className="btn-refresh"
+          onClick={fetchSelectedDevices}
+          data-sound-click
+        >
+          <RefreshIcon width={20} height={20} />
         </div>
       </div>
       <div className="temperature-progress">

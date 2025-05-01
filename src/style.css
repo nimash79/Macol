@@ -247,6 +247,14 @@ p {
 .select-all-devices-container label {
   margin-left: 8px;
 }
+
+.btn-refresh {
+  background-color: var(--primary_400);
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .devices {
   margin-top: 24px;
   display: flex;
@@ -499,7 +507,6 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 16px;
 }
 .battery-value {
   font-size: 16px;

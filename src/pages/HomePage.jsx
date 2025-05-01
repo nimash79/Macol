@@ -11,30 +11,39 @@ import { useSelector } from "react-redux";
 import { changeDeviceOn, getMyDevices } from "./../services/deviceService";
 import LogoutIcon from "./../components/icons/LogoutIcon";
 import { notif_error } from "../utils/toast";
+import RefreshIcon from "./../components/icons/RefreshIcon";
+import LoadingModal from "../components/modals/LoadingModal";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const [devices, setDevices] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
     if (!isAuthenticated()) navigate("/login");
-    (async () => {
-      try {
-        const { data } = await getMyDevices();
-        console.log(data);
-        setDevices(
-          data.data.devices.map((device) => {
-            return { ...device, selected: false };
-          })
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    fetchMyDevices();
   }, []);
+
+  const fetchMyDevices = async () => {
+    if (loading) return;
+    try {
+      setLoading(true);
+      const { data } = await getMyDevices();
+      console.log(data);
+      setDevices(
+        data.data.devices.map((device) => {
+          return { ...device, selected: false };
+        })
+      );
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
 
   const toggleTurnDevice = async (deviceId) => {
     try {
@@ -58,6 +67,7 @@ const HomePage = () => {
 
   return (
     <div className="home">
+      <LoadingModal isOpen={loading} />
       <div className="header">
         <span className="hello">سلام!</span>
         <Link to={"/logout"}>
@@ -106,6 +116,14 @@ const HomePage = () => {
             />
           </div>
         )}
+        <div
+          className="btn-refresh"
+          style={{ marginRight: "auto" }}
+          onClick={fetchMyDevices}
+          data-sound-click
+        >
+          <RefreshIcon />
+        </div>
       </div>
       <div className="devices">
         {devices.map((device) => (
