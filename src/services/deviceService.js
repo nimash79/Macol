@@ -43,3 +43,7 @@ export const changeDeviceSettings = ({
     JSON.stringify({ deviceIds, economy_value, economy_start, economy_end })
   );
 };
+
+export const changeDeviceOn = ({ deviceId, on }) => {
+  return http.post(`${API_URL}/devices/change-on`, JSON.stringify({ deviceId, on }));
+};

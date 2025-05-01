@@ -8,8 +8,9 @@ import CustomCheckbox from "../components/shared/CustomCheckbox";
 import CustomButton from "../components/shared/CustomButton";
 import CustomSwitch from "../components/shared/CustomSwitch";
 import { useSelector } from "react-redux";
-import { getMyDevices } from "./../services/deviceService";
-import LogoutIcon from './../components/icons/LogoutIcon';
+import { changeDeviceOn, getMyDevices } from "./../services/deviceService";
+import LogoutIcon from "./../components/icons/LogoutIcon";
+import { notif_error } from "../utils/toast";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -35,11 +36,17 @@ const HomePage = () => {
     })();
   }, []);
 
-  const toggleTurnDevice = (deviceId) => {
-    let [...devicesCopy] = devices;
-    const deviceIndex = devices.findIndex((d) => d.deviceId === deviceId);
-    devicesCopy[deviceIndex].on = !devicesCopy[deviceIndex].on;
-    setDevices(devicesCopy);
+  const toggleTurnDevice = async (deviceId) => {
+    try {
+      let [...devicesCopy] = devices;
+      const deviceIndex = devices.findIndex((d) => d.deviceId === deviceId);
+      await changeDeviceOn({ deviceId, on: !devicesCopy[deviceIndex].on });
+      devicesCopy[deviceIndex].on = !devicesCopy[deviceIndex].on;
+      setDevices(devicesCopy);
+    } catch (err) {
+      console.log(err);
+      notif_error("مشکلی پیش آمده است. بعدا امتحان کنید.");
+    }
   };
 
   const toggleSelectDevice = (deviceId) => {
