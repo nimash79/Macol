@@ -384,6 +384,28 @@ p {
   font-size: 16px;
   font-weight: 700;
 }
+.settings .buttons {
+  border-radius: 8px;
+  background-color: var(--primary_600);
+  margin-top: 24px;
+}
+.settings .button {
+  padding: 16px;
+  color: var(--neutral_f9);
+  display: flex;
+  align-items: center;
+}
+.settings .button-text {
+  margin-right: 8px;
+}
+.settings .button-arrow {
+  margin-right: auto;
+}
+.settings .button-separator {
+  height: 1px;
+  margin: 0px 16px;
+  background-color: var(--secondary_300);
+}
 .settings .description {
   font-size: 13px;
   font-weight: 300;

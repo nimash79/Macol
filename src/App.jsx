@@ -14,6 +14,7 @@ import SplashScreen from "./pages/SplashScreen";
 import { ToastContainer } from "react-toastify";
 import Logout from "./pages/authentication/Logout";
 import EconomyPage from "./pages/EconomyPage";
+import SettingsPage from "./pages/SettingsPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="/" Component={HomePage} />
           <Route path="/login" Component={Login} />
           <Route path="/logout" Component={Logout} />
+          <Route path="/settings" Component={SettingsPage} />
           <Route path="/devices" Component={DevicePage} />
           <Route path="/economy" Component={EconomyPage} />
         </Routes>

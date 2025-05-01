@@ -9,10 +9,10 @@ import CustomButton from "../components/shared/CustomButton";
 import CustomSwitch from "../components/shared/CustomSwitch";
 import { useSelector } from "react-redux";
 import { changeDeviceOn, getMyDevices } from "./../services/deviceService";
-import LogoutIcon from "./../components/icons/LogoutIcon";
 import { notif_error } from "../utils/toast";
 import RefreshIcon from "./../components/icons/RefreshIcon";
 import LoadingModal from "../components/modals/LoadingModal";
+import SettingsIcon from './../components/icons/SettingsIcon';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -70,8 +70,8 @@ const HomePage = () => {
       <LoadingModal isOpen={loading} />
       <div className="header">
         <span className="hello">سلام!</span>
-        <Link to={"/logout"}>
-          <LogoutIcon />
+        <Link to={"/settings"}>
+          <SettingsIcon />
         </Link>
       </div>
       <div className="description">
