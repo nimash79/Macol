@@ -661,8 +661,13 @@ p {
   color: var(--primary_50);
 }
 .report-chart-container {
-  background: radial-gradient(69.9% 110.16% at 17.58% 4.3%, rgba(46, 167, 255, 0.25) 0%, rgba(28, 27, 51, 0.1) 78.06%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  border: 1px solid #17b9ff1a; 
+  background: radial-gradient(
+      69.9% 110.16% at 17.58% 4.3%,
+      rgba(46, 167, 255, 0.25) 0%,
+      rgba(28, 27, 51, 0.1) 78.06%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border: 1px solid #17b9ff1a;
   border-radius: 30px;
   margin: 0 20px;
   margin-top: 32px;
@@ -744,3 +749,70 @@ p {
   margin: 32px 0;
 }
 /* End Device Page */
+
+/* Settings Layout */
+.settings-layout .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+.settings-layout .header .icon {
+  cursor: pointer;
+}
+.settings-layout .header > * {
+  flex: 0.33;
+}
+.settings-layout .header-title {
+  font-size: 20px;
+  font-weight: 700;
+  flex: 1;
+  text-align: center;
+}
+.settings-layout .title {
+  font-size: 16px;
+  font-weight: 700;
+}
+.settings-layout .header-option {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+}
+/* End Settings Layout */
+
+/* My Devices Page */
+.my-devices {
+  border-radius: 16px;
+  background: radial-gradient(
+      69.9% 110.16% at 17.58% 4.3%,
+      rgba(46, 167, 255, 0.25) 0%,
+      rgba(28, 27, 51, 0.1) 78.06%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-width: 1px;
+  border-color: #17b9ff1a;
+  border-style: solid;
+}
+.my-device {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+}
+.my-device-name {
+  font-size: 16zpx;
+  font-weight: 400;
+  color: var(--neutral_f2);
+}
+.my-device .operations {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+}
+.my-devices .separator {
+  margin: 0px 16px;
+  background-color: var(--secondary_300);
+  border-radius: 8px;
+}
+/* End My Devices Page */

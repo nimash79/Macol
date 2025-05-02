@@ -57,3 +57,30 @@
   align-items: center;
 }
 /* End Loading */
+
+/* Modal */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.modal-buttons button {
+  width: 45%;
+  padding: 8px 0;
+}
+.modal-cancel-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  border: 1px solid var(--primary_400);
+  color: var(--primary_400);
+}
+.modal-submit-button {
+  background-color: var(--primary_400);
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  color: var(--neutral_f9);
+}
+/* End Modal

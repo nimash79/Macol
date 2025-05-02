@@ -1,14 +1,14 @@
 import React from "react";
 import { Link, useNavigate } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
-import PersonalInfoIcon from "../components/icons/PersonalInfoIcon";
-import ArrowLeftIcon from "./../components/icons/ArrowLeftIcon";
-import DeviceIcon from "../components/icons/DeviceIcon";
-import LogoutIcon from "./../components/icons/LogoutIcon";
-import QuestionsIcon from './../components/icons/QuestionsIcon';
-import AboutUsIcon from './../components/icons/AboutUsIcon';
-import ContactUsIcon from './../components/icons/ContactUsIcon';
+import ArrowRightBorderIcon from "../../components/icons/ArrowRightBorderIcon";
+import PersonalInfoIcon from "../../components/icons/PersonalInfoIcon";
+import ArrowLeftIcon from "../../components/icons/ArrowLeftIcon";
+import DeviceIcon from "../../components/icons/DeviceIcon";
+import LogoutIcon from "../../components/icons/LogoutIcon";
+import QuestionsIcon from '../../components/icons/QuestionsIcon';
+import AboutUsIcon from '../../components/icons/AboutUsIcon';
+import ContactUsIcon from '../../components/icons/ContactUsIcon';
 
 const SettingsPage = () => {
   const navigate = useNavigate();

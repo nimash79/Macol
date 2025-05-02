@@ -47,3 +47,11 @@ export const changeDeviceSettings = ({
 export const changeDeviceOn = ({ deviceId, on }) => {
   return http.post(`${API_URL}/devices/change-on`, JSON.stringify({ deviceId, on }));
 };
+
+export const deleteDevice = (deviceId) => {
+  return http.post(`${API_URL}/devices/delete/${deviceId}`);
+};
+
+export const addDevice = (count) => {
+  return http.post(`${API_URL}/devices/add`, JSON.stringify({ count }));
+};
