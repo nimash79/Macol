@@ -842,3 +842,12 @@ p {
   border-radius: 8px;
 }
 /* End My Devices Page */
+
+/* My Account Page */
+.my-account {
+  background-color: #26316d;
+  padding: 8px;
+  border-radius: 8px;
+  border: 2px solid #17b9ff1a
+}
+/* End My Account Page */

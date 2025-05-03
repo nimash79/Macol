@@ -21,6 +21,7 @@ import VerificationPage from "./pages/authentication/VerificationPage";
 import ForgetPasswordPage from './pages/authentication/ForgetPasswordPage';
 import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
 import DeviceSettingsPage from "./pages/DeviceSettingsPage";
+import MyAccountPage from "./pages/settings/MyAccountPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -67,6 +68,7 @@ const App = () => {
           <Route path="/logout" Component={Logout} />
           {/* Settings Pages */}
           <Route path="/settings" Component={SettingsPage} />
+          <Route path="/my-account" Component={MyAccountPage} />
           <Route path="/my-devices" Component={MyDevicesPage} />
           {/* End Settings Pages */}
           <Route path="/devices" Component={DevicePage} />

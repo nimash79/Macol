@@ -7,6 +7,17 @@
   align-items: center;
   height: 56px;
   padding: 0 24px;
+  position: relative;
+}
+.custom-input-container .label {
+  font-size: 14px;
+  font-weight: 30;
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--neutral_f9)
 }
 .custom-input {
   border: none;
