@@ -193,10 +193,36 @@ p {
   color: var(--neutral_f2);
   margin-bottom: 24px;
 }
+.forget-password-link {
+  margin-top: 8px;
+}
+.forget-password-link a {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary_600);
+}
 .login .title {
   font-size: 16px;
   font-weight: 500;
   color: var(--neutral_f2);
+}
+.login-guide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+}
+.login-guide p {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--neutral_f2);
+}
+.login-guide a {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary_600);
+  margin-right: 8px;
+  text-decoration: underline;
 }
 /* End Athentication */
 

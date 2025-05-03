@@ -1,6 +1,6 @@
 import React from "react";
 
-const CustomInput = ({ icon, containerStyle, style = null, ...props }) => {
+const CustomInput = ({ icon, containerStyle, ...props }) => {
   return (
     <div className="custom-input-container" style={containerStyle}>
       {icon ? <div className="icon">{icon}</div> : null}

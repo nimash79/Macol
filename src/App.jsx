@@ -16,6 +16,10 @@ import Logout from "./pages/authentication/Logout";
 import EconomyPage from "./pages/EconomyPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import MyDevicesPage from "./pages/settings/MyDevicesPage";
+import Register from "./pages/authentication/Register";
+import VerificationPage from "./pages/authentication/VerificationPage";
+import ForgetPasswordPage from './pages/authentication/ForgetPasswordPage';
+import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -54,6 +58,10 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" Component={HomePage} />
+          <Route path="/register" Component={Register} />
+          <Route path="/verification" Component={VerificationPage} />
+          <Route path="/forget-password" Component={ForgetPasswordPage} />
+          <Route path="/reset-password" Component={ResetPasswordPage} />
           <Route path="/login" Component={Login} />
           <Route path="/logout" Component={Logout} />
           {/* Settings Pages */}

@@ -6,8 +6,12 @@ export const register = model => {
     return http.post(`${API_URL}/accounts/register`, JSON.stringify(model));
 }
 
-export const getActiveCode = (model) => {
-    return http.get(`${API_URL}/accounts/active-code`, JSON.stringify(model));
+export const activeAccount = (model) => {
+    return http.post(`${API_URL}/accounts/active`, JSON.stringify(model));
+}
+
+export const sendActiveCode = (userId) => {
+    return http.get(`${API_URL}/accounts/send-active-code/${userId}`);
 }
 
 export const login = model => {

@@ -7,13 +7,13 @@ import PasswordIcon from "../icons/PasswordIcon";
 
 
 const CustomPasswordInput = ({
-  style,
+  containerStyle,
   placeholder = "",
   ...props
 }) => {
   const [visible, setVisible] = useState(false);
   return (
-    <div className="custom-input-container" style={style}>
+    <div className="custom-input-container" style={containerStyle}>
       <div className="icon"><PasswordIcon /></div>
       <input
         className="custom-input"
