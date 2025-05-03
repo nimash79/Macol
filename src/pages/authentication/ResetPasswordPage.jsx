@@ -60,7 +60,7 @@ const ResetPasswordPage = () => {
       <div className="login">
         <div className="header">هر جا، هر زمان دما را تنظیم کن!</div>
         <div className="title" style={{ fontSize: 14 }}>
-          لطفا کد تایید پیامک شده را وارد کنید.
+          بازیابی رمز عبور
         </div>
         <CustomPasswordInput placeholder="رمز عبور جدید" ref={passwordRef} containerStyle={{ marginTop: 40, marginBottom: 32 }} />
         <CustomPasswordInput placeholder="تکرار رمز عبور" ref={confirmPasswordRef} containerStyle={{ marginTop: 40, marginBottom: 32 }} />
