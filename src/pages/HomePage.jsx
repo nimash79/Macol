@@ -7,12 +7,12 @@ import DeviceDevider from "../components/svgs/DeviceDevider";
 import CustomCheckbox from "../components/shared/CustomCheckbox";
 import CustomButton from "../components/shared/CustomButton";
 import CustomSwitch from "../components/shared/CustomSwitch";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeDeviceOn, getMyDevices } from "./../services/deviceService";
 import { notif_error } from "../utils/toast";
 import RefreshIcon from "./../components/icons/RefreshIcon";
 import LoadingModal from "../components/modals/LoadingModal";
-import SettingsIcon from './../components/icons/SettingsIcon';
+import SettingsIcon from "./../components/icons/SettingsIcon";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -63,6 +63,16 @@ const HomePage = () => {
     const deviceIndex = devices.findIndex((d) => d.deviceId === deviceId);
     devicesCopy[deviceIndex].selected = !devicesCopy[deviceIndex].selected;
     setDevices(devicesCopy);
+  };
+
+  const onSelectDevices = async () => {
+    let url = "/devices?";
+    devices
+      .filter((d) => d.selected)
+      .forEach((d) => {
+        url += `deviceIds=${d.deviceId}&`;
+      });
+    navigate(url);
   };
 
   return (
@@ -162,15 +172,7 @@ const HomePage = () => {
         <div className="btn-setting-devices">
           <CustomButton
             text={`تنظیم ${devices.filter((d) => d.selected).length} دستگاه`}
-            onClick={() => {
-              let url = "/devices?";
-              devices
-                .filter((d) => d.selected)
-                .forEach((d) => {
-                  url += `deviceIds=${d.deviceId}&`;
-                });
-              navigate(url);
-            }}
+            onClick={onSelectDevices}
           />
         </div>
       )}

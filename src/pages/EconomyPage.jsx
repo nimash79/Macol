@@ -8,6 +8,8 @@ import CustomInput from "../components/shared/CustomInput";
 import { twoDigit } from "./../utils/helper";
 import { notif_error, notif_success } from "../utils/toast";
 import { changeDeviceSettings } from "../services/deviceService";
+import { useDispatch, useSelector } from "react-redux";
+import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
 
 const EconomyPage = () => {
   const [start, setStart] = useState(null);
@@ -19,11 +21,10 @@ const EconomyPage = () => {
   const startSelectButton = useRef(null);
   const endSelectButton = useRef(null);
 
-  const [searchParams] = useSearchParams();
-  const deviceIds = searchParams.getAll("deviceIds");
+  const selectedDevices = useSelector((state) => state.selectedDevices);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { state } = useLocation();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -48,12 +49,12 @@ const EconomyPage = () => {
   }, []);
 
   useEffect(() => {
-    if (state.devices.length === 1) {
-      setStart(twoDigit(state.devices[0].economy_start));
-      setEnd(twoDigit(state.devices[0].economy_end));
-      setTemperature(state.devices[0].economy_value);
+    if (selectedDevices.length === 1) {
+      setStart(twoDigit(selectedDevices[0].economy_start));
+      setEnd(twoDigit(selectedDevices[0].economy_end));
+      setTemperature(selectedDevices[0].economy_value);
     }
-  }, [state]);
+  }, [selectedDevices]);
 
   useEffect(() => {
     setStartToggle(false);
@@ -70,14 +71,18 @@ const EconomyPage = () => {
         notif_error("لطفا مقدار دمای موردنظر را به درستی مشخص کنید.");
         return;
       }
-      await changeDeviceSettings({
-        deviceIds,
+      const { data } = await changeDeviceSettings({
+        deviceIds: selectedDevices.map((d) => d.deviceId),
         economy_value: temperature,
         economy_start: parseInt(start),
         economy_end: parseInt(end),
       });
-      notif_success("تنظیمات با موفقیت اعمال شد.");
-      navigate(-1);
+      console.log("devices data:", data);
+      if (data.code === 200) {
+        dispatch(addSelectedDevices(data.data.devices));
+        notif_success("تنظیمات با موفقیت اعمال شد.");
+        navigate(-1);
+      }
     } catch (err) {
       console.log(err);
       notif_error("مشکلی به وجود آمده است.");
@@ -91,7 +96,7 @@ const EconomyPage = () => {
           <ArrowRightBorderIcon />
         </div>
         <p className="header-title">
-          {deviceIds.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
+          {selectedDevices.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
         </p>
         <div></div>
       </div>

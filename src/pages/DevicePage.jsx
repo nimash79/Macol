@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 
 import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
 import EditIcon from "./../components/icons/EditIcon";
@@ -23,6 +23,8 @@ import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import { getReports } from "./../services/reportService";
 import LoadingModal from "./../components/modals/LoadingModal";
 import RefreshIcon from "./../components/icons/RefreshIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
 
 const DevicePage = () => {
   const [editNameModal, setEditNameModal] = useState(false);
@@ -50,6 +52,8 @@ const DevicePage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const deviceIds = searchParams.getAll("deviceIds");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -117,6 +121,7 @@ const DevicePage = () => {
       setLoading(true);
       const { data } = await getSelectedDevices(deviceIds);
       console.log(data);
+      dispatch(addSelectedDevices(data.data.devices));
       setDevices(data.data.devices);
       setDevice(data.data.devices[0]);
       setName(data.data.devices[0].name);
@@ -158,26 +163,11 @@ const DevicePage = () => {
     }
   };
 
-  const goToEconomyPage = () => {
-    let url = "/economy?";
-    deviceIds.forEach((deviceId) => {
-      url += `deviceIds=${deviceId}&`;
-    });
-    navigate(url, { state: { devices } });
-  };
-
   if (!pageIsReady) return null;
 
   return (
     <div className="device-page">
       <LoadingModal isOpen={loading} />
-      <EditNameModal
-        isOpen={editNameModal}
-        onClose={() => setEditNameModal(false)}
-        onSubmit={modalSubmit}
-        onChange={(e) => setName(e.target.value)}
-        name={device.name}
-      />
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
           <ArrowRightBorderIcon />
@@ -200,13 +190,9 @@ const DevicePage = () => {
             </div>
           )}
         </div>
-        <div
-          onClick={goToEconomyPage}
-          data-sound-click
-          style={{ cursor: "pointer" }}
-        >
+        <Link to={"/device-settings"}>
           <SettingsIcon />
-        </div>
+        </Link>
       </div>
       <div
         style={{

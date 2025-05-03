@@ -20,6 +20,7 @@ import Register from "./pages/authentication/Register";
 import VerificationPage from "./pages/authentication/VerificationPage";
 import ForgetPasswordPage from './pages/authentication/ForgetPasswordPage';
 import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
+import DeviceSettingsPage from "./pages/DeviceSettingsPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -69,6 +70,7 @@ const App = () => {
           <Route path="/my-devices" Component={MyDevicesPage} />
           {/* End Settings Pages */}
           <Route path="/devices" Component={DevicePage} />
+          <Route path="/device-settings" Component={DeviceSettingsPage} />
           <Route path="/economy" Component={EconomyPage} />
         </Routes>
         <ToastContainer />
