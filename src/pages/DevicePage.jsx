@@ -27,9 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
 
 const DevicePage = () => {
-  const [editNameModal, setEditNameModal] = useState(false);
   const [devices, setDevices] = useState([]);
-  const [name, setName] = useState();
   const [currentTemperature, setCurrentTemperature] = useState();
   const [temperature, setTemperature] = useState();
   const [minTemperature, setMinTemperature] = useState(15);
@@ -124,7 +122,6 @@ const DevicePage = () => {
       dispatch(addSelectedDevices(data.data.devices));
       setDevices(data.data.devices);
       setDevice(data.data.devices[0]);
-      setName(data.data.devices[0].name);
       setTemperature(data.data.devices[0].value);
       setCurrentTemperature(data.data.devices[0].temperature);
       setBattery(data.data.devices[0].battery);
@@ -134,31 +131,6 @@ const DevicePage = () => {
     } catch (err) {
       console.log(err);
       setLoading(false);
-      notif_error("مشکلی پیش آمده است!");
-    }
-  };
-
-  const modalSubmit = async () => {
-    try {
-      if (name === "") {
-        notif_error("وارد کردن نام اجباری می باشد!");
-        return;
-      }
-      const { data } = await changeDeviceName({
-        deviceId: device.deviceId,
-        name,
-      });
-      if (data.data.status == 2) {
-        notif_error("نام دستگاه نمیتواند تکراری باشد.");
-        return;
-      }
-      setDevice((d) => {
-        d.name = name;
-        return d;
-      });
-      setEditNameModal(false);
-    } catch (err) {
-      console.log(err);
       notif_error("مشکلی پیش آمده است!");
     }
   };
@@ -173,22 +145,11 @@ const DevicePage = () => {
           <ArrowRightBorderIcon />
         </div>
         <div className="header-title">
-          {deviceIds.length > 1 ? (
-            <div className="header-title">
-              <p>تنظیم گروهی دستگاه ها</p>
-            </div>
-          ) : (
-            <div className="header-title">
-              <p>{device.name}</p>
-              <div
-                className="edit-button"
-                data-sound-click
-                onClick={() => setEditNameModal(true)}
-              >
-                <EditIcon />
-              </div>
-            </div>
-          )}
+          <div className="header-title">
+            <p>
+              {deviceIds.length > 1 ? "تنظیم گروهی دستگاه ها" : device.name}
+            </p>
+          </div>
         </div>
         <Link to={"/device-settings"}>
           <SettingsIcon />
