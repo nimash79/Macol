@@ -22,6 +22,7 @@ import ForgetPasswordPage from './pages/authentication/ForgetPasswordPage';
 import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
 import DeviceSettingsPage from "./pages/DeviceSettingsPage";
 import MyAccountPage from "./pages/settings/MyAccountPage";
+import OffDatesPage from "./pages/OffDatesPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -74,6 +75,7 @@ const App = () => {
           <Route path="/devices" Component={DevicePage} />
           <Route path="/device-settings" Component={DeviceSettingsPage} />
           <Route path="/economy" Component={EconomyPage} />
+          <Route path="/off-dates" Component={OffDatesPage} />
         </Routes>
         <ToastContainer />
       </BrowserRouter>

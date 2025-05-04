@@ -19,11 +19,13 @@ const HomePage = () => {
   const [toggle, setToggle] = useState(false);
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [now, setNow] = useState();
 
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
     if (!isAuthenticated()) navigate("/login");
+    setNow(new Date());
     fetchMyDevices();
   }, []);
 
@@ -159,9 +161,19 @@ const HomePage = () => {
               </div>
             </Link>
             <div className="device-status">
-              {device.on ? <p>روشن</p> : <p>خاموش</p>}
+              {device.on &&
+              (now > new Date(device.off_end) ||
+                now < new Date(device.off_start)) ? (
+                <p>روشن</p>
+              ) : (
+                <p>خاموش</p>
+              )}
               <CustomSwitch
-                checked={device.on}
+                checked={
+                  device.on &&
+                  (now > new Date(device.off_end) ||
+                    now < new Date(device.off_start))
+                }
                 onChange={() => toggleTurnDevice(device.deviceId)}
               />
             </div>

@@ -59,3 +59,14 @@ export const addDevice = (count) => {
 export const changeCalibration = ({ deviceIds, calibration }) => {
   return http.post(`${API_URL}/devices/change-calibration`, JSON.stringify({ deviceIds, calibration }));
 };
+
+export const changeDeviceOffDates = ({
+  deviceIds,
+  off_start,
+  off_end
+}) => {
+  return http.post(
+    `${API_URL}/devices/change-off-dates`,
+    JSON.stringify({ deviceIds, off_start, off_end })
+  );
+};

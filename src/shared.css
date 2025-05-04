@@ -57,6 +57,29 @@
 .custom-checkbox.active {
   border: 2px solid var(--secondary_300);
 }
+
+.custom-label {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--neutral_f9)
+}
+
+.custom-calendar-input {
+  width: 100%;
+  height: 100%;
+}
+.custom-calendar-input .rmdp-input {
+  background-color: transparent;
+  border: none;
+  color: var(--neutral_e9);
+  margin-right: 8px;
+  width: 100%;
+  height: 100%;
+}
+.custom-calendar-input .rmdp-input:focus {
+  border: none;
+  box-shadow: none;
+}
 /* End Forms */
 
 /* Loading */
