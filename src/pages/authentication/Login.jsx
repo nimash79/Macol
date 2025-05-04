@@ -40,7 +40,7 @@ const Login = () => {
         notif_error("شماره موبایل یا رمز عبور اشتباه می باشد!");
       else if (data.code === 200) {
         if (data.data.status === 3)
-          navigate("/verification", { state: { userId: data.data.userId } });
+          navigate("/verification", { state: { userId: data.data.userId, register: true } });
         else {
           localStorage.setItem("token", data.data.token);
           const user = decode_token(data.data.token);
