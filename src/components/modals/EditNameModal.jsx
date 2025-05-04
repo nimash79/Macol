@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CustomInput from "./../shared/CustomInput";
 import CustomButton from './../shared/CustomButton';
 
 const EditNameModal = ({ isOpen, onClose, onSubmit, name, onChange }) => {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (isOpen) inputRef.current.select();
+  }, [isOpen])
   return (
     <AnimatePresence>
       {isOpen && (
@@ -27,6 +31,7 @@ const EditNameModal = ({ isOpen, onClose, onSubmit, name, onChange }) => {
           >
             <p className="title">ویرایش نام دستگاه</p>
             <CustomInput
+              ref={inputRef}
               defaultValue={name}
               containerStyle={{ marginBottom: 32 }}
               onChange={onChange}
