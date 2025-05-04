@@ -55,3 +55,7 @@ export const deleteDevice = (deviceId) => {
 export const addDevice = (count) => {
   return http.post(`${API_URL}/devices/add`, JSON.stringify({ count }));
 };
+
+export const changeCalibration = ({ deviceIds, calibration }) => {
+  return http.post(`${API_URL}/devices/change-calibration`, JSON.stringify({ deviceIds, calibration }));
+};

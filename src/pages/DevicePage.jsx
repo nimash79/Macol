@@ -72,6 +72,7 @@ const DevicePage = () => {
       if (deviceRef.current == undefined || temperatureRef.current == undefined)
         return;
       try {
+        setLoading(true);
         const { data } = await changeDeviceValue({
           deviceIds,
           value: temperatureRef.current,
@@ -82,6 +83,7 @@ const DevicePage = () => {
         console.log(err);
         notif_error("درخواست شما برای تنظیم درجه موفقیت آمیز نبود.");
       } finally {
+        setLoading(false);
         document.removeEventListener("click", handleClickOutside);
       }
     };
