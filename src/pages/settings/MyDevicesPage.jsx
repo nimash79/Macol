@@ -72,11 +72,7 @@ const MyDevicesPage = () => {
     try {
       setLoading(true);
       await deleteDevice(device.deviceId);
-      setDevices((d) => {
-        const index = d.findIndex((x) => x.deviceId === device.deviceId);
-        delete d[index];
-        return d;
-      });
+      setDevices((d) => d.filter((x) => x.deviceId !== device.deviceId));
       setDeleteModal(false);
     } catch (err) {
       console.log(err);
@@ -96,6 +92,7 @@ const MyDevicesPage = () => {
         return;
       }
       const { data } = await addDevice(count);
+      console.log("devices:", devices);
       setDevices((d) =>
         [...data.data.devices, ...d].sort(
           (a, b) => new Date(a.createDate) - new Date(b.createDate)
