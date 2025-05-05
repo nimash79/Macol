@@ -2,28 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 
 import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
-import EditIcon from "./../components/icons/EditIcon";
 import SettingsIcon from "../components/icons/SettingsIcon";
 import CustomSwitch from "../components/shared/CustomSwitch";
 import BatteryIcon from "./../components/icons/BatteryIcon";
 import IncreaseButton from "../components/svgs/IncreaseButton";
 import DecreaseButton from "./../components/svgs/DecreaseButton";
-import EditNameModal from "../components/modals/EditNameModal";
 import TemperatureProgress from "../components/svgs/TemperatureProgress";
 import {
-  changeDeviceName,
   changeDeviceValue,
   getSelectedDevices,
 } from "../services/deviceService";
 import { notif_error } from "../utils/toast";
 import OpenedDoorIcon from "../components/icons/OpenedDoorIcon";
-import ReportIcon from "./../components/icons/ReportIcon";
-import CustomBarChart from "../components/shared/CustomBarChart";
-import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import { getReports } from "./../services/reportService";
 import LoadingModal from "./../components/modals/LoadingModal";
 import RefreshIcon from "./../components/icons/RefreshIcon";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
 
 const DevicePage = () => {
@@ -37,8 +31,6 @@ const DevicePage = () => {
   const [openedDoor, setOpenedDoor] = useState(false);
   const [device, setDevice] = useState();
   const [reportType, setReportType] = useState("هفتگی");
-  const [reportToggle, setReportToggle] = useState(false);
-  const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageIsReady, setPageIsReady] = useState(false);
 
@@ -58,16 +50,6 @@ const DevicePage = () => {
       await fetchSelectedDevices();
       setPageIsReady(true);
     })();
-
-    function handleClickOutside(event) {
-      if (
-        reportSelectButton.current &&
-        !reportSelectButton.current.contains(event.target)
-      )
-        setReportToggle(false);
-    }
-
-    document.addEventListener("click", handleClickOutside);
     return async () => {
       if (deviceRef.current == undefined || temperatureRef.current == undefined)
         return;
@@ -78,13 +60,11 @@ const DevicePage = () => {
           value: temperatureRef.current,
           economy: economyRef.current,
         });
-        console.log(data);
       } catch (err) {
         console.log(err);
         notif_error("درخواست شما برای تنظیم درجه موفقیت آمیز نبود.");
       } finally {
         setLoading(false);
-        document.removeEventListener("click", handleClickOutside);
       }
     };
   }, []);
@@ -95,32 +75,10 @@ const DevicePage = () => {
     economyRef.current = economy;
   }, [device, temperature, economy]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getReports({
-          deviceId: deviceIds[0],
-          type:
-            reportType == "روزانه"
-              ? "daily"
-              : reportType == "هفتگی"
-              ? "weekly"
-              : "monthly",
-        });
-        console.log(data);
-        setReportData(data.data.reports);
-      } catch (err) {
-        console.log(err);
-        notif_error("در دریافت گزارشات مشکلی به وجود آمده است.");
-      }
-    })();
-  }, [reportType]);
-
   const fetchSelectedDevices = async () => {
     try {
       setLoading(true);
       const { data } = await getSelectedDevices(deviceIds);
-      console.log(data);
       dispatch(addSelectedDevices(data.data.devices));
       setDevices(data.data.devices);
       setDevice(data.data.devices[0]);
@@ -240,54 +198,6 @@ const DevicePage = () => {
           </div>
         </div>
       </div> */}
-      <div className="report-container">
-        <div className="report-header">
-          <div className="report-title">
-            <ReportIcon />
-            <p>گزارش دما</p>
-          </div>
-          <div className="report-filter">
-            <div
-              ref={reportSelectButton}
-              className="report-select"
-              data-sound-click
-              onClick={() => setReportToggle((t) => !t)}
-            >
-              <div className="report-select-button">
-                <span>{reportType}</span>
-                <ArrowDownIcon />
-              </div>
-              {reportToggle && (
-                <div className="options-container">
-                  <div className="options">
-                    <div
-                      onClick={() => setReportType("روزانه")}
-                      data-sound-click
-                    >
-                      روزانه
-                    </div>
-                    <div
-                      onClick={() => setReportType("هفتگی")}
-                      data-sound-click
-                    >
-                      هفتگی
-                    </div>
-                    <div
-                      onClick={() => setReportType("ماهانه")}
-                      data-sound-click
-                    >
-                      ماهانه
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="report-chart-container">
-          <CustomBarChart type={reportType} dataValues={reportData} />
-        </div>
-      </div>
     </div>
   );
 };

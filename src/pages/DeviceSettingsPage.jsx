@@ -39,6 +39,7 @@ const DeviceSettingsPage = () => {
   useEffect(() => {
       (async () => {
         try {
+          setLoading(true);
           const { data } = await getReports({
             deviceId: selectedDevices[0].deviceId,
             type:
@@ -53,6 +54,8 @@ const DeviceSettingsPage = () => {
         } catch (err) {
           console.log(err);
           notif_error("در دریافت گزارشات مشکلی به وجود آمده است.");
+        } finally {
+          setLoading(true);
         }
       })();
     }, [reportType]);
@@ -121,7 +124,7 @@ const DeviceSettingsPage = () => {
           <ArrowLeftIcon className="button-arrow" />
         </Link>
         <div className="button-separator"></div>
-        <Link to={"/reports"} className="button">
+        <Link to={"/export-report"} className="button">
           <ReportsIcon />
           <p className="button-text">گزارش گیری</p>
           <ArrowLeftIcon className="button-arrow" />
