@@ -17,6 +17,8 @@ import LoadingModal from "./../../components/modals/LoadingModal";
 import DeleteDeviceModal from "../../components/modals/DeleteDeviceModal";
 import AddDeviceModal from "../../components/modals/AddDeviceModal";
 import CustomCheckbox from "../../components/shared/CustomCheckbox";
+import EmptyDevicesIcon from './../../components/icons/EmptyDevicesIcon';
+import CustomButton from "../../components/shared/CustomButton";
 
 const MyDevicesPage = () => {
   const [pageIsReady, setPageIsReady] = useState(false);
@@ -171,91 +173,105 @@ const MyDevicesPage = () => {
         onClose={() => setAddDeviceModal(false)}
         onSubmit={submitAddDevice}
       />
-      <div className="select-all-my-devices-container">
-        <button
-          type="button"
-          className={
-            devices.length === devices.filter((d) => d.selected).length
-              ? "btn-select-devices active"
-              : "btn-select-devices"
-          }
-          onClick={() => {
-            if (devices.length === devices.filter((d) => d.selected).length) {
-              setDevices((ds) =>
-                ds.map((d) => {
-                  return { ...d, selected: false };
-                })
-              );
-            } else {
-              setDevices((ds) =>
-                ds.map((d) => {
-                  return { ...d, selected: true };
-                })
-              );
-            }
-          }}
-        >
-          انتخاب همه
-        </button>
-        {devices.filter((d) => d.selected).length ? (
-          <div
-            style={{ cursor: "pointer", marginLeft: 16 }}
-            onClick={submitDeleteDevices}
-            data-sound-click
-          >
-            <DeleteIcon />
+      {devices.length ? (
+        <div>
+          <div className="select-all-my-devices-container">
+            <button
+              type="button"
+              className={
+                devices.length === devices.filter((d) => d.selected).length
+                  ? "btn-select-devices active"
+                  : "btn-select-devices"
+              }
+              onClick={() => {
+                if (
+                  devices.length === devices.filter((d) => d.selected).length
+                ) {
+                  setDevices((ds) =>
+                    ds.map((d) => {
+                      return { ...d, selected: false };
+                    })
+                  );
+                } else {
+                  setDevices((ds) =>
+                    ds.map((d) => {
+                      return { ...d, selected: true };
+                    })
+                  );
+                }
+              }}
+            >
+              انتخاب همه
+            </button>
+            {devices.filter((d) => d.selected).length ? (
+              <div
+                style={{ cursor: "pointer", marginLeft: 16 }}
+                onClick={submitDeleteDevices}
+                data-sound-click
+              >
+                <DeleteIcon />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-      <div className="my-devices">
-        {devices.map((item, index) => (
-          <Fragment key={item.deviceId}>
-            <div className="my-device">
-              <div className="my-device-checkbox">
-                <CustomCheckbox
-                  checked={item.selected}
-                  onChange={() => toggleSelectDevice(item.deviceId)}
-                />
-              </div>
-              <p className="my-device-name">{item.name}</p>
-              <div className="operations">
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    setDevice(item);
-                    setDeviceInfoModal(true);
-                  }}
-                  data-sound-click
-                >
-                  <InfoIcon />
+          <div className="my-devices">
+            {devices.map((item, index) => (
+              <Fragment key={item.deviceId}>
+                <div className="my-device">
+                  <div className="my-device-checkbox">
+                    <CustomCheckbox
+                      checked={item.selected}
+                      onChange={() => toggleSelectDevice(item.deviceId)}
+                    />
+                  </div>
+                  <p className="my-device-name">{item.name}</p>
+                  <div className="operations">
+                    <div
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setDevice(item);
+                        setDeviceInfoModal(true);
+                      }}
+                      data-sound-click
+                    >
+                      <InfoIcon />
+                    </div>
+                    <div
+                      style={{ cursor: "pointer", marginRight: 8 }}
+                      onClick={() => {
+                        setDevice(item);
+                        setDeviceName(item.name);
+                        setEditNameModal(true);
+                      }}
+                      data-sound-click
+                    >
+                      <EditIcon />
+                    </div>
+                    <div
+                      style={{ cursor: "pointer", marginRight: 8 }}
+                      onClick={() => {
+                        setDevice(item);
+                        setDeleteModal(true);
+                      }}
+                      data-sound-click
+                    >
+                      <DeleteIcon />
+                    </div>
+                  </div>
                 </div>
-                <div
-                  style={{ cursor: "pointer", marginRight: 8 }}
-                  onClick={() => {
-                    setDevice(item);
-                    setDeviceName(item.name);
-                    setEditNameModal(true);
-                  }}
-                  data-sound-click
-                >
-                  <EditIcon />
-                </div>
-                <div
-                  style={{ cursor: "pointer", marginRight: 8 }}
-                  onClick={() => {
-                    setDevice(item);
-                    setDeleteModal(true);
-                  }}
-                  data-sound-click
-                >
-                  <DeleteIcon />
-                </div>
-              </div>
-            </div>
-            {index + 1 !== devices.length && <div className="separator"></div>}
-          </Fragment>
-        ))}
-      </div>
+                {index + 1 !== devices.length && (
+                  <div className="separator"></div>
+                )}
+              </Fragment>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="my-devices-empty">
+          <EmptyDevicesIcon width={250} height={250} />
+          <p>شما در حال حاضر دستگاهی ندارید.</p>
+          <CustomButton text={"افزودن دستگاه"} onClick={() => setAddDeviceModal(true)}  />
+        </div>
+      )}
     </SettingsLayout>
   );
 };

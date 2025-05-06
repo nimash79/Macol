@@ -850,6 +850,21 @@ p {
   align-items: center;
   margin-bottom: 16px;
 }
+.my-devices-empty {
+  margin-top: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.my-devices-empty p {
+  margin-bottom: 24px;
+}
+.my-devices-empty button {
+  padding: 8px 32px;
+  width: auto;
+  border-radius: 8px;
+}
 /* End My Devices Page */
 
 /* My Account Page */
