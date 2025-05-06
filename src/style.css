@@ -841,6 +841,15 @@ p {
   background-color: var(--secondary_300);
   border-radius: 8px;
 }
+.my-device-checkbox {
+  margin-left: 8px;
+}
+.select-all-my-devices-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
 /* End My Devices Page */
 
 /* My Account Page */

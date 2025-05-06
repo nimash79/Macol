@@ -7,7 +7,7 @@ import InfoIcon from "../../components/icons/InfoIcon";
 import {
   addDevice,
   changeDeviceName,
-  deleteDevice,
+  deleteDevices,
   getMyDevices,
 } from "./../../services/deviceService";
 import DeviceInfoModal from "../../components/modals/DeviceInfoModal";
@@ -16,6 +16,7 @@ import { notif_error } from "../../utils/toast";
 import LoadingModal from "./../../components/modals/LoadingModal";
 import DeleteDeviceModal from "../../components/modals/DeleteDeviceModal";
 import AddDeviceModal from "../../components/modals/AddDeviceModal";
+import CustomCheckbox from "../../components/shared/CustomCheckbox";
 
 const MyDevicesPage = () => {
   const [pageIsReady, setPageIsReady] = useState(false);
@@ -32,7 +33,11 @@ const MyDevicesPage = () => {
     (async () => {
       try {
         const { data } = await getMyDevices();
-        setDevices(data.data.devices);
+        setDevices(
+          data.data.devices.map((d) => {
+            return { ...d, selected: false };
+          })
+        );
         setPageIsReady(true);
       } catch (err) {
         console.log(err);
@@ -71,8 +76,31 @@ const MyDevicesPage = () => {
   const submitDeleteDevice = async () => {
     try {
       setLoading(true);
-      await deleteDevice(device.deviceId);
+      await deleteDevices([device.deviceId]);
       setDevices((d) => d.filter((x) => x.deviceId !== device.deviceId));
+      setDeleteModal(false);
+    } catch (err) {
+      console.log(err);
+      notif_error("مشکلی پیش آمده است!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const submitDeleteDevices = async () => {
+    try {
+      setLoading(true);
+      const deviceIds = devices
+        .filter((d) => d.selected)
+        .map((d) => d.deviceId);
+      await deleteDevices(deviceIds);
+      setDevices((d) =>
+        d
+          .filter((x) => !deviceIds.includes(x.deviceId))
+          .map((x) => {
+            return { ...x, selected: false };
+          })
+      );
       setDeleteModal(false);
     } catch (err) {
       console.log(err);
@@ -106,6 +134,13 @@ const MyDevicesPage = () => {
     }
   };
 
+  const toggleSelectDevice = (deviceId) => {
+    let [...devicesCopy] = devices;
+    const deviceIndex = devices.findIndex((d) => d.deviceId === deviceId);
+    devicesCopy[deviceIndex].selected = !devicesCopy[deviceIndex].selected;
+    setDevices(devicesCopy);
+  };
+
   if (!pageIsReady) return null;
   return (
     <SettingsLayout
@@ -136,10 +171,52 @@ const MyDevicesPage = () => {
         onClose={() => setAddDeviceModal(false)}
         onSubmit={submitAddDevice}
       />
+      <div className="select-all-my-devices-container">
+        <button
+          type="button"
+          className={
+            devices.length === devices.filter((d) => d.selected).length
+              ? "btn-select-devices active"
+              : "btn-select-devices"
+          }
+          onClick={() => {
+            if (devices.length === devices.filter((d) => d.selected).length) {
+              setDevices((ds) =>
+                ds.map((d) => {
+                  return { ...d, selected: false };
+                })
+              );
+            } else {
+              setDevices((ds) =>
+                ds.map((d) => {
+                  return { ...d, selected: true };
+                })
+              );
+            }
+          }}
+        >
+          انتخاب همه
+        </button>
+        {devices.filter((d) => d.selected).length ? (
+          <div
+            style={{ cursor: "pointer", marginLeft: 16 }}
+            onClick={submitDeleteDevices}
+            data-sound-click
+          >
+            <DeleteIcon />
+          </div>
+        ) : null}
+      </div>
       <div className="my-devices">
         {devices.map((item, index) => (
           <Fragment key={item.deviceId}>
             <div className="my-device">
+              <div className="my-device-checkbox">
+                <CustomCheckbox
+                  checked={item.selected}
+                  onChange={() => toggleSelectDevice(item.deviceId)}
+                />
+              </div>
               <p className="my-device-name">{item.name}</p>
               <div className="operations">
                 <div

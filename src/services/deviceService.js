@@ -48,8 +48,8 @@ export const changeDeviceOn = ({ deviceId, on }) => {
   return http.post(`${API_URL}/devices/change-on`, JSON.stringify({ deviceId, on }));
 };
 
-export const deleteDevice = (deviceId) => {
-  return http.post(`${API_URL}/devices/delete/${deviceId}`);
+export const deleteDevices = (deviceIds) => {
+  return http.post(`${API_URL}/devices/delete`, JSON.stringify({deviceIds}));
 };
 
 export const addDevice = (count) => {
