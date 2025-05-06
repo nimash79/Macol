@@ -50,22 +50,8 @@ const DevicePage = () => {
       await fetchSelectedDevices();
       setPageIsReady(true);
     })();
-    return async () => {
-      if (deviceRef.current == undefined || temperatureRef.current == undefined)
-        return;
-      try {
-        setLoading(true);
-        const { data } = await changeDeviceValue({
-          deviceIds,
-          value: temperatureRef.current,
-          economy: economyRef.current,
-        });
-      } catch (err) {
-        console.log(err);
-        notif_error("درخواست شما برای تنظیم درجه موفقیت آمیز نبود.");
-      } finally {
-        setLoading(false);
-      }
+    return () => {
+      submitChangeDeviceValue()
     };
   }, []);
 
@@ -94,6 +80,33 @@ const DevicePage = () => {
       notif_error("مشکلی پیش آمده است!");
     }
   };
+
+  const submitChangeDeviceValue = async () => {
+    if (deviceRef.current == undefined || temperatureRef.current == undefined)
+      return;
+    try {
+      setLoading(true);
+      const { data } = await changeDeviceValue({
+        deviceIds,
+        value: temperatureRef.current,
+        economy: economyRef.current,
+      });
+    } catch (err) {
+      console.log(err);
+      notif_error("درخواست شما برای تنظیم درجه موفقیت آمیز نبود.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onRefresh = async () => {
+    try {
+      await submitChangeDeviceValue();
+      await fetchSelectedDevices();
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   if (!pageIsReady) return null;
 
@@ -129,7 +142,7 @@ const DevicePage = () => {
         </div>
         <div
           className="btn-refresh"
-          onClick={fetchSelectedDevices}
+          onClick={onRefresh}
           data-sound-click
         >
           <RefreshIcon width={20} height={20} />
