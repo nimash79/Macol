@@ -17,7 +17,7 @@ import LoadingModal from "./../../components/modals/LoadingModal";
 import DeleteDeviceModal from "../../components/modals/DeleteDeviceModal";
 import AddDeviceModal from "../../components/modals/AddDeviceModal";
 import CustomCheckbox from "../../components/shared/CustomCheckbox";
-import EmptyDevicesIcon from './../../components/icons/EmptyDevicesIcon';
+import EmptyDevicesIcon from "./../../components/icons/EmptyDevicesIcon";
 import CustomButton from "../../components/shared/CustomButton";
 
 const MyDevicesPage = () => {
@@ -29,6 +29,8 @@ const MyDevicesPage = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addDeviceModal, setAddDeviceModal] = useState(false);
   const [deviceName, setDeviceName] = useState("");
+  const [deletesModal, setDeletesModal] = useState(false);
+  const [toggleSelectDevices, setToggleSelectDevices] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -103,7 +105,7 @@ const MyDevicesPage = () => {
             return { ...x, selected: false };
           })
       );
-      setDeleteModal(false);
+      setDeletesModal(false);
     } catch (err) {
       console.log(err);
       notif_error("مشکلی پیش آمده است!");
@@ -167,6 +169,13 @@ const MyDevicesPage = () => {
         isOpen={deleteModal}
         onClose={() => setDeleteModal(false)}
         onSubmit={submitDeleteDevice}
+        single={true}
+      />
+      <DeleteDeviceModal
+        isOpen={deletesModal}
+        onClose={() => setDeletesModal(false)}
+        onSubmit={submitDeleteDevices}
+        single={false}
       />
       <AddDeviceModal
         isOpen={addDeviceModal}
@@ -179,34 +188,43 @@ const MyDevicesPage = () => {
             <button
               type="button"
               className={
-                devices.length === devices.filter((d) => d.selected).length
+                toggleSelectDevices
                   ? "btn-select-devices active"
                   : "btn-select-devices"
               }
-              onClick={() => {
-                if (
-                  devices.length === devices.filter((d) => d.selected).length
-                ) {
-                  setDevices((ds) =>
-                    ds.map((d) => {
-                      return { ...d, selected: false };
-                    })
-                  );
-                } else {
-                  setDevices((ds) =>
-                    ds.map((d) => {
-                      return { ...d, selected: true };
-                    })
-                  );
-                }
-              }}
+              onClick={() => setToggleSelectDevices((x) => !x)}
             >
-              انتخاب همه
+              انتخاب گروهی
             </button>
+            {toggleSelectDevices ? (
+              <CustomCheckbox
+                checked={
+                  devices.length === devices.filter((d) => d.selected).length
+                }
+                onChange={() => {
+                  if (
+                    devices.length === devices.filter((d) => d.selected).length
+                  ) {
+                    setDevices((ds) =>
+                      ds.map((d) => {
+                        return { ...d, selected: false };
+                      })
+                    );
+                  } else {
+                    setDevices((ds) =>
+                      ds.map((d) => {
+                        return { ...d, selected: true };
+                      })
+                    );
+                  }
+                }}
+                style={{marginRight: 8}}
+              />
+            ) : null}
             {devices.filter((d) => d.selected).length ? (
               <div
-                style={{ cursor: "pointer", marginLeft: 16 }}
-                onClick={submitDeleteDevices}
+                style={{ cursor: "pointer", marginLeft: 16, marginRight: "auto" }}
+                onClick={() => setDeletesModal(true)}
                 data-sound-click
               >
                 <DeleteIcon />
@@ -217,12 +235,14 @@ const MyDevicesPage = () => {
             {devices.map((item, index) => (
               <Fragment key={item.deviceId}>
                 <div className="my-device">
-                  <div className="my-device-checkbox">
-                    <CustomCheckbox
-                      checked={item.selected}
-                      onChange={() => toggleSelectDevice(item.deviceId)}
-                    />
-                  </div>
+                  {toggleSelectDevices ? (
+                    <div className="my-device-checkbox">
+                      <CustomCheckbox
+                        checked={item.selected}
+                        onChange={() => toggleSelectDevice(item.deviceId)}
+                      />
+                    </div>
+                  ) : null}
                   <p className="my-device-name">{item.name}</p>
                   <div className="operations">
                     <div
@@ -269,7 +289,10 @@ const MyDevicesPage = () => {
         <div className="my-devices-empty">
           <EmptyDevicesIcon width={250} height={250} />
           <p>شما در حال حاضر دستگاهی ندارید.</p>
-          <CustomButton text={"افزودن دستگاه"} onClick={() => setAddDeviceModal(true)}  />
+          <CustomButton
+            text={"افزودن دستگاه"}
+            onClick={() => setAddDeviceModal(true)}
+          />
         </div>
       )}
     </SettingsLayout>
