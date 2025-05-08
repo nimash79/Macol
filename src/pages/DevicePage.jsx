@@ -72,7 +72,7 @@ const DevicePage = () => {
       try {
         setLoading(true);
         const { data } = await getReports({
-          deviceId: selectedDevices[0].deviceId,
+          deviceId: deviceIds[0],
           type:
             reportType == "روزانه"
               ? "daily"
@@ -89,7 +89,7 @@ const DevicePage = () => {
         setLoading(false);
       }
     })();
-  }, [reportType]);
+  }, [pageIsReady, reportType]);
 
   const fetchSelectedDevices = async () => {
     try {
