@@ -51,8 +51,14 @@ const TemperatureProgress = ({
           Max
         </text>
       )}
-      <text x="58%" y="10%" fontSize={20} fontWeight={500} fill="#C3B4E0">
-        {(max + min) / 2}°
+      <text x="35%" y="14%" fontSize={20} fontWeight={500} fill="#C3B4E0">
+        {(max - min) / 3 + min}°
+      </text>
+      {/* <text x="58%" y="10%" fontSize={20} fontWeight={500} fill="#C3B4E0">
+        {(max - min) / 2 + min}°
+      </text> */}
+      <text x="75%" y="14%" fontSize={20} fontWeight={500} fill="#C3B4E0">
+        {((max - min) * 2) / 3 + min}°
       </text>
       <text
         x="10%"
