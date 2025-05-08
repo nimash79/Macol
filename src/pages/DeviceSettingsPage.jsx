@@ -21,11 +21,6 @@ const DeviceSettingsPage = () => {
   const [calibration, setCalibration] = useState();
   const [calibrationModal, setCalibrationModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [reportType, setReportType] = useState("هفتگی");
-  const [reportToggle, setReportToggle] = useState(false);
-  const [reportData, setReportData] = useState([]);
-
-  const reportSelectButton = useRef(null);
 
   const navigate = useNavigate();
   const selectedDevices = useSelector((state) => state.selectedDevices);
@@ -35,30 +30,6 @@ const DeviceSettingsPage = () => {
     if (selectedDevices.length === 1)
       setCalibration(selectedDevices[0].calibration);
   }, [selectedDevices]);
-
-  useEffect(() => {
-      (async () => {
-        try {
-          setLoading(true);
-          const { data } = await getReports({
-            deviceId: selectedDevices[0].deviceId,
-            type:
-              reportType == "روزانه"
-                ? "daily"
-                : reportType == "هفتگی"
-                ? "weekly"
-                : "monthly",
-          });
-          console.log(data);
-          setReportData(data.data.reports);
-        } catch (err) {
-          console.log(err);
-          notif_error("در دریافت گزارشات مشکلی به وجود آمده است.");
-        } finally {
-          setLoading(true);
-        }
-      })();
-    }, [reportType]);
 
   const handleChangeCalibration = async (value) => {
     try {
@@ -129,54 +100,6 @@ const DeviceSettingsPage = () => {
           <p className="button-text">گزارش گیری</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
-      </div>
-      <div className="report-container">
-        <div className="report-header">
-          <div className="report-title">
-            <ReportIcon />
-            <p>گزارش دما</p>
-          </div>
-          <div className="report-filter">
-            <div
-              ref={reportSelectButton}
-              className="report-select"
-              data-sound-click
-              onClick={() => setReportToggle((t) => !t)}
-            >
-              <div className="report-select-button">
-                <span>{reportType}</span>
-                <ArrowDownIcon />
-              </div>
-              {reportToggle && (
-                <div className="options-container">
-                  <div className="options">
-                    <div
-                      onClick={() => setReportType("روزانه")}
-                      data-sound-click
-                    >
-                      روزانه
-                    </div>
-                    <div
-                      onClick={() => setReportType("هفتگی")}
-                      data-sound-click
-                    >
-                      هفتگی
-                    </div>
-                    <div
-                      onClick={() => setReportType("ماهانه")}
-                      data-sound-click
-                    >
-                      ماهانه
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="report-chart-container">
-          <CustomBarChart type={reportType} dataValues={reportData} />
-        </div>
       </div>
     </div>
   );

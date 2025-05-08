@@ -17,8 +17,11 @@ import OpenedDoorIcon from "../components/icons/OpenedDoorIcon";
 import { getReports } from "./../services/reportService";
 import LoadingModal from "./../components/modals/LoadingModal";
 import RefreshIcon from "./../components/icons/RefreshIcon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
+import CustomBarChart from "../components/shared/CustomBarChart";
+import ArrowDownIcon from "../components/icons/ArrowDownIcon";
+import ReportIcon from "../components/icons/ReportIcon";
 
 const DevicePage = () => {
   const [devices, setDevices] = useState([]);
@@ -31,6 +34,8 @@ const DevicePage = () => {
   const [openedDoor, setOpenedDoor] = useState(false);
   const [device, setDevice] = useState();
   const [reportType, setReportType] = useState("هفتگی");
+  const [reportToggle, setReportToggle] = useState(false);
+  const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageIsReady, setPageIsReady] = useState(false);
 
@@ -43,6 +48,7 @@ const DevicePage = () => {
   const [searchParams] = useSearchParams();
   const deviceIds = searchParams.getAll("deviceIds");
 
+  const selectedDevices = useSelector(state => state.selectedDevices);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,7 +57,7 @@ const DevicePage = () => {
       setPageIsReady(true);
     })();
     return () => {
-      submitChangeDeviceValue()
+      submitChangeDeviceValue();
     };
   }, []);
 
@@ -60,6 +66,30 @@ const DevicePage = () => {
     temperatureRef.current = temperature;
     economyRef.current = economy;
   }, [device, temperature, economy]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const { data } = await getReports({
+          deviceId: selectedDevices[0].deviceId,
+          type:
+            reportType == "روزانه"
+              ? "daily"
+              : reportType == "هفتگی"
+              ? "weekly"
+              : "monthly",
+        });
+        console.log(data);
+        setReportData(data.data.reports);
+      } catch (err) {
+        console.log(err);
+        notif_error("در دریافت گزارشات مشکلی به وجود آمده است.");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [reportType]);
 
   const fetchSelectedDevices = async () => {
     try {
@@ -104,9 +134,9 @@ const DevicePage = () => {
       await submitChangeDeviceValue();
       await fetchSelectedDevices();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   if (!pageIsReady) return null;
 
@@ -140,11 +170,7 @@ const DevicePage = () => {
           <BatteryIcon width={21.5} height={17.5} />
           <p className="battery-value">{battery}%</p>
         </div>
-        <div
-          className="btn-refresh"
-          onClick={onRefresh}
-          data-sound-click
-        >
+        <div className="btn-refresh" onClick={onRefresh} data-sound-click>
           <RefreshIcon width={20} height={20} />
         </div>
       </div>
@@ -211,6 +237,54 @@ const DevicePage = () => {
           </div>
         </div>
       </div> */}
+      <div className="report-container">
+        <div className="report-header">
+          <div className="report-title">
+            <ReportIcon />
+            <p>گزارش دما</p>
+          </div>
+          <div className="report-filter">
+            <div
+              ref={reportSelectButton}
+              className="report-select"
+              data-sound-click
+              onClick={() => setReportToggle((t) => !t)}
+            >
+              <div className="report-select-button">
+                <span>{reportType}</span>
+                <ArrowDownIcon />
+              </div>
+              {reportToggle && (
+                <div className="options-container">
+                  <div className="options">
+                    <div
+                      onClick={() => setReportType("روزانه")}
+                      data-sound-click
+                    >
+                      روزانه
+                    </div>
+                    <div
+                      onClick={() => setReportType("هفتگی")}
+                      data-sound-click
+                    >
+                      هفتگی
+                    </div>
+                    <div
+                      onClick={() => setReportType("ماهانه")}
+                      data-sound-click
+                    >
+                      ماهانه
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="report-chart-container">
+          <CustomBarChart type={reportType} dataValues={reportData} />
+        </div>
+      </div>
     </div>
   );
 };
