@@ -83,7 +83,7 @@ const HomePage = () => {
       <div className="header">
         <span className="hello">سلام!</span>
         <Link to={"/settings"}>
-          <UserIcon />
+          <UserIcon width={28} height={28} color={"#B6BCDF"} />
         </Link>
       </div>
       <div className="description">
