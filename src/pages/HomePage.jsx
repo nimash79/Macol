@@ -12,7 +12,7 @@ import { changeDeviceOn, getMyDevices } from "./../services/deviceService";
 import { notif_error } from "../utils/toast";
 import RefreshIcon from "./../components/icons/RefreshIcon";
 import LoadingModal from "../components/modals/LoadingModal";
-import SettingsIcon from "./../components/icons/SettingsIcon";
+import UserIcon from './../components/icons/UserIcon';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ const HomePage = () => {
       <div className="header">
         <span className="hello">سلام!</span>
         <Link to={"/settings"}>
-          <SettingsIcon />
+          <UserIcon />
         </Link>
       </div>
       <div className="description">
