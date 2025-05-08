@@ -1,11 +1,16 @@
 import React, { useRef } from "react";
 import CalendarIcon from "./../icons/CalendarIcon";
 import DatePicker from "react-multi-date-picker";
-import { Calendar } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 
-const CustomCalendarInput = ({ value, onChange, containerStyle, ...props }) => {
+const CustomCalendarInput = ({
+  value,
+  onChange,
+  containerStyle,
+  withReset = false,
+  ...props
+}) => {
   const datePickerRef = useRef();
   return (
     <div
@@ -16,7 +21,6 @@ const CustomCalendarInput = ({ value, onChange, containerStyle, ...props }) => {
       <div className="icon">
         <CalendarIcon />
       </div>
-      {/* <input className="custom-input" {...props} /> */}
       <DatePicker
         ref={datePickerRef}
         calendar={persian}
@@ -27,6 +31,11 @@ const CustomCalendarInput = ({ value, onChange, containerStyle, ...props }) => {
         calendarPosition="bottom-right"
         {...props}
       />
+      {withReset && (
+        <button type="button" onClick={() => onChange(null)}>
+          ریست
+        </button>
+      )}
     </div>
   );
 };

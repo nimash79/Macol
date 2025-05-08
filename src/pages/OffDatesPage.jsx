@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
@@ -12,10 +12,7 @@ import CustomCalendarInput from "../components/shared/CustomCalendarInput";
 import LoadingModal from "./../components/modals/LoadingModal";
 
 const OffDatesPage = () => {
-  const [start, setStart] = useState();
-  const [end, setEnd] = useState();
-  const [startDefault, setStartDefault] = useState();
-  const [endDefault, setEndDefault] = useState();
+  const [values, setValues] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const selectedDevices = useSelector((state) => state.selectedDevices);
@@ -24,27 +21,22 @@ const OffDatesPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (selectedDevices.length === 1) {
-      setStartDefault(selectedDevices[0].off_start);
-      setEndDefault(selectedDevices[0].off_end);
-    }
+    if (selectedDevices.length === 1) setValues(selectedDevices[0].off_dates);
   }, [selectedDevices]);
 
   const submit = async () => {
-    console.log("start:", start ? formatDatePicker(start) : startDefault);
-    console.log("end:", end ? formatDatePicker(end) : endDefault);
     try {
       setLoading(true);
-      if (!startDefault || !endDefault) {
-        notif_error("لطفا تاریخ شروع و پایان را مشخص کنید.");
+      console.log("values:", values);
+      if (!values || !Array.isArray(values)) {
+        notif_error("لطفا تاریخ را وارد کنید.");
         return;
       }
       const { data } = await changeDeviceOffDates({
         deviceIds: selectedDevices.map((d) => d.deviceId),
-        off_start: start ? formatDatePicker(start) : startDefault,
-        off_end: end ? formatDatePicker(end) : endDefault,
+        off_dates: values,
       });
-      console.log("devices data:", data);
+      console.log("res data:", data);
       if (data.code === 200) {
         dispatch(addSelectedDevices(data.data.devices));
         notif_success("تنظیمات با موفقیت اعمال شد.");
@@ -73,31 +65,29 @@ const OffDatesPage = () => {
       <div className="separator"></div>
       <div className="title">تاریخ خاموشی</div>
       <p className="description">
-        با وارد کردن تاریخ شروع و پایان، دستگاه یا دستگاه های موردنظر در آن بازه
-        زمانی خاموش خواهند بود و پس از پایان بازه، به حالت عادی خود برمی گردند.
-        شما میتوانید هنگام مسافرت از این قابلیت استفاده کنید.
+        با وارد کردن تاریخ، دستگاه یا دستگاه های موردنظر در تاریخ های موردنظر
+        خاموش خواهند بود و پس از پایان آن روز، به حالت عادی خود برمی گردند.
       </p>
-      <label
-        className="custom-label"
-        style={{ marginTop: 24, marginBottom: 8 }}
-      >
-        تاریخ شروع:
-      </label>
-      <CustomCalendarInput value={startDefault} onChange={(v) => {
-        setStartDefault(v);
-        setStart(v);
-      }} />
-      <label
-        className="custom-label"
-        style={{ marginTop: 24, marginBottom: 8 }}
-      >
-        تاریخ پایان:
-      </label>
-      <CustomCalendarInput value={endDefault} onChange={(v) => {
-        setEndDefault(v);
-        setEnd(v);
-      }} />
-      <CustomButton text={"تایید"} style={{ marginTop: 32 }} onClick={submit} />
+      <CustomCalendarInput
+        multiple
+        value={values}
+        editable={false}
+        onChange={setValues}
+        placeholder={"انتخاب کنید ..."}
+        containerStyle={{ marginTop: 24 }}
+      />
+      <div style={{marginTop: 32, display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+        <CustomButton
+          text={"پاک کردن"}
+          onClick={() => setValues([])}
+          style={{width: "45%", backgroundColor: "#ed2e2e"}}
+        />
+        <CustomButton
+          text={"تایید"}
+          onClick={submit}
+          style={{width: "45%"}}
+        />
+      </div>
     </div>
   );
 };

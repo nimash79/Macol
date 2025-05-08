@@ -62,11 +62,10 @@ export const changeCalibration = ({ deviceIds, calibration }) => {
 
 export const changeDeviceOffDates = ({
   deviceIds,
-  off_start,
-  off_end
+  off_dates
 }) => {
   return http.post(
     `${API_URL}/devices/change-off-dates`,
-    JSON.stringify({ deviceIds, off_start, off_end })
+    JSON.stringify({ deviceIds, off_dates })
   );
 };

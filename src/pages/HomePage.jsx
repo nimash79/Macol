@@ -12,7 +12,7 @@ import { changeDeviceOn, getMyDevices } from "./../services/deviceService";
 import { notif_error } from "../utils/toast";
 import RefreshIcon from "./../components/icons/RefreshIcon";
 import LoadingModal from "../components/modals/LoadingModal";
-import UserIcon from './../components/icons/UserIcon';
+import UserIcon from "./../components/icons/UserIcon";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -51,6 +51,14 @@ const HomePage = () => {
     try {
       let [...devicesCopy] = devices;
       const deviceIndex = devices.findIndex((d) => d.deviceId === deviceId);
+      if (
+        devicesCopy[deviceIndex].off_dates.filter(
+          (off_date) => now.getDate() == new Date(off_date).getDate()
+        ).length
+      ) {
+        notif_error("به نظر میرسد قرار بوده که امروز دستگاه خاموش باشد.");
+        return;
+      }
       await changeDeviceOn({ deviceId, on: !devicesCopy[deviceIndex].on });
       devicesCopy[deviceIndex].on = !devicesCopy[deviceIndex].on;
       setDevices(devicesCopy);
@@ -162,8 +170,9 @@ const HomePage = () => {
             </Link>
             <div className="device-status">
               {device.on &&
-              (now > new Date(device.off_end) ||
-                now < new Date(device.off_start)) ? (
+              !device.off_dates.filter(
+                (off_date) => now.getDate() == new Date(off_date).getDate()
+              ).length ? (
                 <p>روشن</p>
               ) : (
                 <p>خاموش</p>
@@ -171,8 +180,9 @@ const HomePage = () => {
               <CustomSwitch
                 checked={
                   device.on &&
-                  (now > new Date(device.off_end) ||
-                    now < new Date(device.off_start))
+                  !device.off_dates.filter(
+                    (off_date) => now.getDate() == new Date(off_date).getDate()
+                  ).length
                 }
                 onChange={() => toggleTurnDevice(device.deviceId)}
               />
