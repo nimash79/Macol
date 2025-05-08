@@ -24,6 +24,7 @@ import DeviceSettingsPage from "./pages/DeviceSettingsPage";
 import MyAccountPage from "./pages/settings/MyAccountPage";
 import OffDatesPage from "./pages/OffDatesPage";
 import ReportPage from "./pages/ReportPage";
+import CalibrationPage from "./pages/CalibrationPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -76,6 +77,7 @@ const App = () => {
           <Route path="/devices" Component={DevicePage} />
           <Route path="/device-settings" Component={DeviceSettingsPage} />
           <Route path="/economy" Component={EconomyPage} />
+          <Route path="/calibration" Component={CalibrationPage} />
           <Route path="/off-dates" Component={OffDatesPage} />
           <Route path="/export-report" Component={ReportPage} />
         </Routes>

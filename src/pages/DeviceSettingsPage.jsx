@@ -18,51 +18,12 @@ import ReportIcon from "../components/icons/ReportIcon";
 import { getReports } from "../services/reportService";
 
 const DeviceSettingsPage = () => {
-  const [calibration, setCalibration] = useState();
-  const [calibrationModal, setCalibrationModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
   const selectedDevices = useSelector((state) => state.selectedDevices);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (selectedDevices.length === 1)
-      setCalibration(selectedDevices[0].calibration);
-  }, [selectedDevices]);
-
-  const handleChangeCalibration = async (value) => {
-    try {
-      console.log("value:", value);
-      setLoading(true);
-      const { data } = await changeCalibration({
-        deviceIds: selectedDevices.map((d) => d.deviceId),
-        calibration: value,
-      });
-      console.log(data);
-      if (data.code === 200) {
-        notif_success("دمای کالیبراسیون با موفقیت تغییر یافت.");
-        dispatch(addSelectedDevices(data.data.devices));
-        if (data.data.devices.length === 1)
-          setCalibration(data.data.devices[0].calibration);
-      } else notif_error("مشکلی از سمت سرور پیش آمده است.");
-    } catch (err) {
-      console.log(err);
-      notif_error("مشکلی پیش آمده است.");
-    } finally {
-      setCalibrationModal(false);
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="settings">
-      <ChangeCalibrationModal
-        isOpen={calibrationModal}
-        onClose={() => setCalibrationModal(false)}
-        calibration={calibration}
-        onSubmit={handleChangeCalibration}
-      />
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
           <ArrowRightBorderIcon />
@@ -74,9 +35,8 @@ const DeviceSettingsPage = () => {
       </div>
       <div className="buttons">
         <Link
-          to={"javascript:;"}
+          to={"/calibration"}
           className="button"
-          onClick={() => setCalibrationModal(true)}
         >
           <DeviceIcon />
           <p className="button-text">دمای کالیبراسیون</p>
