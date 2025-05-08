@@ -25,6 +25,7 @@ import ReportIcon from "../components/icons/ReportIcon";
 
 const DevicePage = () => {
   const [devices, setDevices] = useState([]);
+  const [previousTemperature, setPreviousTemperature] = useState();
   const [currentTemperature, setCurrentTemperature] = useState();
   const [temperature, setTemperature] = useState();
   const [minTemperature, setMinTemperature] = useState(15);
@@ -98,6 +99,7 @@ const DevicePage = () => {
       dispatch(addSelectedDevices(data.data.devices));
       setDevices(data.data.devices);
       setDevice(data.data.devices[0]);
+      setPreviousTemperature(data.data.devices[0].secondReport?.temperature || 0);
       setTemperature(data.data.devices[0].value);
       setCurrentTemperature(data.data.devices[0].temperature);
       setBattery(data.data.devices[0].battery);
@@ -176,6 +178,7 @@ const DevicePage = () => {
       </div>
       <div className="temperature-progress">
         <TemperatureProgress
+          previousValue={previousTemperature}
           value={temperature}
           currentValue={currentTemperature}
           min={minTemperature}
