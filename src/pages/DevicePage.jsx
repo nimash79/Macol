@@ -49,7 +49,7 @@ const DevicePage = () => {
   const [searchParams] = useSearchParams();
   const deviceIds = searchParams.getAll("deviceIds");
 
-  const selectedDevices = useSelector(state => state.selectedDevices);
+  const selectedDevices = useSelector((state) => state.selectedDevices);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -96,11 +96,12 @@ const DevicePage = () => {
     try {
       setLoading(true);
       const { data } = await getSelectedDevices(deviceIds);
-      console.log(data);
       dispatch(addSelectedDevices(data.data.devices));
       setDevices(data.data.devices);
       setDevice(data.data.devices[0]);
-      setPreviousTemperature(data.data.devices[0].secondReport[0]?.temperature || -1);
+      setPreviousTemperature(
+        data.data.devices[0].secondReport[0]?.temperature || -1
+      );
       setTemperature(data.data.devices[0].value);
       setCurrentTemperature(data.data.devices[0].temperature);
       setBattery(data.data.devices[0].battery);
@@ -241,54 +242,56 @@ const DevicePage = () => {
           </div>
         </div>
       </div> */}
-      <div className="report-container">
-        <div className="report-header">
-          <div className="report-title">
-            <ReportIcon />
-            <p>گزارش دما</p>
-          </div>
-          <div className="report-filter">
-            <div
-              ref={reportSelectButton}
-              className="report-select"
-              data-sound-click
-              onClick={() => setReportToggle((t) => !t)}
-            >
-              <div className="report-select-button">
-                <span>{reportType}</span>
-                <ArrowDownIcon />
-              </div>
-              {reportToggle && (
-                <div className="options-container">
-                  <div className="options">
-                    <div
-                      onClick={() => setReportType("روزانه")}
-                      data-sound-click
-                    >
-                      روزانه
-                    </div>
-                    <div
-                      onClick={() => setReportType("هفتگی")}
-                      data-sound-click
-                    >
-                      هفتگی
-                    </div>
-                    <div
-                      onClick={() => setReportType("ماهانه")}
-                      data-sound-click
-                    >
-                      ماهانه
+      {selectedDevices.length === 1 ? (
+        <div className="report-container">
+          <div className="report-header">
+            <div className="report-title">
+              <ReportIcon />
+              <p>گزارش دما</p>
+            </div>
+            <div className="report-filter">
+              <div
+                ref={reportSelectButton}
+                className="report-select"
+                data-sound-click
+                onClick={() => setReportToggle((t) => !t)}
+              >
+                <div className="report-select-button">
+                  <span>{reportType}</span>
+                  <ArrowDownIcon />
+                </div>
+                {reportToggle && (
+                  <div className="options-container">
+                    <div className="options">
+                      <div
+                        onClick={() => setReportType("روزانه")}
+                        data-sound-click
+                      >
+                        روزانه
+                      </div>
+                      <div
+                        onClick={() => setReportType("هفتگی")}
+                        data-sound-click
+                      >
+                        هفتگی
+                      </div>
+                      <div
+                        onClick={() => setReportType("ماهانه")}
+                        data-sound-click
+                      >
+                        ماهانه
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
+          <div className="report-chart-container">
+            <CustomBarChart type={reportType} dataValues={reportData} />
+          </div>
         </div>
-        <div className="report-chart-container">
-          <CustomBarChart type={reportType} dataValues={reportData} />
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };
