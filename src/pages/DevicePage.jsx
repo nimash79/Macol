@@ -100,7 +100,7 @@ const DevicePage = () => {
       dispatch(addSelectedDevices(data.data.devices));
       setDevices(data.data.devices);
       setDevice(data.data.devices[0]);
-      setPreviousTemperature(data.data.devices[0].secondReport[0]?.temperature || 0);
+      setPreviousTemperature(data.data.devices[0].secondReport[0]?.temperature || -1);
       setTemperature(data.data.devices[0].value);
       setCurrentTemperature(data.data.devices[0].temperature);
       setBattery(data.data.devices[0].battery);
