@@ -90,8 +90,8 @@ const TemperatureProgress = ({
           <div
             xmlns="http://www.w3.org/1999/xhtml"
             style={{
-              backdropFilter: "blur(5px)",
-              clipPath: "url(#bgblur_0_21_598_clip_path)",
+              // backdropFilter: "blur(5px)",
+              // clipPath: "url(#bgblur_0_21_598_clip_path)",
               height: "100%",
               width: "100%",
             }}
@@ -126,8 +126,8 @@ const TemperatureProgress = ({
           <div
             xmlns="http://www.w3.org/1999/xhtml"
             style={{
-              backdropFilter: "blur(5px)",
-              clipPath: "url(#bgblur_1_21_598_clip_path)",
+              // backdropFilter: "blur(5px)",
+              // clipPath: "url(#bgblur_1_21_598_clip_path)",
               height: "100%",
               width: "100%",
             }}
