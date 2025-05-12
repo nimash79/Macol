@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "unserve": "pm2 stop macol && pm2 delete macol",
     "serve": "pm2 start serve --name macol -- -s dist"
   },
   "dependencies": {
