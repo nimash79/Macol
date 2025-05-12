@@ -51,7 +51,10 @@ const OffDatesPage = () => {
   };
 
   return (
-    <div className="settings">
+    <div
+      className="settings"
+      style={{ position: "relative", minHeight: "100vh" }}
+    >
       <LoadingModal isOpen={loading} />
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
@@ -76,16 +79,27 @@ const OffDatesPage = () => {
         placeholder={"انتخاب کنید ..."}
         containerStyle={{ marginTop: 24 }}
       />
-      <div style={{marginTop: 32, display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+      <div
+        style={{
+          marginTop: 32,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          position: "absolute",
+          bottom: 32,
+          right: 0,
+          left: 0,
+        }}
+      >
         <CustomButton
           text={"پاک کردن"}
           onClick={() => setValues([])}
-          style={{width: "45%", backgroundColor: "#ed2e2e"}}
+          style={{ width: "45%", backgroundColor: "#ed2e2e" }}
         />
         <CustomButton
           text={"تایید"}
           onClick={submit}
-          style={{width: "45%"}}
+          style={{ width: "45%" }}
         />
       </div>
     </div>
