@@ -93,9 +93,9 @@ const CircularProgress = ({ min, max, onChange, currentProgress = 0 }) => {
 
   useEffect(() => {
     const percentage = parseInt(progress * 100);
-    setClipPathId(`paint16_angular_0_${percentage}_clip_path`);
+    setClipPathId(`paint16_angular_0_${percentage || 0}_clip_path`);
 
-    const { x, y } = getCirclePosition(percentage);
+    const { x, y } = getCirclePosition(percentage || 0);
     const offsetX = x - 21.5;
     const offsetY = y - 11.5;
     setOffset({ x: offsetX, y: offsetY });
@@ -153,7 +153,7 @@ const CircularProgress = ({ min, max, onChange, currentProgress = 0 }) => {
 
   return (
     <>
-      <g clipPath={`url(#${clipPathId})`}>
+      <g clipPath={`url(#${clipPathId || "paint16_angular_0_0_clip_path"})`}>
         <g transform="matrix(0 0.1015 -0.1025 0 168.5 168.5)">
           <foreignObject
             x={-1009.68}
