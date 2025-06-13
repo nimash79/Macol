@@ -31,7 +31,7 @@ const SettingsPage = () => {
         <div className="button-separator"></div>
         <Link to={"/my-devices"} className="button">
           <DeviceIcon />
-          <p className="button-text">دستگاه های من</p>
+          <p className="button-text">مدیریت دستگاه ها</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
       </div>

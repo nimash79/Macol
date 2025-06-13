@@ -148,7 +148,7 @@ const MyDevicesPage = () => {
   if (!pageIsReady) return null;
   return (
     <SettingsLayout
-      title={"دستگاه های من"}
+      title={"مدیریت دستگاه ها"}
       icon={<PlusIcon />}
       onIconClick={() => setAddDeviceModal(true)}
     >
