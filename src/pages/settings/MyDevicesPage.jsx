@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import SettingsLayout from "../../layouts/SettingsLayout";
 import PlusIcon from "../../components/icons/PlusIcon";
 import EditIcon from "./../../components/icons/EditIcon";
@@ -7,6 +7,7 @@ import InfoIcon from "../../components/icons/InfoIcon";
 import {
   addDevice,
   changeDeviceName,
+  changeDevicesFeatures,
   deleteDevices,
   getMyDevices,
 } from "./../../services/deviceService";
@@ -19,6 +20,8 @@ import AddDeviceModal from "../../components/modals/AddDeviceModal";
 import CustomCheckbox from "../../components/shared/CustomCheckbox";
 import EmptyDevicesIcon from "./../../components/icons/EmptyDevicesIcon";
 import CustomButton from "../../components/shared/CustomButton";
+import CustomSwitch from "./../../components/shared/CustomSwitch";
+import ArrowDownIcon from "../../components/icons/ArrowDownIcon";
 
 const MyDevicesPage = () => {
   const [pageIsReady, setPageIsReady] = useState(false);
@@ -31,7 +34,12 @@ const MyDevicesPage = () => {
   const [deviceName, setDeviceName] = useState("");
   const [deletesModal, setDeletesModal] = useState(false);
   const [toggleSelectDevices, setToggleSelectDevices] = useState(false);
+  const [summer, setSummer] = useState(false);
+  const [refreshRateToggle, setRefreshRateToggle] = useState(false);
+  const [refreshRateType, setRefreshRateType] = useState(5);
   const [loading, setLoading] = useState(false);
+
+  const refreshRateSelectButton = useRef();
 
   useEffect(() => {
     (async () => {
@@ -42,12 +50,30 @@ const MyDevicesPage = () => {
             return { ...d, selected: false };
           })
         );
+        setSummer(data.data.devices[0].summer);
+        setRefreshRateType(data.data.devices[0].refreshRateType);
         setPageIsReady(true);
       } catch (err) {
         console.log(err);
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (!pageIsReady) return;
+    console.log(`refreshRateType: ${refreshRateType} && summer: ${summer}`);
+    (async () => {
+      try {
+        setLoading(true);
+        await changeDevicesFeatures({ summer, refreshRateType });
+      } catch (err) {
+        console.log(err);
+        notif_error("مشکلی پیش آمده است.");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [refreshRateType, summer]);
 
   const changeName = async () => {
     try {
@@ -145,6 +171,31 @@ const MyDevicesPage = () => {
     setDevices(devicesCopy);
   };
 
+  const getRefreshRateType = (type) => {
+    switch (type) {
+      case 1:
+        return "۰۱ دقیقه";
+      case 2:
+        return "۰۳ دقیقه";
+      case 3:
+        return "۰۵ دقیقه";
+      case 4:
+        return "۱۵ دقیقه";
+      case 5:
+        return "۳۰ دقیقه";
+      case 6:
+        return "۰۱ ساعت";
+      case 7:
+        return "۰۲ ساعت";
+      case 8:
+        return "۰۶ ساعت";
+      case 9:
+        return "۱۲ ساعت";
+      case 10:
+        return "۲۴ ساعت";
+    }
+  };
+
   if (!pageIsReady) return null;
   return (
     <SettingsLayout
@@ -182,109 +233,212 @@ const MyDevicesPage = () => {
         onClose={() => setAddDeviceModal(false)}
         onSubmit={submitAddDevice}
       />
+
       {devices.length ? (
-        <div>
-          <div className="select-all-my-devices-container">
-            <button
-              type="button"
-              className={
-                toggleSelectDevices
-                  ? "btn-select-devices active"
-                  : "btn-select-devices"
-              }
-              onClick={() => setToggleSelectDevices((x) => !x)}
-            >
-              انتخاب گروهی
-            </button>
-            {toggleSelectDevices ? (
-              <CustomCheckbox
-                checked={
-                  devices.length === devices.filter((d) => d.selected).length
-                }
-                onChange={() => {
-                  if (
-                    devices.length === devices.filter((d) => d.selected).length
-                  ) {
-                    setDevices((ds) =>
-                      ds.map((d) => {
-                        return { ...d, selected: false };
-                      })
-                    );
-                  } else {
-                    setDevices((ds) =>
-                      ds.map((d) => {
-                        return { ...d, selected: true };
-                      })
-                    );
-                  }
-                }}
-                style={{marginRight: 8}}
-              />
-            ) : null}
-            {devices.filter((d) => d.selected).length ? (
-              <div
-                style={{ cursor: "pointer", marginLeft: 16, marginRight: "auto" }}
-                onClick={() => setDeletesModal(true)}
-                data-sound-click
-              >
-                <DeleteIcon />
-              </div>
-            ) : null}
+        <>
+          <div className="my-devices-features-title">
+            <span>تنظیمات دستگاه ها</span>
           </div>
-          <div className="my-devices">
-            {devices.map((item, index) => (
-              <Fragment key={item.deviceId}>
-                <div className="my-device">
-                  {toggleSelectDevices ? (
-                    <div className="my-device-checkbox">
-                      <CustomCheckbox
-                        checked={item.selected}
-                        onChange={() => toggleSelectDevice(item.deviceId)}
-                      />
-                    </div>
-                  ) : null}
-                  <p className="my-device-name">{item.name}</p>
-                  <div className="operations">
-                    <div
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        setDevice(item);
-                        setDeviceInfoModal(true);
-                      }}
-                      data-sound-click
-                    >
-                      <InfoIcon />
-                    </div>
-                    <div
-                      style={{ cursor: "pointer", marginRight: 8 }}
-                      onClick={() => {
-                        setDevice(item);
-                        setDeviceName(item.name);
-                        setEditNameModal(true);
-                      }}
-                      data-sound-click
-                    >
-                      <EditIcon />
-                    </div>
-                    <div
-                      style={{ cursor: "pointer", marginRight: 8 }}
-                      onClick={() => {
-                        setDevice(item);
-                        setDeleteModal(true);
-                      }}
-                      data-sound-click
-                    >
-                      <DeleteIcon />
+          <div className="my-devices-features">
+            <div className="refresh-rate-feature">
+              <div className="refresh-rate-label">نرخ داده برداری</div>
+              <div
+                ref={refreshRateSelectButton}
+                className="refresh-rate-select"
+                data-sound-click
+                onClick={() => setRefreshRateToggle((t) => !t)}
+              >
+                <div className="refresh-rate-select-button">
+                  <span>{getRefreshRateType(refreshRateType)}</span>
+                  <ArrowDownIcon />
+                </div>
+                {refreshRateToggle && (
+                  <div className="options-container">
+                    <div className="options">
+                      <div
+                        onClick={() => setRefreshRateType(1)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(1)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(2)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(2)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(3)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(3)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(4)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(4)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(5)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(5)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(6)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(6)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(7)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(7)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(8)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(8)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(9)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(9)}
+                      </div>
+                      <div
+                        onClick={() => setRefreshRateType(10)}
+                        data-sound-click
+                      >
+                        {getRefreshRateType(10)}
+                      </div>
                     </div>
                   </div>
-                </div>
-                {index + 1 !== devices.length && (
-                  <div className="separator"></div>
                 )}
-              </Fragment>
-            ))}
+              </div>
+            </div>
+            <div className="summer-feature">
+              <div style={{ marginBottom: 8, color: summer ? "#36EDF7" : "" }}>
+                تابستانه
+              </div>
+              <CustomSwitch
+                onChange={() => setSummer((w) => !w)}
+                checked={summer}
+              />
+            </div>
           </div>
-        </div>
+          <hr style={{ borderColor: "#17b9ff1a", borderWidth: 3 }} />
+          <div>
+            <div className="select-all-my-devices-container">
+              <button
+                type="button"
+                className={
+                  toggleSelectDevices
+                    ? "btn-select-devices active"
+                    : "btn-select-devices"
+                }
+                onClick={() => setToggleSelectDevices((x) => !x)}
+              >
+                انتخاب گروهی
+              </button>
+              {toggleSelectDevices ? (
+                <CustomCheckbox
+                  checked={
+                    devices.length === devices.filter((d) => d.selected).length
+                  }
+                  onChange={() => {
+                    if (
+                      devices.length ===
+                      devices.filter((d) => d.selected).length
+                    ) {
+                      setDevices((ds) =>
+                        ds.map((d) => {
+                          return { ...d, selected: false };
+                        })
+                      );
+                    } else {
+                      setDevices((ds) =>
+                        ds.map((d) => {
+                          return { ...d, selected: true };
+                        })
+                      );
+                    }
+                  }}
+                  style={{ marginRight: 8 }}
+                />
+              ) : null}
+              {devices.filter((d) => d.selected).length ? (
+                <div
+                  style={{
+                    cursor: "pointer",
+                    marginLeft: 16,
+                    marginRight: "auto",
+                  }}
+                  onClick={() => setDeletesModal(true)}
+                  data-sound-click
+                >
+                  <DeleteIcon />
+                </div>
+              ) : null}
+            </div>
+            <div className="my-devices">
+              {devices.map((item, index) => (
+                <Fragment key={item.deviceId}>
+                  <div className="my-device">
+                    {toggleSelectDevices ? (
+                      <div className="my-device-checkbox">
+                        <CustomCheckbox
+                          checked={item.selected}
+                          onChange={() => toggleSelectDevice(item.deviceId)}
+                        />
+                      </div>
+                    ) : null}
+                    <p className="my-device-name">{item.name}</p>
+                    <div className="operations">
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          setDevice(item);
+                          setDeviceInfoModal(true);
+                        }}
+                        data-sound-click
+                      >
+                        <InfoIcon />
+                      </div>
+                      <div
+                        style={{ cursor: "pointer", marginRight: 8 }}
+                        onClick={() => {
+                          setDevice(item);
+                          setDeviceName(item.name);
+                          setEditNameModal(true);
+                        }}
+                        data-sound-click
+                      >
+                        <EditIcon />
+                      </div>
+                      <div
+                        style={{ cursor: "pointer", marginRight: 8 }}
+                        onClick={() => {
+                          setDevice(item);
+                          setDeleteModal(true);
+                        }}
+                        data-sound-click
+                      >
+                        <DeleteIcon />
+                      </div>
+                    </div>
+                  </div>
+                  {index + 1 !== devices.length && (
+                    <div className="separator"></div>
+                  )}
+                </Fragment>
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <div className="my-devices-empty">
           <EmptyDevicesIcon width={250} height={250} />

@@ -69,3 +69,7 @@ export const changeDeviceOffDates = ({
     JSON.stringify({ deviceIds, off_dates })
   );
 };
+
+export const changeDevicesFeatures = ({ summer, refreshRateType }) => {
+  return http.post(`${API_URL}/devices/change-features`, JSON.stringify({ summer, refreshRateType }));
+};

@@ -864,6 +864,74 @@ p {
   width: auto;
   border-radius: 8px;
 }
+.my-devices-features-title {
+  margin-bottom: 24px;
+}
+.my-devices-features-title span {
+  padding-bottom: 8px;
+  border-bottom: 2px solid #17b9ff1a;
+}
+.my-devices-features {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.summer-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.refresh-rate-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.refresh-rate-label {
+  margin-bottom: 8px;
+}
+.refresh-rate-select {
+  position: relative;
+}
+.refresh-rate-select-button {
+  border: 1px solid var(--neutral_f9);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  padding: 11px 8.5px;
+  cursor: pointer;
+}
+.refresh-rate-select-button span {
+  background-color: transparent;
+  color: var(--primary_100);
+  margin-left: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.refresh-rate-select .options-container {
+  position: absolute;
+  right: 0;
+  left: 0;
+  background: linear-gradient(166.39deg, #6171c8 0.63%, #1c2247 90.36%);
+  border: 1px solid var(--primary_50);
+  border-radius: 14px;
+}
+.refresh-rate-select .options {
+  height: 150px;
+  overflow-y: scroll;
+  margin: 8px 2px;
+}
+.refresh-rate-select .options div {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
 /* End My Devices Page */
 
 /* My Account Page */
