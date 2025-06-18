@@ -879,7 +879,11 @@ p {
 }
 .summer-feature {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.wifi-feature {
+  display: flex;
   align-items: center;
 }
 .refresh-rate-feature {

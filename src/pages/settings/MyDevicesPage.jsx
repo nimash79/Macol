@@ -37,6 +37,7 @@ const MyDevicesPage = () => {
   const [summer, setSummer] = useState(false);
   const [refreshRateToggle, setRefreshRateToggle] = useState(false);
   const [refreshRateType, setRefreshRateType] = useState(5);
+  const [wifi, setWifi] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const refreshRateSelectButton = useRef();
@@ -52,6 +53,7 @@ const MyDevicesPage = () => {
         );
         setSummer(data.data.devices[0].summer);
         setRefreshRateType(data.data.devices[0].refreshRateType);
+        setWifi(data.data.devices[0].wifi);
         setPageIsReady(true);
       } catch (err) {
         console.log(err);
@@ -61,11 +63,10 @@ const MyDevicesPage = () => {
 
   useEffect(() => {
     if (!pageIsReady) return;
-    console.log(`refreshRateType: ${refreshRateType} && summer: ${summer}`);
     (async () => {
       try {
         setLoading(true);
-        await changeDevicesFeatures({ summer, refreshRateType });
+        await changeDevicesFeatures({ summer, refreshRateType, wifi });
       } catch (err) {
         console.log(err);
         notif_error("مشکلی پیش آمده است.");
@@ -73,7 +74,7 @@ const MyDevicesPage = () => {
         setLoading(false);
       }
     })();
-  }, [refreshRateType, summer]);
+  }, [refreshRateType, summer, wifi]);
 
   const changeName = async () => {
     try {
@@ -320,14 +321,25 @@ const MyDevicesPage = () => {
                 )}
               </div>
             </div>
-            <div className="summer-feature">
-              <div style={{ marginBottom: 8, color: summer ? "#36EDF7" : "" }}>
-                تابستانه
+            <div>
+              <div className="summer-feature">
+                <CustomSwitch
+                  onChange={() => setSummer((w) => !w)}
+                  checked={summer}
+                />
+                <div style={{ marginRight: 8, color: summer ? "#36EDF7" : "" }}>
+                  تابستانه
+                </div>
               </div>
-              <CustomSwitch
-                onChange={() => setSummer((w) => !w)}
-                checked={summer}
-              />
+              <div className="wifi-feature">
+                <CustomSwitch
+                  onChange={() => setWifi((w) => !w)}
+                  checked={wifi}
+                />
+                <div style={{ marginRight: 8, color: summer ? "#36EDF7" : "" }}>
+                  وای فای
+                </div>
+              </div>
             </div>
           </div>
           <hr style={{ borderColor: "#17b9ff1a", borderWidth: 3 }} />

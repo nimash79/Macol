@@ -70,6 +70,6 @@ export const changeDeviceOffDates = ({
   );
 };
 
-export const changeDevicesFeatures = ({ summer, refreshRateType }) => {
-  return http.post(`${API_URL}/devices/change-features`, JSON.stringify({ summer, refreshRateType }));
+export const changeDevicesFeatures = ({ summer, refreshRateType, wifi }) => {
+  return http.post(`${API_URL}/devices/change-features`, JSON.stringify({ summer, refreshRateType, wifi }));
 };
