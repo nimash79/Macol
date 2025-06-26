@@ -49,7 +49,7 @@ export const changeDeviceOn = ({ deviceId, on }) => {
 };
 
 export const deleteDevices = (deviceIds) => {
-  return http.post(`${API_URL}/devices/delete`, JSON.stringify({deviceIds}));
+  return http.post(`${API_URL}/devices/delete`, JSON.stringify({ deviceIds }));
 };
 
 export const addDevice = (count) => {
@@ -72,4 +72,11 @@ export const changeDeviceOffDates = ({
 
 export const changeDevicesFeatures = ({ summer, refreshRateType, wifi }) => {
   return http.post(`${API_URL}/devices/change-features`, JSON.stringify({ summer, refreshRateType, wifi }));
+};
+
+export const changeDeviceOffTimes = ({ deviceIds, off_start, off_end }) => {
+  return http.post(
+    `${API_URL}/devices/change-off-times`,
+    JSON.stringify({ deviceIds, off_start, off_end })
+  );
 };

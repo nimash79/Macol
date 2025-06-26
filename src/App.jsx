@@ -25,6 +25,7 @@ import MyAccountPage from "./pages/settings/MyAccountPage";
 import OffDatesPage from "./pages/OffDatesPage";
 import ReportPage from "./pages/ReportPage";
 import CalibrationPage from "./pages/CalibrationPage";
+import OffTimesPage from "./pages/OffTimesPage";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -79,6 +80,7 @@ const App = () => {
           <Route path="/economy" Component={EconomyPage} />
           <Route path="/calibration" Component={CalibrationPage} />
           <Route path="/off-dates" Component={OffDatesPage} />
+          <Route path="/off-times" Component={OffTimesPage} />
           <Route path="/export-report" Component={ReportPage} />
         </Routes>
         <ToastContainer />

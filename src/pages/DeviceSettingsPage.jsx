@@ -49,6 +49,12 @@ const DeviceSettingsPage = () => {
           <ArrowLeftIcon className="button-arrow" />
         </Link>
         <div className="button-separator"></div>
+        <Link to={"/off-times"} className="button">
+          <CalendarIcon />
+          <p className="button-text">ساعت خاموشی</p>
+          <ArrowLeftIcon className="button-arrow" />
+        </Link>
+        <div className="button-separator"></div>
         <Link to={"/off-dates"} className="button">
           <CalendarIcon />
           <p className="button-text">تاریخ خاموشی</p>
