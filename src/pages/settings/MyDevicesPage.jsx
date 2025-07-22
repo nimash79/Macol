@@ -51,9 +51,9 @@ const MyDevicesPage = () => {
             return { ...d, selected: false };
           })
         );
-        setSummer(data.data.devices[0].summer);
-        setRefreshRateType(data.data.devices[0].refreshRateType);
-        setWifi(data.data.devices[0].wifi);
+        setSummer(data.data.devices[0]?.summer);
+        setRefreshRateType(data.data.devices[0]?.refreshRateType);
+        setWifi(data.data.devices[0]?.wifi);
         setPageIsReady(true);
       } catch (err) {
         console.log(err);
