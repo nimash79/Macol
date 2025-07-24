@@ -34,6 +34,7 @@ const Login = () => {
       const { data } = await login({
         mobile: mobileRef.current.value,
         password: passwordRef.current.value,
+        pushToken: localStorage.getItem("pushToken") || "",
       });
       console.log(data);
       if (data.code === 404)

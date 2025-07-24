@@ -1,24 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import MainLayout from "./layouts/MainLayout";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { ToastContainer } from "react-toastify";
 
+import { messaging, getToken, onMessage } from "./firebase";
+import PushNotification from "./PushNotification";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/authentication/Login";
 import DevicePage from "./pages/DevicePage";
-
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { addUser } from "./reducers/userReducer";
 import { decode_token } from "./utils/auth";
 import useClickSound from "./hooks/useClickSound";
 import SplashScreen from "./pages/SplashScreen";
-import { ToastContainer } from "react-toastify";
 import Logout from "./pages/authentication/Logout";
 import EconomyPage from "./pages/EconomyPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import MyDevicesPage from "./pages/settings/MyDevicesPage";
 import Register from "./pages/authentication/Register";
 import VerificationPage from "./pages/authentication/VerificationPage";
-import ForgetPasswordPage from './pages/authentication/ForgetPasswordPage';
+import ForgetPasswordPage from "./pages/authentication/ForgetPasswordPage";
 import ResetPasswordPage from "./pages/authentication/ResetPasswordPage";
 import DeviceSettingsPage from "./pages/DeviceSettingsPage";
 import MyAccountPage from "./pages/settings/MyAccountPage";
@@ -49,6 +50,38 @@ const App = () => {
     const token = localStorage.getItem("token");
     if (token) dispatch(addUser(decode_token(token)));
     setTimeout(() => setIsReady(true), 3000);
+  }, []);
+
+  // Register service worker
+  useEffect(() => {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        navigator.serviceWorker
+          .register("/firebase-messaging-sw.js")
+          .then((registration) => {
+            console.log("Service Worker registered:", registration);
+
+            // Now get FCM token
+            getToken(messaging, {
+              vapidKey:
+                "BMZf9Fq0B289OIfXKb6U7aeBNf-fnSI8RsgkcwMcDdzzl6VUMIZQQSnv2kZ850cQDSpzfamDRnU1xsIhNKr3Hq4",
+              serviceWorkerRegistration: registration,
+            })
+              .then((token) => {
+                console.log("FCM token:", token);
+                localStorage.setItem("pushToken", token);
+              })
+              .catch((err) => {
+                console.log("getToken failed:", err);
+              });
+          })
+          .catch((err) => {
+            console.error("Service Worker registration failed:", err);
+          });
+      } else {
+        console.warn("Notification permission not granted:", permission);
+      }
+    });
   }, []);
 
   if (!isReady) {
