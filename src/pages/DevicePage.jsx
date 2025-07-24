@@ -135,7 +135,7 @@ const DevicePage = () => {
 
   const onRefresh = async () => {
     try {
-      await submitChangeDeviceValue();
+      // await submitChangeDeviceValue();
       await fetchSelectedDevices();
     } catch (err) {
       console.log(err);
