@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 import ArrowRightBorderIcon from "../../components/icons/ArrowRightBorderIcon";
@@ -10,9 +10,21 @@ import QuestionsIcon from "../../components/icons/QuestionsIcon";
 import AboutUsIcon from "../../components/icons/AboutUsIcon";
 import ContactUsIcon from "../../components/icons/ContactUsIcon";
 import GuideIcon from "./../../components/icons/GuideIcon";
+import CustomSwitch from "./../../components/shared/CustomSwitch";
+import SoundIcon from './../../components/icons/SoundIcon';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
+  const [clickSound, setClickSound] = useState(false);
+  useEffect(() => {
+    const item = localStorage.getItem("clickSound");
+    if (item) setClickSound(item === "true");
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("clickSound", clickSound.toString());
+  }, [clickSound])
+
   return (
     <div className="settings">
       <div className="header">
@@ -34,6 +46,19 @@ const SettingsPage = () => {
           <p className="button-text">مدیریت دستگاه ها</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
+      </div>
+      <div className="buttons">
+        <div className="button">
+          <SoundIcon width={20} height={20} />
+          <p className="button-text">صدای کلیک</p>
+          <div style={{ marginRight: "auto" }}>
+            <CustomSwitch
+              checked={clickSound}
+              onChange={() => setClickSound(!clickSound)}
+              changeBackground={false}
+            />
+          </div>
+        </div>
       </div>
       <div className="buttons">
         <Link to={"/guide"} className="button">
