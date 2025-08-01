@@ -57,15 +57,13 @@ const DevicePage = () => {
       await fetchSelectedDevices();
       setPageIsReady(true);
     })();
-    return () => {
-      submitChangeDeviceValue();
-    };
   }, []);
 
   useEffect(() => {
     deviceRef.current = device;
     temperatureRef.current = temperature;
     economyRef.current = economy;
+    submitChangeDeviceValue();
   }, [device, temperature, economy]);
 
   useEffect(() => {
@@ -135,7 +133,6 @@ const DevicePage = () => {
 
   const onRefresh = async () => {
     try {
-      // await submitChangeDeviceValue();
       await fetchSelectedDevices();
     } catch (err) {
       console.log(err);
