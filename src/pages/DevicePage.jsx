@@ -117,17 +117,13 @@ const DevicePage = () => {
     if (deviceRef.current == undefined || temperatureRef.current == undefined)
       return;
     try {
-      setLoading(true);
-      const { data } = await changeDeviceValue({
+      await changeDeviceValue({
         deviceIds,
         value: temperatureRef.current,
         economy: economyRef.current,
       });
     } catch (err) {
       console.log(err);
-      notif_error("درخواست شما برای تنظیم درجه موفقیت آمیز نبود.");
-    } finally {
-      setLoading(false);
     }
   };
 
