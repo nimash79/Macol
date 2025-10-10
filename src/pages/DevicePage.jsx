@@ -42,6 +42,7 @@ const DevicePage = () => {
 
   const deviceRef = useRef();
   const temperatureRef = useRef();
+  const timeoutRef = useRef();
   const economyRef = useRef();
   const reportSelectButton = useRef();
 
@@ -63,7 +64,10 @@ const DevicePage = () => {
     deviceRef.current = device;
     temperatureRef.current = temperature;
     economyRef.current = economy;
-    submitChangeDeviceValue();
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      submitChangeDeviceValue();
+    }, 3000)
   }, [device, temperature, economy]);
 
   useEffect(() => {
@@ -122,6 +126,7 @@ const DevicePage = () => {
         value: temperatureRef.current,
         economy: economyRef.current,
       });
+      console.log("temp changed to:", temperatureRef.current);
     } catch (err) {
       console.log(err);
     }
