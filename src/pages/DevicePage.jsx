@@ -22,6 +22,7 @@ import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
 import CustomBarChart from "../components/shared/CustomBarChart";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import ReportIcon from "../components/icons/ReportIcon";
+import AiIcon from "../components/icons/AIIcon";
 
 const DevicePage = () => {
   const [devices, setDevices] = useState([]);
@@ -33,6 +34,7 @@ const DevicePage = () => {
   const [battery, setBattery] = useState();
   const [economy, setEconomy] = useState(false);
   const [openedDoor, setOpenedDoor] = useState(false);
+  const [ai, setAi] = useState(false);
   const [device, setDevice] = useState();
   const [reportType, setReportType] = useState("هفتگی");
   const [reportToggle, setReportToggle] = useState(false);
@@ -213,6 +215,18 @@ const DevicePage = () => {
           </label>
         </div>
         <OpenedDoorIcon active={openedDoor} />
+      </div>
+      <div className="features">
+        <div className="economy-feature">
+          <CustomSwitch
+            onChange={() => setAi((f) => !f)}
+            checked={ai}
+          />
+          <label style={{ color: ai ? "#36EDF7" : "" }}>
+            قابلیت هوش مصنوعی
+          </label>
+        </div>
+        <AiIcon active={ai} />
       </div>
       {/* <div className="device-info-container">
         <DeviceInfoBox
