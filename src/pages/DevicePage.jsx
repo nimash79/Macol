@@ -22,7 +22,7 @@ import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
 import CustomBarChart from "../components/shared/CustomBarChart";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import ReportIcon from "../components/icons/ReportIcon";
-import AiIcon from "../components/icons/AIIcon";
+import AiIcon from "../components/icons/AiIcon";
 
 const DevicePage = () => {
   const [devices, setDevices] = useState([]);
