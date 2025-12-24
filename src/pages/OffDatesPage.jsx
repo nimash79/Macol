@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
+import ArrowBackIcon from "../components/icons/ArrowBackIcon";
 import CustomButton from "../components/shared/CustomButton";
 import { formatDatePicker, toShamsi, twoDigit } from "./../utils/helper";
 import { notif_error, notif_success } from "../utils/toast";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
 import CustomCalendarInput from "../components/shared/CustomCalendarInput";
 import LoadingModal from "./../components/modals/LoadingModal";
+import { useTranslation } from "react-i18next";
 
 const OffDatesPage = () => {
   const [values, setValues] = useState([]);
@@ -20,6 +21,8 @@ const OffDatesPage = () => {
 
   const navigate = useNavigate();
 
+  const {t} = useTranslation();
+
   useEffect(() => {
     if (selectedDevices.length === 1) setValues(selectedDevices[0].off_dates);
   }, [selectedDevices]);
@@ -27,24 +30,22 @@ const OffDatesPage = () => {
   const submit = async () => {
     try {
       setLoading(true);
-      console.log("values:", values);
       if (!values || !Array.isArray(values)) {
-        notif_error("لطفا تاریخ را وارد کنید.");
+        notif_error(t("offDatesPage:date_validation"));
         return;
       }
       const { data } = await changeDeviceOffDates({
         deviceIds: selectedDevices.map((d) => d.deviceId),
         off_dates: values,
       });
-      console.log("res data:", data);
       if (data.code === 200) {
         dispatch(addSelectedDevices(data.data.devices));
-        notif_success("تنظیمات با موفقیت اعمال شد.");
+        notif_success(t("offDatesPage:success"));
         navigate(-1);
-      } else notif_error("مشکلی از سمت سرور پیش آمده است.");
+      } else notif_error(t("offDatesPage:server_error"));
     } catch (err) {
       console.log(err);
-      notif_error("مشکلی به وجود آمده است.");
+      notif_error(t("offDatesPage:error"));
     } finally {
       setLoading(false);
     }
@@ -58,25 +59,24 @@ const OffDatesPage = () => {
       <LoadingModal isOpen={loading} />
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
-          <ArrowRightBorderIcon />
+          <ArrowBackIcon />
         </div>
         <p className="header-title">
-          {selectedDevices.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
+          {selectedDevices.length > 1 ? t("offDatesPage:devices_settings") : t("offDatesPage:device_settings")}
         </p>
         <div></div>
       </div>
       <div className="separator"></div>
-      <div className="title">تاریخ خاموشی</div>
+      <div className="title">{t("offDatesPage:off_date")}</div>
       <p className="description">
-        با وارد کردن تاریخ، دستگاه یا دستگاه های موردنظر در تاریخ های موردنظر
-        خاموش خواهند بود و پس از پایان آن روز، به حالت عادی خود برمی گردند.
+        {t("offDatesPage:description")}
       </p>
       <CustomCalendarInput
         multiple
         value={values}
         editable={false}
         onChange={setValues}
-        placeholder={"انتخاب کنید ..."}
+        placeholder={t("offDatesPage:select")}
         containerStyle={{ marginTop: 24 }}
       />
       <div
@@ -92,12 +92,12 @@ const OffDatesPage = () => {
         }}
       >
         <CustomButton
-          text={"پاک کردن"}
+          text={t("offDatesPage:clear")}
           onClick={() => setValues([])}
           style={{ width: "45%", backgroundColor: "#ed2e2e" }}
         />
         <CustomButton
-          text={"تایید"}
+          text={t("offDatesPage:confirm")}
           onClick={submit}
           style={{ width: "45%" }}
         />

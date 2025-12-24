@@ -1,9 +1,11 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CustomInput from "./../shared/CustomInput";
-import CustomButton from './../shared/CustomButton';
+import CustomButton from "./../shared/CustomButton";
+import { useTranslation } from "react-i18next";
 
 const DeviceInfoModal = ({ isOpen, onClose, deviceId }) => {
+  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -13,7 +15,7 @@ const DeviceInfoModal = ({ isOpen, onClose, deviceId }) => {
             className="modal-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{opacity: 0}}
+            exit={{ opacity: 0 }}
             onClick={onClose}
           />
 
@@ -24,12 +26,16 @@ const DeviceInfoModal = ({ isOpen, onClose, deviceId }) => {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            style={{direction: "ltr"}}
+            style={{ direction: "ltr" }}
           >
-            <p className="title">آیدی دستگاه</p>
+            <p className="title">{t("deviceInfoMdal:title")}</p>
             <CustomInput
               defaultValue={deviceId}
-              containerStyle={{ marginBottom: 32, opacity: 0.8, cursor: "not-allowed" }}
+              containerStyle={{
+                marginBottom: 32,
+                opacity: 0.8,
+                cursor: "not-allowed",
+              }}
               disabled
             />
           </motion.div>

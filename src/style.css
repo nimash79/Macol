@@ -70,12 +70,17 @@
   padding: 0;
   box-sizing: border-box;
 }
-body {
-  direction: rtl;
-  font-family: "Shabnam", sans-serif;
+.lang-fa body {
+  font-family: "Shabnam", 'Segoe UI';
 }
-input {
-  font-family: Shabnam;
+.lang-fa input {
+  font-family: "Shabnam", 'Segoe UI';
+}
+.lang-en body {
+  font-family: 'Segoe UI', "Shabnam",
+}
+.lang-end input {
+  font-family: 'Segoe UI', "Shabnam",
 }
 input[type="submit"],
 button {
@@ -221,7 +226,7 @@ p {
   font-size: 12px;
   font-weight: 500;
   color: var(--primary_600);
-  margin-right: 8px;
+  margin-inline-start: 8px;
   text-decoration: underline;
 }
 /* End Athentication */
@@ -268,7 +273,7 @@ p {
 .select-all-devices-container {
   display: flex;
   align-items: center;
-  margin-right: 12px;
+  margin-inline-start: 12px;
 }
 .select-all-devices-container label {
   margin-left: 8px;
@@ -375,7 +380,7 @@ p {
 }
 .device-checkbox {
   position: absolute;
-  right: 8px;
+  inset-inline-start: 8px;
   top: 8px;
 }
 .btn-setting-devices {
@@ -422,10 +427,10 @@ p {
   align-items: center;
 }
 .settings .button-text {
-  margin-right: 8px;
+  margin-inline-start: 8px;
 }
 .settings .button-arrow {
-  margin-right: auto;
+  margin-inline-start: auto;
 }
 .settings .button-separator {
   height: 1px;
@@ -460,7 +465,7 @@ p {
 .economy-form label {
   font-size: 12px;
   font-weight: 500;
-  margin-left: 8px;
+  margin-inline-end: 8px;
 }
 .economy-select-time {
   position: relative;
@@ -560,7 +565,7 @@ p {
   font-size: 16px;
   font-weight: 500;
   color: var(--neutral_f2);
-  margin-right: 8px;
+  margin-inline-start: 8px;
 }
 .temperature-progress {
   margin-top: 24px;
@@ -570,6 +575,7 @@ p {
   flex-direction: row;
   justify-content: space-between;
   margin-top: -45px;
+  direction: rtl;
 }
 .controller-container > div {
   cursor: pointer;
@@ -612,7 +618,7 @@ p {
   align-items: center;
 }
 .economy-feature label {
-  margin-right: 8px;
+  margin-inline-start: 8px;
 }
 .device-info-container {
   width: 100%;
@@ -683,7 +689,7 @@ p {
 .report-title p {
   font-size: 16px;
   font-weight: 400;
-  margin-right: 16px;
+  margin-inline-start: 16px;
   color: var(--primary_50);
 }
 .report-chart-container {
@@ -717,7 +723,7 @@ p {
 .report-select-button span {
   background-color: transparent;
   color: var(--primary_100);
-  margin-left: 12px;
+  margin-inline-end: 12px;
   font-size: 16px;
   font-weight: 700;
 }
@@ -832,7 +838,7 @@ p {
   color: var(--neutral_f2);
 }
 .my-device .operations {
-  margin-right: auto;
+  margin-inline-start: auto;
   display: flex;
   align-items: center;
 }
@@ -842,7 +848,7 @@ p {
   border-radius: 8px;
 }
 .my-device-checkbox {
-  margin-left: 8px;
+  margin-inline-end: 8px;
 }
 .select-all-my-devices-container {
   display: flex;
@@ -904,7 +910,7 @@ p {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 120px;
+  width: 130px;
   height: 40px;
   padding: 11px 8.5px;
   cursor: pointer;
@@ -912,7 +918,7 @@ p {
 .refresh-rate-select-button span {
   background-color: transparent;
   color: var(--primary_100);
-  margin-left: 12px;
+  margin-inline-end: 12px;
   font-size: 16px;
   font-weight: 700;
 }

@@ -22,6 +22,7 @@ import EmptyDevicesIcon from "./../../components/icons/EmptyDevicesIcon";
 import CustomButton from "../../components/shared/CustomButton";
 import CustomSwitch from "./../../components/shared/CustomSwitch";
 import ArrowDownIcon from "../../components/icons/ArrowDownIcon";
+import { useTranslation } from "react-i18next";
 
 const MyDevicesPage = () => {
   const [pageIsReady, setPageIsReady] = useState(false);
@@ -41,6 +42,8 @@ const MyDevicesPage = () => {
   const [loading, setLoading] = useState(false);
 
   const refreshRateSelectButton = useRef();
+
+  const {t} = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -69,7 +72,7 @@ const MyDevicesPage = () => {
         await changeDevicesFeatures({ summer, refreshRateType, wifi });
       } catch (err) {
         console.log(err);
-        notif_error("مشکلی پیش آمده است.");
+        notif_error(t("common:error"));
       } finally {
         setLoading(false);
       }
@@ -80,7 +83,7 @@ const MyDevicesPage = () => {
     try {
       setLoading(true);
       if (deviceName === "") {
-        notif_error("وارد کردن نام اجباری می باشد!");
+        notif_error(t("myDevicesPage:name_validation"));
         return;
       }
       const { data } = await changeDeviceName({
@@ -88,7 +91,7 @@ const MyDevicesPage = () => {
         name: deviceName,
       });
       if (data.data.status == 2) {
-        notif_error("نام دستگاه نمیتواند تکراری باشد.");
+        notif_error(t("myDevicesPage:unique_validation"));
         return;
       }
       setDevices((d) => {
@@ -98,7 +101,7 @@ const MyDevicesPage = () => {
       setEditNameModal(false);
     } catch (err) {
       console.log(err);
-      notif_error("مشکلی پیش آمده است!");
+      notif_error(t("common:error"));
     } finally {
       setLoading(false);
     }
@@ -112,7 +115,7 @@ const MyDevicesPage = () => {
       setDeleteModal(false);
     } catch (err) {
       console.log(err);
-      notif_error("مشکلی پیش آمده است!");
+      notif_error(t("common:error"));
     } finally {
       setLoading(false);
     }
@@ -135,7 +138,7 @@ const MyDevicesPage = () => {
       setDeletesModal(false);
     } catch (err) {
       console.log(err);
-      notif_error("مشکلی پیش آمده است!");
+      notif_error(t("common:error"));
     } finally {
       setLoading(false);
     }
@@ -147,11 +150,10 @@ const MyDevicesPage = () => {
       setLoading(true);
       count = parseInt(count);
       if (!count || isNaN(count)) {
-        notif_error("لطفا تعداد دستگاه را وارد کنید.");
+        notif_error(t("myDevicesPage:count_validation"));
         return;
       }
       const { data } = await addDevice(count);
-      console.log("devices:", devices);
       setDevices((d) =>
         [...data.data.devices, ...d].sort(
           (a, b) => new Date(a.createDate) - new Date(b.createDate)
@@ -175,32 +177,32 @@ const MyDevicesPage = () => {
   const getRefreshRateType = (type) => {
     switch (type) {
       case 1:
-        return "۰۱ دقیقه";
+        return t("myDevicesPage:min1");
       case 2:
-        return "۰۳ دقیقه";
+        return t("myDevicesPage:min3");
       case 3:
-        return "۰۵ دقیقه";
+        return t("myDevicesPage:min5");
       case 4:
-        return "۱۵ دقیقه";
+        return t("myDevicesPage:min15");
       case 5:
-        return "۳۰ دقیقه";
+        return t("myDevicesPage:min30");
       case 6:
-        return "۰۱ ساعت";
+        return t("myDevicesPage:hour1");
       case 7:
-        return "۰۲ ساعت";
+        return t("myDevicesPage:hour2");
       case 8:
-        return "۰۶ ساعت";
+        return t("myDevicesPage:hour6");
       case 9:
-        return "۱۲ ساعت";
+        return t("myDevicesPage:hour12");
       case 10:
-        return "۲۴ ساعت";
+        return t("myDevicesPage:hour24");
     }
   };
 
   if (!pageIsReady) return null;
   return (
     <SettingsLayout
-      title={"مدیریت دستگاه ها"}
+      title={t("myDevicesPage:devices_management")}
       icon={<PlusIcon />}
       onIconClick={() => setAddDeviceModal(true)}
     >
@@ -238,11 +240,11 @@ const MyDevicesPage = () => {
       {devices.length ? (
         <>
           <div className="my-devices-features-title">
-            <span>تنظیمات دستگاه ها</span>
+            <span>{t("myDevicesPage:device_settings")}</span>
           </div>
           <div className="my-devices-features">
             <div className="refresh-rate-feature">
-              <div className="refresh-rate-label">نرخ داده برداری</div>
+              <div className="refresh-rate-label">{t("myDevicesPage:sample_rate")}</div>
               <div
                 ref={refreshRateSelectButton}
                 className="refresh-rate-select"
@@ -327,8 +329,8 @@ const MyDevicesPage = () => {
                   onChange={() => setSummer((w) => !w)}
                   checked={summer}
                 />
-                <div style={{ marginRight: 8, color: summer ? "#36EDF7" : "" }}>
-                  تابستانه
+                <div style={{ marginInlineStart: 8, color: summer ? "#36EDF7" : "" }}>
+                  {t("myDevicesPage:summer")}
                 </div>
               </div>
               <div className="wifi-feature">
@@ -336,8 +338,8 @@ const MyDevicesPage = () => {
                   onChange={() => setWifi((w) => !w)}
                   checked={wifi}
                 />
-                <div style={{ marginRight: 8, color: summer ? "#36EDF7" : "" }}>
-                  وای فای
+                <div style={{ marginInlineStart: 8, color: summer ? "#36EDF7" : "" }}>
+                 {t("myDevicesPage:wifi")}
                 </div>
               </div>
             </div>
@@ -354,7 +356,7 @@ const MyDevicesPage = () => {
                 }
                 onClick={() => setToggleSelectDevices((x) => !x)}
               >
-                انتخاب گروهی
+               {t("myDevicesPage:group_select")}
               </button>
               {toggleSelectDevices ? (
                 <CustomCheckbox
@@ -379,15 +381,15 @@ const MyDevicesPage = () => {
                       );
                     }
                   }}
-                  style={{ marginRight: 8 }}
+                  style={{ marginInlineStart: 8 }}
                 />
               ) : null}
               {devices.filter((d) => d.selected).length ? (
                 <div
                   style={{
                     cursor: "pointer",
-                    marginLeft: 16,
-                    marginRight: "auto",
+                    marginInlineEnd: 16,
+                    marginInlineStart: "auto",
                   }}
                   onClick={() => setDeletesModal(true)}
                   data-sound-click
@@ -421,7 +423,7 @@ const MyDevicesPage = () => {
                         <InfoIcon />
                       </div>
                       <div
-                        style={{ cursor: "pointer", marginRight: 8 }}
+                        style={{ cursor: "pointer", marginInlineStart: 8 }}
                         onClick={() => {
                           setDevice(item);
                           setDeviceName(item.name);
@@ -432,7 +434,7 @@ const MyDevicesPage = () => {
                         <EditIcon />
                       </div>
                       <div
-                        style={{ cursor: "pointer", marginRight: 8 }}
+                        style={{ cursor: "pointer", marginInlineStart: 8 }}
                         onClick={() => {
                           setDevice(item);
                           setDeleteModal(true);
@@ -454,9 +456,9 @@ const MyDevicesPage = () => {
       ) : (
         <div className="my-devices-empty">
           <EmptyDevicesIcon width={250} height={250} />
-          <p>شما در حال حاضر دستگاهی ندارید.</p>
+          <p>{t("myDevicesPage:empty")}</p>
           <CustomButton
-            text={"افزودن دستگاه"}
+            text={t("myDevicesPage:add_device")}
             onClick={() => setAddDeviceModal(true)}
           />
         </div>

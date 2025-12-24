@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
+import ArrowBackIcon from "../components/icons/ArrowBackIcon";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import CustomButton from "../components/shared/CustomButton";
 import CustomInput from "../components/shared/CustomInput";
@@ -13,6 +13,7 @@ import {
 } from "../services/deviceService";
 import { useDispatch, useSelector } from "react-redux";
 import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
+import { useTranslation } from "react-i18next";
 
 const CalibrationPage = () => {
   const [value, setValue] = useState();
@@ -25,6 +26,8 @@ const CalibrationPage = () => {
 
   const navigate = useNavigate();
 
+  const {t} = useTranslation();
+
   useEffect(() => {
     if (selectedDevices.length === 1) setValue(selectedDevices[0].calibration);
   }, [selectedDevices]);
@@ -32,7 +35,7 @@ const CalibrationPage = () => {
   const submit = async () => {
     try {
       if (!valueRef.current.value) {
-        notif_error("لطفا میزان دمای کالیبراسیون را مشخص کنید.");
+        notif_error(t("calibrationPage:validation"));
         return;
       }
       setLoading(true);
@@ -42,12 +45,12 @@ const CalibrationPage = () => {
       });
       console.log(data);
       if (data.code === 200) {
-        notif_success("دمای کالیبراسیون با موفقیت تغییر یافت.");
+        notif_success(t("calibrationPage:success"));
         dispatch(addSelectedDevices(data.data.devices));
-      } else notif_error("مشکلی از سمت سرور پیش آمده است.");
+      } else notif_error(t("calibrationPage:server_error"));
     } catch (err) {
       console.log(err);
-      notif_error("مشکلی پیش آمده است.");
+      notif_error(t("calibrationPage:error"));
     } finally {
       setLoading(false);
     }
@@ -57,23 +60,21 @@ const CalibrationPage = () => {
     <div className="settings">
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
-          <ArrowRightBorderIcon />
+          <ArrowBackIcon />
         </div>
         <p className="header-title">
-          {selectedDevices.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
+          {selectedDevices.length > 1 ? t("calibrationPage:devices_settings") : t("calibrationPage:device_settings")}
         </p>
         <div></div>
       </div>
       <div className="separator"></div>
-      <div className="title">دمای کالیبراسیون</div>
+      <div className="title">{t("calibrationPage:temp_calibration")}</div>
       <p className="description">
-        برای عملکرد بهتر دستگاه، نیاز هست که میزان دمای کالیبراسیون را مشخص
-        کنید. کالیبراسیون دما برای هر گونه تجهیزاتی که در سیستم های اندازه گیری
-        دما استفاده می شود مورد استفاده قرار می گیرد.
+        {t("calibrationPage:descriptions")}
       </p>
       <div className="economy-form">
         <div className="economy-field">
-          <label>میزان دمای کالیبراسیون :</label>
+          <label>{t("calibrationPage:temp_calibration_value")} :</label>
           <CustomInput
             ref={valueRef}
             containerStyle={{
@@ -89,7 +90,7 @@ const CalibrationPage = () => {
           />
         </div>
       </div>
-      <CustomButton text={"تایید"} style={{ marginTop: 32 }} onClick={submit} />
+      <CustomButton text={t("calibrationPage:confirm")} style={{ marginTop: 32 }} onClick={submit} />
     </div>
   );
 };

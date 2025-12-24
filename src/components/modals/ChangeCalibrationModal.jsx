@@ -2,9 +2,11 @@ import React, { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CustomInput from "../shared/CustomInput";
 import CustomButton from "../shared/CustomButton";
+import { useTranslation } from "react-i18next";
 
 const ChangeCalibrationModal = ({ isOpen, onClose, onSubmit, calibration }) => {
   const calibrationRef = useRef(null);
+  const {t} = useTranslation();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -26,16 +28,16 @@ const ChangeCalibrationModal = ({ isOpen, onClose, onSubmit, calibration }) => {
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
-            <p className="title">دمای کالیبراسیون</p>
+            <p className="title">{t("changeCalibrationModal:title")}</p>
             <CustomInput
               ref={calibrationRef}
-              placeholder="میزان دمای کالیبراسیون را وارد کنید"
+              placeholder={t("changeCalibrationModal:placeholder")}
               containerStyle={{ marginBottom: 32 }}
               type="number"
               defaultValue={calibration}
             />
             <CustomButton
-              text={"تایید"}
+              text={t("changeCalibrationModal:confirm")}
               style={{ marginBottom: 52 }}
               onClick={() => onSubmit(calibrationRef.current.value)}
             />

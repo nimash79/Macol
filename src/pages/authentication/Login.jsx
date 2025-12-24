@@ -11,6 +11,7 @@ import { notif_error, notif_success } from "../../utils/toast";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../reducers/userReducer";
 import LoadingModal from "../../components/modals/LoadingModal";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,8 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (isAuthenticated()) navigate("/");
@@ -36,9 +39,8 @@ const Login = () => {
         password: passwordRef.current.value,
         pushToken: localStorage.getItem("pushToken") || "",
       });
-      console.log(data);
       if (data.code === 404)
-        notif_error("شماره موبایل یا رمز عبور اشتباه می باشد!");
+        notif_error(t("login:validation"));
       else if (data.code === 200) {
         if (data.data.status === 3)
           navigate("/verification", { state: { userId: data.data.userId, register: true } });
@@ -47,9 +49,9 @@ const Login = () => {
           const user = decode_token(data.data.token);
           dispatch(addUser(user));
           navigate("/");
-          notif_success("خوش آمدید!");
+          notif_success(t("login:welcome"));
         }
-      } else notif_error("مشکلی از سمت سرور پیش آمده است.");
+      } else notif_error(t("common:server_error"));
     } catch (err) {
       console.log(err);
     } finally {
@@ -61,26 +63,26 @@ const Login = () => {
     <div className="login-container">
       <LoadingModal isOpen={loading} />
       <div className="login">
-        <div className="header">هر جا، هر زمان دما را تنظیم کن!</div>
-        <div className="title">ورود به حساب کاربری</div>
+        <div className="header">{t("login:header")}</div>
+        <div className="title">{t("login:title")}</div>
         <CustomInput
           icon={<PhoneIcon />}
-          placeholder="شماره موبایل"
+          placeholder={t("login:mobile")}
           containerStyle={{ marginTop: 40, marginBottom: 32 }}
           ref={mobileRef}
         />
-        <CustomPasswordInput placeholder="رمز عبور" ref={passwordRef} />
+        <CustomPasswordInput placeholder={t("login:password")} ref={passwordRef} />
         <div className="forget-password-link">
-          <Link to={"/forget-password"}>فراموشی رمز عبور</Link>
+          <Link to={"/forget-password"}>{t("login:forget_password")}</Link>
         </div>
         <CustomButton
-          text={"ورود"}
+          text={t("login:login")}
           style={{ marginTop: 32 }}
           onClick={onSubmit}
         />
         <div className="login-guide">
-          <p>هنوز ثبت نام نکرده اید؟</p>
-          <Link to={"/register"}>ثبت نام</Link>
+          <p>{t("login:register_guide")}</p>
+          <Link to={"/register"}>{t("login:register")}</Link>
         </div>
       </div>
     </div>

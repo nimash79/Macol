@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
+import ArrowBackIcon from "../components/icons/ArrowBackIcon";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import CustomButton from "../components/shared/CustomButton";
 import CustomInput from "../components/shared/CustomInput";
@@ -10,6 +10,7 @@ import { notif_error, notif_success } from "../utils/toast";
 import { changeDeviceSettings } from "../services/deviceService";
 import { useDispatch, useSelector } from "react-redux";
 import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
+import { useTranslation } from "react-i18next";
 
 const EconomyPage = () => {
   const [start, setStart] = useState(null);
@@ -25,6 +26,8 @@ const EconomyPage = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const {t} = useTranslation();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -64,11 +67,11 @@ const EconomyPage = () => {
   const submit = async () => {
     try {
       if (!start || !end) {
-        notif_error("لطفا شروع و پایان را مشخص کنید.");
+        notif_error(t("economyPage:date_validation"));
         return;
       }
       if (!temperature || temperature < 15 || temperature > 30) {
-        notif_error("لطفا مقدار دمای موردنظر را به درستی مشخص کنید.");
+        notif_error(t("economyPage:temp_validation"));
         return;
       }
       const { data } = await changeDeviceSettings({
@@ -80,12 +83,12 @@ const EconomyPage = () => {
       console.log("devices data:", data);
       if (data.code === 200) {
         dispatch(addSelectedDevices(data.data.devices));
-        notif_success("تنظیمات با موفقیت اعمال شد.");
+        notif_success(t("economyPage:success"));
         navigate(-1);
       }
     } catch (err) {
       console.log(err);
-      notif_error("مشکلی به وجود آمده است.");
+      notif_error(t("economyPage:error"));
     }
   };
 
@@ -93,24 +96,21 @@ const EconomyPage = () => {
     <div className="settings">
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
-          <ArrowRightBorderIcon />
+          <ArrowBackIcon />
         </div>
         <p className="header-title">
-          {selectedDevices.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
+          {selectedDevices.length > 1 ? t("economyPage:device_settings") : t("economyPage:device_settings")}
         </p>
         <div></div>
       </div>
       <div className="separator"></div>
-      <div className="title">حالت اقتصادی</div>
+      <div className="title">{t("economyPage:economy_mode")}</div>
       <p className="description">
-        با فعال کردن حالت اقتصادی، شوفاژ در بازه زمانی مشخص شده توسط شما روی
-        حالت انتخاب شده شما تنظیم می شود تا در مصرف بهینه تر صرفه جویی شود. پس
-        از پایان بازه، تنظیمات دما به حالت قبلی باز می گردد تا راحتی محیط حفظ
-        شود.
+        {t("economyPage:description")}
       </p>
       <div className="economy-form">
         <div className="economy-field">
-          <label>مقدار دمای موردنظر :</label>
+          <label>{t("economyPage:temp_value")} :</label>
           <CustomInput
             containerStyle={{
               width: 71,
@@ -125,11 +125,11 @@ const EconomyPage = () => {
           />
         </div>
         <p className="economy-field-guide">
-          مقدار دما باید بین ۱۵ تا ۳۰ درجه باشد.
+          {t("economyPage:temp_guide")}
         </p>
         <div className="economy-date-form">
           <div className="economy-field">
-            <label>شروع از ساعت :</label>
+            <label>{t("economyPage:start_from")} :</label>
             <div
               ref={startSelectButton}
               className="economy-select-time"
@@ -221,7 +221,7 @@ const EconomyPage = () => {
             </div>
           </div>
           <div className="economy-field">
-            <label>تا ساعت :</label>
+            <label>{t("economyPage:to_end")} :</label>
             <div className="economy-select-time">
               <div
                 ref={endSelectButton}
@@ -229,7 +229,7 @@ const EconomyPage = () => {
                 data-sound-click
                 onClick={() => setEndToggle((e) => !e)}
               >
-                <span>{end || "پایان"}</span>
+                <span>{end || t("economyPage:end")}</span>
                 <ArrowDownIcon />
               </div>
               {endToggle && (
@@ -314,7 +314,7 @@ const EconomyPage = () => {
           </div>
         </div>
       </div>
-      <CustomButton text={"تایید"} style={{ marginTop: 32 }} onClick={submit} />
+      <CustomButton text={t("economyPage:confirm")} style={{ marginTop: 32 }} onClick={submit} />
     </div>
   );
 };

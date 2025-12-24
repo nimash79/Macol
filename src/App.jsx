@@ -27,6 +27,8 @@ import OffDatesPage from "./pages/OffDatesPage";
 import ReportPage from "./pages/ReportPage";
 import CalibrationPage from "./pages/CalibrationPage";
 import OffTimesPage from "./pages/OffTimesPage";
+import i18n from "./localization/i18n";
+import { useTranslation } from "react-i18next";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -84,6 +86,23 @@ const App = () => {
     });
   }, []);
 
+  const RTL_LANGS = new Set(["ar", "fa", "he", "ur"]);
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const lang = i18n.resolvedLanguage || i18n.language; // e.g. "en", "az", "ar"
+    const base = lang.split("-")[0];                    // "en-US" -> "en"
+
+    document.documentElement.lang = lang;
+
+    const isRtl = RTL_LANGS.has(base);
+    document.documentElement.dir = isRtl ? "rtl" : "ltr";
+
+    // optional: class for easy CSS targeting
+    document.documentElement.classList.remove("lang-en", "lang-az", "lang-ar");
+    document.documentElement.classList.add(`lang-${base}`);
+  }, [i18n.resolvedLanguage, i18n.language]);
+  
   if (!isReady) {
     return (
       <MainLayout splash={true}>
@@ -91,6 +110,7 @@ const App = () => {
       </MainLayout>
     );
   }
+
 
   return (
     <MainLayout>

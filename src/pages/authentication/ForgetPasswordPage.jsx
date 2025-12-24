@@ -4,11 +4,16 @@ import CustomInput from "../../components/shared/CustomInput";
 import CustomButton from "../../components/shared/CustomButton";
 import { isAuthenticated } from "./../../utils/auth";
 import { useLocation, useNavigate } from "react-router";
-import { activeAccount, forgetPassword, sendActiveCode } from "./../../services/accountService";
+import {
+  activeAccount,
+  forgetPassword,
+  sendActiveCode,
+} from "./../../services/accountService";
 import { notif_error, notif_success } from "../../utils/toast";
 import LoadingModal from "./../../components/modals/LoadingModal";
 import PasswordIcon from "../../components/icons/PasswordIcon";
 import PhoneIcon from "../../components/icons/PhoneIcon";
+import { useTranslation } from "react-i18next";
 
 const ForgetPasswordPage = () => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +22,8 @@ const ForgetPasswordPage = () => {
   const navigate = useNavigate();
 
   const { state } = useLocation();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isAuthenticated()) navigate("/");
@@ -29,19 +36,22 @@ const ForgetPasswordPage = () => {
   const onSubmit = async () => {
     try {
       if (mobileRef.current.value === "") {
-        notif_error("لطفا شماره موبایل را وارد کنید.");
+        notif_error(t("forgetPasswordPage:validation"));
         return;
       }
       setLoading(true);
       const { data } = await forgetPassword({
-        mobile: mobileRef.current.value
+        mobile: mobileRef.current.value,
       });
       console.log(data);
-      if (data.code === 404) notif_error("حساب کاربری ای با این شماره موبایل وجود ندارد.");
+      if (data.code === 404)
+        notif_error(t("forgetPasswordPage:not_exist"));
       else if (data.code === 200) {
-        notif_success("کد تایید برای شما ارسال شد.");
-        navigate("/verification", {state: {userId: data.data.userId, register: false}});
-      } else notif_error("مشکلی از سمت سرور پیش آمده است.");
+        notif_success(t("forgetPasswordPage:code_sent"));
+        navigate("/verification", {
+          state: { userId: data.data.userId, register: false },
+        });
+      } else notif_error(t("common:server_error"));
     } catch (err) {
       console.log(err);
     } finally {
@@ -53,23 +63,21 @@ const ForgetPasswordPage = () => {
     <div className="login-container">
       <LoadingModal isOpen={loading} />
       <div className="login">
-        <div className="header">هر جا، هر زمان دما را تنظیم کن!</div>
+        <div className="header">{t("forgetPasswordPage:header")}</div>
         <div className="title" style={{ fontSize: 14, marginBottom: 8 }}>
-          رمز عبور خود را فراموش کردید؟
+          {t("forgetPasswordPage:title")}
         </div>
         <div className="title" style={{ fontSize: 12 }}>
-          نگران نباش! اتفاق می افتد. لطفا شماره موبایل مربوط به حساب کاربری خود
-          را وارد کنید. ما کد تایید ۵ رقمی را برای شما ارسال می کنیم تا به شما
-          کمک کنیم رمز عبور خود را بازیابی کنید.
+          {t("forgetPasswordPage:description")}
         </div>
         <CustomInput
           icon={<PhoneIcon />}
-          placeholder="شماره موبایل"
+          placeholder={t("forgetPasswordPage:mobile")}
           containerStyle={{ marginTop: 40, marginBottom: 32 }}
           ref={mobileRef}
         />
         <CustomButton
-          text={"ارسال کد"}
+          text={t("forgetPasswordPage:send_code")}
           style={{ marginTop: 32 }}
           onClick={onSubmit}
         />

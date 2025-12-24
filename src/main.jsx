@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 
 import "./style.css";
 import "./shared.css";
+import "./localization/i18n.js";
 import App from "./App.jsx";
 import { store } from "./store";
 

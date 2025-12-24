@@ -13,6 +13,7 @@ import { notif_error } from "../utils/toast";
 import RefreshIcon from "./../components/icons/RefreshIcon";
 import LoadingModal from "../components/modals/LoadingModal";
 import UserIcon from "./../components/icons/UserIcon";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const HomePage = () => {
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [now, setNow] = useState();
+
+  const {t} = useTranslation();
 
   const user = useSelector((state) => state.user);
 
@@ -89,14 +92,13 @@ const HomePage = () => {
     <div className="home">
       <LoadingModal isOpen={loading} />
       <div className="header">
-        <span className="hello">سلام!</span>
+        <span className="hello">{t("homePage:hi")}</span>
         <Link to={"/settings"}>
           <UserIcon width={28} height={28} color={"#B6BCDF"} />
         </Link>
       </div>
       <div className="description">
-        شما دارای {devices?.length} دستگاه هستید که{" "}
-        {devices?.filter((x) => x.on).length} مورد از آن ها فعال هستند.
+        {t("homePage:description", {total_count: devices?.length, count: devices?.filter((x) => x.on).length})}
       </div>
       <div className="separator"></div>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -107,7 +109,7 @@ const HomePage = () => {
           }
           onClick={() => setToggle((t) => !t)}
         >
-          تنظیم گروهی دستگاه ها
+          {t("homePage:group_settings")}
         </button>
         {toggle && (
           <div className="select-all-devices-container">
@@ -138,7 +140,7 @@ const HomePage = () => {
         )}
         <div
           className="btn-refresh"
-          style={{ marginRight: "auto" }}
+          style={{ marginInlineStart: "auto" }}
           onClick={fetchMyDevices}
           data-sound-click
         >
@@ -173,9 +175,9 @@ const HomePage = () => {
               !device.off_dates.filter(
                 (off_date) => now.getDate() == new Date(off_date).getDate()
               ).length ? (
-                <p>روشن</p>
+                <p>{t("homePage:on")}</p>
               ) : (
-                <p>خاموش</p>
+                <p>{t("homePage:off")}</p>
               )}
               <CustomSwitch
                 checked={
@@ -193,7 +195,7 @@ const HomePage = () => {
       {toggle && (
         <div className="btn-setting-devices">
           <CustomButton
-            text={`تنظیم ${devices.filter((d) => d.selected).length} دستگاه`}
+            text={t("homePage:device_settings", {count: devices.filter((d) => d.selected).length})}
             onClick={onSelectDevices}
           />
         </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
+import ArrowBackIcon from "../components/icons/ArrowBackIcon";
 
 const SettingsLayout = ({
   children,
@@ -14,7 +14,7 @@ const SettingsLayout = ({
     <div className="settings-layout">
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
-          <ArrowRightBorderIcon />
+          <ArrowBackIcon />
         </div>
         <p className="header-title">{title}</p>
         <div className="header-option" onClick={onIconClick} data-sound-click>

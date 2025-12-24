@@ -1,7 +1,9 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const DeleteDeviceModal = ({ isOpen, onClose, onSubmit, single = false }) => {
+  const {t} = useTranslation();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -25,8 +27,7 @@ const DeleteDeviceModal = ({ isOpen, onClose, onSubmit, single = false }) => {
             style={{ direction: "ltr" }}
           >
             <p className="title">
-              آیا از حذف {single ? "دستگاه موردنظر" : "دستگاه های انتخاب شده"}{" "}
-              مطمئن هستید؟
+              {single ? t("deleteDeviceModal:single") : t("deleteDeviceModal:multiple")}
             </p>
             <div className="modal-buttons">
               <button
@@ -34,14 +35,14 @@ const DeleteDeviceModal = ({ isOpen, onClose, onSubmit, single = false }) => {
                 className="modal-submit-button"
                 onClick={onSubmit}
               >
-                تایید
+                {t("deleteDeviceModal:confirm")}
               </button>
               <button
                 type="button"
                 className="modal-cancel-button"
                 onClick={onClose}
               >
-                لغو
+                {t("deleteDeviceModal:cancel")}
               </button>
             </div>
           </motion.div>

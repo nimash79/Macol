@@ -1,0 +1,16 @@
+export default {
+    date_validation: "Please specify the start and end.",
+    temp_validation: "Please specify the desired temp value correctly.",
+    success: "Settings applied successfully.",
+    error: "There is something wrong.",
+    device_settings: "Device settings",
+    devices_settings: "Device settings",
+    economy_mode: "Economy mode",
+    description: `By activating the economy mode, the heater will be set to your selected mode for a period of time specified by you to save more energy. After the period ends, the temperature settings will return to the previous mode to maintain comfort.`,
+    temp_value: "Temp value",
+    temp_guide: "Temp value must be between 15 to 30.",
+    start_from: "Start from",
+    to_end: "to",
+    end: "End",
+    confirm: "Confirm",
+}

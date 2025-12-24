@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
+import ArrowBackIcon from "../components/icons/ArrowBackIcon";
 import { useDispatch, useSelector } from "react-redux";
 import EconomyIcon from "../components/icons/EconomyIcon";
 import DeviceIcon from "./../components/icons/DeviceIcon";
@@ -16,20 +16,23 @@ import CustomBarChart from "../components/shared/CustomBarChart";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import ReportIcon from "../components/icons/ReportIcon";
 import { getReports } from "../services/reportService";
+import { useTranslation } from "react-i18next";
 
 const DeviceSettingsPage = () => {
   const navigate = useNavigate();
   const selectedDevices = useSelector((state) => state.selectedDevices);
   const dispatch = useDispatch();
 
+  const {t} = useTranslation();
+
   return (
     <div className="settings">
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
-          <ArrowRightBorderIcon />
+          <ArrowBackIcon />
         </div>
         <p className="header-title">
-          {selectedDevices.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
+          {selectedDevices.length > 1 ? t("deviceSettingsPage:devices_settings") : t("deviceSettingsPage:device_settings")}
         </p>
         <div></div>
       </div>
@@ -39,31 +42,31 @@ const DeviceSettingsPage = () => {
           className="button"
         >
           <DeviceIcon />
-          <p className="button-text">دمای کالیبراسیون</p>
+          <p className="button-text">{t("deviceSettingsPage:temp_calibration")}</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
         <div className="button-separator"></div>
         <Link to={"/economy"} className="button">
           <EconomyIcon />
-          <p className="button-text">حالت اقتصادی</p>
+          <p className="button-text">{t("deviceSettingsPage:economy")}</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
         <div className="button-separator"></div>
         <Link to={"/off-times"} className="button">
           <CalendarIcon />
-          <p className="button-text">ساعت خاموشی</p>
+          <p className="button-text">{t("deviceSettingsPage:off_time")}</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
         <div className="button-separator"></div>
         <Link to={"/off-dates"} className="button">
           <CalendarIcon />
-          <p className="button-text">تاریخ خاموشی</p>
+          <p className="button-text">{t("deviceSettingsPage:off_date")}</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
         <div className="button-separator"></div>
         <Link to={"/export-report"} className="button">
           <ReportsIcon />
-          <p className="button-text">گزارش گیری</p>
+          <p className="button-text">{t("deviceSettingsPage:reports")}</p>
           <ArrowLeftIcon className="button-arrow" />
         </Link>
       </div>

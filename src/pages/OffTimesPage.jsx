@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
+import ArrowBackIcon from "../components/icons/ArrowBackIcon";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import CustomButton from "../components/shared/CustomButton";
 import CustomInput from "../components/shared/CustomInput";
@@ -10,6 +10,7 @@ import { notif_error, notif_success } from "../utils/toast";
 import { changeDeviceOffTimes, changeDeviceSettings } from "../services/deviceService";
 import { useDispatch, useSelector } from "react-redux";
 import { addSelectedDevices } from "../reducers/selectedDevicesReducer";
+import { useTranslation } from "react-i18next";
 
 const OffTimesPage = () => {
   const [start, setStart] = useState(null);
@@ -24,6 +25,8 @@ const OffTimesPage = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const {t} = useTranslation();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -62,7 +65,7 @@ const OffTimesPage = () => {
   const submit = async () => {
     try {
       if (!start || !end) {
-        notif_error("لطفا شروع و پایان را مشخص کنید.");
+        notif_error(t("offTimesPage:time_validation"));
         return;
       }
       const { data } = await changeDeviceOffTimes({
@@ -70,15 +73,14 @@ const OffTimesPage = () => {
         off_start: parseInt(start),
         off_end: parseInt(end),
       });
-      console.log("devices data:", data);
       if (data.code === 200) {
         dispatch(addSelectedDevices(data.data.devices));
-        notif_success("تنظیمات با موفقیت اعمال شد.");
+        notif_success(t("common:success"));
         navigate(-1);
       }
     } catch (err) {
       console.log(err);
-      notif_error("مشکلی به وجود آمده است.");
+      notif_error(t("common:error"));
     }
   };
 
@@ -86,24 +88,22 @@ const OffTimesPage = () => {
     <div className="settings">
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
-          <ArrowRightBorderIcon />
+          <ArrowBackIcon />
         </div>
         <p className="header-title">
-          {selectedDevices.length > 1 ? "تنظیمات دستگاه ها" : "تنظیمات دستگاه"}
+          {selectedDevices.length > 1 ? t("offTimesPage:devices_settings") : t("offTimesPage:device_settings")}
         </p>
         <div></div>
       </div>
       <div className="separator"></div>
-      <div className="title">ساعت خاموشی</div>
+      <div className="title">{t("offTimesPage:off_time")}</div>
       <p className="description">
-        با تنظیم کردن ساعت خاموشی، شیر شوفاژ در بازه زمانی مشخص شده بسته خواهد شد تا از هدر رفت انرژی جلوگیری شود. پس
-        از پایان بازه، تنظیمات دما به حالت قبلی باز می گردد تا راحتی محیط حفظ
-        شود.
+        {t("offTimesPage:description")}
       </p>
       <div className="economy-form">
         <div className="economy-date-form">
           <div className="economy-field">
-            <label>شروع از ساعت :</label>
+            <label>{t("offTimesPage:start_from")} :</label>
             <div
               ref={startSelectButton}
               className="economy-select-time"
@@ -111,7 +111,7 @@ const OffTimesPage = () => {
               onClick={() => setStartToggle((e) => !e)}
             >
               <div className="economy-select-time-button">
-                <span>{start || "شروع"}</span>
+                <span>{start || t("offTimesPage:start")}</span>
                 <ArrowDownIcon />
               </div>
               {startToggle && (
@@ -195,7 +195,7 @@ const OffTimesPage = () => {
             </div>
           </div>
           <div className="economy-field">
-            <label>تا ساعت :</label>
+            <label>{t("offTimesPage:to_end")} :</label>
             <div className="economy-select-time">
               <div
                 ref={endSelectButton}
@@ -203,7 +203,7 @@ const OffTimesPage = () => {
                 data-sound-click
                 onClick={() => setEndToggle((e) => !e)}
               >
-                <span>{end || "پایان"}</span>
+                <span>{end || t("offTimesPage:end")}</span>
                 <ArrowDownIcon />
               </div>
               {endToggle && (
@@ -288,7 +288,7 @@ const OffTimesPage = () => {
           </div>
         </div>
       </div>
-      <CustomButton text={"تایید"} style={{ marginTop: 32 }} onClick={submit} />
+      <CustomButton text={t("common:confirm")} style={{ marginTop: 32 }} onClick={submit} />
     </div>
   );
 };

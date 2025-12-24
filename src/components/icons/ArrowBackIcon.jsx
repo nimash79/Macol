@@ -1,6 +1,7 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
 
-const ArrowRightBorderIcon = (props) => {
+const ArrowBackIcon = (props) => {
+  const {i18n} = useTranslation();
   return (
     <svg
       width="30"
@@ -8,6 +9,7 @@ const ArrowRightBorderIcon = (props) => {
       viewBox="0 0 30 30"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      style={{rotate: i18n.language === "fa" ? "0" : "180deg"}}
       {...props}
     >
       <path
@@ -27,4 +29,4 @@ const ArrowRightBorderIcon = (props) => {
   );
 };
 
-export default ArrowRightBorderIcon;
+export default ArrowBackIcon;

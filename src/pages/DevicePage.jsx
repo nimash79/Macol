@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 
-import ArrowRightBorderIcon from "../components/icons/ArrowRightBorderIcon";
+import ArrowBackIcon from "../components/icons/ArrowBackIcon";
 import SettingsIcon from "../components/icons/SettingsIcon";
 import CustomSwitch from "../components/shared/CustomSwitch";
 import BatteryIcon from "./../components/icons/BatteryIcon";
@@ -23,8 +23,11 @@ import CustomBarChart from "../components/shared/CustomBarChart";
 import ArrowDownIcon from "../components/icons/ArrowDownIcon";
 import ReportIcon from "../components/icons/ReportIcon";
 import AiIcon from "../components/icons/AiIcon";
+import { useTranslation } from "react-i18next";
 
 const DevicePage = () => {
+  const {t} = useTranslation();
+
   const [devices, setDevices] = useState([]);
   const [previousTemperature, setPreviousTemperature] = useState();
   const [currentTemperature, setCurrentTemperature] = useState();
@@ -36,7 +39,7 @@ const DevicePage = () => {
   const [openedDoor, setOpenedDoor] = useState(false);
   const [ai, setAi] = useState(false);
   const [device, setDevice] = useState();
-  const [reportType, setReportType] = useState("هفتگی");
+  const [reportType, setReportType] = useState(t("devicePage:weekly"));
   const [reportToggle, setReportToggle] = useState(false);
   const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -79,9 +82,9 @@ const DevicePage = () => {
         const { data } = await getReports({
           deviceId: deviceIds[0],
           type:
-            reportType == "روزانه"
+            reportType == t("devicePage:daily")
               ? "daily"
-              : reportType == "هفتگی"
+              : reportType == t("devicePage:weekly")
               ? "weekly"
               : "monthly",
         });
@@ -89,7 +92,7 @@ const DevicePage = () => {
         setReportData(data.data.reports);
       } catch (err) {
         console.log(err);
-        notif_error("در دریافت گزارشات مشکلی به وجود آمده است.");
+        notif_error(t("devicePage:report_error"));
       } finally {
         setLoading(false);
       }
@@ -115,7 +118,7 @@ const DevicePage = () => {
     } catch (err) {
       console.log(err);
       setLoading(false);
-      notif_error("مشکلی پیش آمده است!");
+      notif_error(t("devicePage:error"));
     }
   };
 
@@ -149,12 +152,12 @@ const DevicePage = () => {
       <LoadingModal isOpen={loading} />
       <div className="header">
         <div className="icon" data-sound-click onClick={() => navigate(-1)}>
-          <ArrowRightBorderIcon />
+          <ArrowBackIcon />
         </div>
         <div className="header-title">
           <div className="header-title">
             <p>
-              {deviceIds.length > 1 ? "تنظیم گروهی دستگاه ها" : device.name}
+              {deviceIds.length > 1 ? t("devicePage:group_settings") : device.name}
             </p>
           </div>
         </div>
@@ -211,7 +214,7 @@ const DevicePage = () => {
             checked={economy}
           />
           <label style={{ color: economy ? "#36EDF7" : "" }}>
-            قابلیت اقتصادی
+            {t("devicePage:economy")}
           </label>
         </div>
         <OpenedDoorIcon active={openedDoor} />
@@ -223,7 +226,7 @@ const DevicePage = () => {
             checked={ai}
           />
           <label style={{ color: ai ? "#36EDF7" : "" }}>
-            قابلیت هوش مصنوعی
+            {t("devicePage:ai")}
           </label>
         </div>
         <AiIcon active={ai} />
@@ -259,7 +262,7 @@ const DevicePage = () => {
           <div className="report-header">
             <div className="report-title">
               <ReportIcon />
-              <p>گزارش دما</p>
+              <p>{t("devicePage:temp_report")}</p>
             </div>
             <div className="report-filter">
               <div
@@ -276,22 +279,22 @@ const DevicePage = () => {
                   <div className="options-container">
                     <div className="options">
                       <div
-                        onClick={() => setReportType("روزانه")}
+                        onClick={() => setReportType(t("devicePage:daily"))}
                         data-sound-click
                       >
-                        روزانه
+                        {t("devicePage:daily")}
                       </div>
                       <div
-                        onClick={() => setReportType("هفتگی")}
+                        onClick={() => setReportType(t("devicePage:weekly"))}
                         data-sound-click
                       >
-                        هفتگی
+                        {t("devicePage:weekly")}
                       </div>
                       <div
-                        onClick={() => setReportType("ماهانه")}
+                        onClick={() => setReportType(t("devicePage:monthly"))}
                         data-sound-click
                       >
-                        ماهانه
+                        {t("devicePage:monthly")}
                       </div>
                     </div>
                   </div>

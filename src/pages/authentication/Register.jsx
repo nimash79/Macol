@@ -10,6 +10,7 @@ import { register } from "./../../services/accountService";
 import { notif_error } from "../../utils/toast";
 import LoadingModal from "./../../components/modals/LoadingModal";
 import UserIcon from "../../components/icons/UserIcon";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,8 @@ const Register = () => {
   const confirmPasswordRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (isAuthenticated()) navigate("/");
@@ -36,12 +39,12 @@ const Register = () => {
         passwordRef.current.value === "" ||
         confirmPasswordRef.current.value === ""
       ) {
-        notif_error("لطفا اطلاعات خواسته شده را وارد کنید.");
+        notif_error(t("register:validation"));
         return;
       }
 
       if (passwordRef.current.value !== confirmPasswordRef.current.value) {
-        notif_error("رمز عبور و تایید رمز عبور مغایرت دارند.");
+        notif_error("register:compare_password");
         return;
       }
       setLoading(true);
@@ -52,7 +55,7 @@ const Register = () => {
         confirmPasswordRef: confirmPasswordRef.current.value,
       });
       console.log(data);
-      if (data.code === 403) notif_error("این شماره موبایل قبلا ثبت شده است.");
+      if (data.code === 403) notif_error(t("regisetr_mobile_validation"));
       else
         navigate("/verification", {
           state: { userId: data.data.user._id, register: true },
@@ -68,38 +71,38 @@ const Register = () => {
     <div className="login-container">
       <LoadingModal isOpen={loading} />
       <div className="login">
-        <div className="header">هر جا، هر زمان دما را تنظیم کن!</div>
-        <div className="title">ایجاد حساب کاربری</div>
+        <div className="header">{t("register:header")}</div>
+        <div className="title">{t("register:title")}</div>
         <CustomInput
           icon={<UserIcon />}
-          placeholder="نام و نام خانوادگی"
+          placeholder={t("register:full_name")}
           containerStyle={{ marginTop: 40, marginBottom: 32 }}
           ref={fullnameRef}
         />
         <CustomInput
           icon={<PhoneIcon />}
-          placeholder="شماره موبایل"
+          placeholder={t("register:mobile")}
           containerStyle={{ marginTop: 40, marginBottom: 32 }}
           ref={mobileRef}
         />
         <CustomPasswordInput
-          placeholder="رمز عبور"
+          placeholder={t("register:password")}
           ref={passwordRef}
           containerStyle={{ marginTop: 40, marginBottom: 32 }}
         />
         <CustomPasswordInput
-          placeholder="تایید رمز عبور"
+          placeholder={t("register:confirm_password")}
           ref={confirmPasswordRef}
           containerStyle={{ marginTop: 40, marginBottom: 32 }}
         />
         <CustomButton
-          text={"ثبت نام"}
+          text={t("register:register")}
           style={{ marginTop: 32 }}
           onClick={onSubmit}
         />
         <div className="login-guide">
-          <p>قبلا ثبت نام کرده اید؟</p>
-          <Link to={"/login"}>وارد شوید</Link>
+          <p>{t("register:login_guide")}</p>
+          <Link to={"/login"}>{t("register:login")}</Link>
         </div>
       </div>
     </div>

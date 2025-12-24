@@ -1,7 +1,10 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
-const RefreshIcon = ({ width = 24, height = 24, ...props }) => (
-  <svg
+const RefreshIcon = ({ width = 24, height = 24, ...props }) => {
+  const {i18n} = useTranslation();
+  return (
+    <svg
     width={width}
     height={height}
     viewBox="0 0 24 24"
@@ -22,5 +25,6 @@ const RefreshIcon = ({ width = 24, height = 24, ...props }) => (
       fill="#f9f9f9"
     />
   </svg>
-);
+  )
+}
 export default RefreshIcon;
