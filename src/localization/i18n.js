@@ -11,9 +11,10 @@ const resources = {
 
 i18n
   .use(initReactI18next)
-  .use(LanguageDetector)
+  // .use(LanguageDetector)
   .init({
     resources,
+    lng: "fa",
     supportedLngs: ["fa", "en"],
     load: "languageOnly",
     detection: {
