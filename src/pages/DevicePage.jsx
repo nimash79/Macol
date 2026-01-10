@@ -26,7 +26,7 @@ import AiIcon from "../components/icons/AiIcon";
 import { useTranslation } from "react-i18next";
 
 const DevicePage = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const [devices, setDevices] = useState([]);
   const [previousTemperature, setPreviousTemperature] = useState();
@@ -47,6 +47,7 @@ const DevicePage = () => {
 
   const deviceRef = useRef();
   const temperatureRef = useRef();
+  const initialTemperatureRef = useRef(0);
   const timeoutRef = useRef();
   const economyRef = useRef();
   const reportSelectButton = useRef();
@@ -66,14 +67,20 @@ const DevicePage = () => {
   }, []);
 
   useEffect(() => {
-    deviceRef.current = device;
+    if (initialTemperatureRef.current < 2) {
+      temperatureRef.current = temperature;
+      economyRef.current = economy;
+      initialTemperatureRef.current++;
+      return;
+    }
     temperatureRef.current = temperature;
     economyRef.current = economy;
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      submitChangeDeviceValue();
-    }, 3000)
-  }, [device, temperature, economy]);
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(async () => {
+      await submitChangeDeviceValue();
+      await fetchSelectedDevices();
+    }, 3000);
+  }, [temperature, economy]);
 
   useEffect(() => {
     (async () => {
@@ -106,6 +113,7 @@ const DevicePage = () => {
       dispatch(addSelectedDevices(data.data.devices));
       setDevices(data.data.devices);
       setDevice(data.data.devices[0]);
+      deviceRef.current = data.data.devices[0];
       setPreviousTemperature(
         data.data.devices[0].secondReport[0]?.temperature || -1
       );
@@ -125,6 +133,11 @@ const DevicePage = () => {
   const submitChangeDeviceValue = async () => {
     if (deviceRef.current == undefined || temperatureRef.current == undefined)
       return;
+    if (
+      deviceRef.current.value === temperatureRef.current &&
+      deviceRef.current.economy === economyRef.current
+    )
+      return;
     try {
       await changeDeviceValue({
         deviceIds,
@@ -139,6 +152,8 @@ const DevicePage = () => {
 
   const onRefresh = async () => {
     try {
+      clearTimeout(timeoutRef.current);
+      await submitChangeDeviceValue();
       await fetchSelectedDevices();
     } catch (err) {
       console.log(err);
@@ -157,7 +172,9 @@ const DevicePage = () => {
         <div className="header-title">
           <div className="header-title">
             <p>
-              {deviceIds.length > 1 ? t("devicePage:group_settings") : device.name}
+              {deviceIds.length > 1
+                ? t("devicePage:group_settings")
+                : device.name}
             </p>
           </div>
         </div>
@@ -221,10 +238,7 @@ const DevicePage = () => {
       </div>
       <div className="features">
         <div className="economy-feature">
-          <CustomSwitch
-            onChange={() => setAi((f) => !f)}
-            checked={ai}
-          />
+          <CustomSwitch onChange={() => setAi((f) => !f)} checked={ai} />
           <label style={{ color: ai ? "#36EDF7" : "" }}>
             {t("devicePage:ai")}
           </label>
