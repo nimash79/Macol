@@ -25,10 +25,10 @@ export const changeDeviceName = ({ deviceId, name }) => {
   );
 };
 
-export const changeDeviceValue = ({ deviceIds, value, economy }) => {
+export const changeDeviceValue = ({ deviceIds, value, economy, ai }) => {
   return http.post(
     `${API_URL}/devices/change`,
-    JSON.stringify({ deviceIds, value, economy })
+    JSON.stringify({ deviceIds, value, economy, ai })
   );
 };
 

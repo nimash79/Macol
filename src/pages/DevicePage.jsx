@@ -38,6 +38,7 @@ const DevicePage = () => {
   const [economy, setEconomy] = useState(false);
   const [openedDoor, setOpenedDoor] = useState(false);
   const [ai, setAi] = useState(false);
+  const [isOneMonthLater, setIsOneMonthLater] = useState(false);
   const [device, setDevice] = useState();
   const [reportType, setReportType] = useState(t("devicePage:weekly"));
   const [reportToggle, setReportToggle] = useState(false);
@@ -50,6 +51,7 @@ const DevicePage = () => {
   const initialTemperatureRef = useRef(0);
   const timeoutRef = useRef();
   const economyRef = useRef();
+  const aiRef = useRef();
   const reportSelectButton = useRef();
 
   const navigate = useNavigate();
@@ -70,17 +72,19 @@ const DevicePage = () => {
     if (initialTemperatureRef.current < 2) {
       temperatureRef.current = temperature;
       economyRef.current = economy;
+      aiRef.current = ai;
       initialTemperatureRef.current++;
       return;
     }
     temperatureRef.current = temperature;
     economyRef.current = economy;
+    aiRef.current = ai;
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(async () => {
       await submitChangeDeviceValue();
       await fetchSelectedDevices();
     }, 3000);
-  }, [temperature, economy]);
+  }, [temperature, economy, ai]);
 
   useEffect(() => {
     (async () => {
@@ -95,7 +99,6 @@ const DevicePage = () => {
               ? "weekly"
               : "monthly",
         });
-        console.log(data);
         setReportData(data.data.reports);
       } catch (err) {
         console.log(err);
@@ -131,11 +134,16 @@ const DevicePage = () => {
   };
 
   const submitChangeDeviceValue = async () => {
-    if (deviceRef.current == undefined || temperatureRef.current == undefined)
+    if (
+      deviceRef.current == undefined ||
+      temperatureRef.current == undefined ||
+      aiRef.current == undefined
+    )
       return;
     if (
       deviceRef.current.value === temperatureRef.current &&
-      deviceRef.current.economy === economyRef.current
+      deviceRef.current.economy === economyRef.current &&
+      deviceRef.current.ai === aiRef.current
     )
       return;
     try {
@@ -143,6 +151,7 @@ const DevicePage = () => {
         deviceIds,
         value: temperatureRef.current,
         economy: economyRef.current,
+        ai: aiRef.current,
       });
       console.log("temp changed to:", temperatureRef.current);
     } catch (err) {
@@ -236,7 +245,10 @@ const DevicePage = () => {
         </div>
         <OpenedDoorIcon active={openedDoor} />
       </div>
-      <div className="features">
+      <div
+        className="features"
+        style={!isOneMonthLater ? { opacity: 0.5, pointerEvents: "none" } : {}}
+      >
         <div className="economy-feature">
           <CustomSwitch onChange={() => setAi((f) => !f)} checked={ai} />
           <label style={{ color: ai ? "#36EDF7" : "" }}>
@@ -245,6 +257,14 @@ const DevicePage = () => {
         </div>
         <AiIcon active={ai} />
       </div>
+      {!isOneMonthLater && (
+        <div className="guide">
+          <p>
+            جهت استفاده از قابلیت هوش مصنوعی، بایستی حداقل ۱ ماه از زمان نصب
+            دستگاه گذشته باشد تا مدل، رفتار کاربر را یاد گرفته باشد.
+          </p>
+        </div>
+      )}
       {/* <div className="device-info-container">
         <DeviceInfoBox
           temperature={currentTemperature}

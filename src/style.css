@@ -620,6 +620,11 @@ p {
 .economy-feature label {
   margin-inline-start: 8px;
 }
+.device-page .guide {
+  font-size: 11px;
+  margin-top: 8px;
+  color: var(--neutral_200)
+}
 .device-info-container {
   width: 100%;
   height: auto;
