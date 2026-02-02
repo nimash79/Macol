@@ -16,7 +16,7 @@ import login from "./pages/authentication/login";
 import forgetPasswordPage from "./pages/authentication/forgetPasswordPage";
 import resetPasswordPage from "./pages/authentication/resetPasswordPage";
 import verificationPage from "./pages/authentication/verificationPage";
-import myDevicesPage from "../en/pages/settings/myDevicesPage";
+import myDevicesPage from "./pages/settings/myDevicesPage";
 import addDeviceModal from "./modals/addDeviceModal";
 import deviceInfoModal from "./modals/deviceInfoModal";
 import editNameModal from "./modals/editNameModal";
