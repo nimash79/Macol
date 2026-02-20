@@ -3,6 +3,7 @@ export default {
     my_profile: "مشخصات من",
     device_management: "مدیریت دستگاه ها",
     click_sound: "صدای کلیک",
+    language_settings: "تنظیمات زبان",
     usage_guide: "راهنمای استفاده از دستگاه",
     faq: "سوالات متداول",
     about_us: "درباره ما",

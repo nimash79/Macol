@@ -3,6 +3,7 @@ export default {
     my_profile: "My profile",
     device_management: "Devices management",
     click_sound: "Click sound",
+    language_settings: "Language settings",
     usage_guide: "Usage guide",
     faq: "FAQ",
     about_us: "About us",

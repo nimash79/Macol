@@ -38,7 +38,7 @@ const DevicePage = () => {
   const [economy, setEconomy] = useState(false);
   const [openedDoor, setOpenedDoor] = useState(false);
   const [ai, setAi] = useState(false);
-  const [isOneMonthLater, setIsOneMonthLater] = useState(false);
+  const [isThreeMonthLater, setIsThreeMonthLater] = useState(false);
   const [device, setDevice] = useState();
   const [reportType, setReportType] = useState(t("devicePage:weekly"));
   const [reportToggle, setReportToggle] = useState(false);
@@ -247,7 +247,7 @@ const DevicePage = () => {
       </div>
       <div
         className="features"
-        style={!isOneMonthLater ? { opacity: 0.5, pointerEvents: "none" } : {}}
+        style={!isThreeMonthLater ? { opacity: 0.5, pointerEvents: "none" } : {}}
       >
         <div className="economy-feature">
           <CustomSwitch onChange={() => setAi((f) => !f)} checked={ai} />
@@ -257,12 +257,9 @@ const DevicePage = () => {
         </div>
         <AiIcon active={ai} />
       </div>
-      {!isOneMonthLater && (
+      {!isThreeMonthLater && (
         <div className="guide">
-          <p>
-            جهت استفاده از قابلیت هوش مصنوعی، بایستی حداقل ۱ ماه از زمان نصب
-            دستگاه گذشته باشد تا مدل، رفتار کاربر را یاد گرفته باشد.
-          </p>
+          <p>{t("devicePage:ai_guide")}</p>
         </div>
       )}
       {/* <div className="device-info-container">

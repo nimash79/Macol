@@ -99,7 +99,7 @@ const App = () => {
     document.documentElement.dir = isRtl ? "rtl" : "ltr";
 
     // optional: class for easy CSS targeting
-    document.documentElement.classList.remove("lang-en", "lang-az", "lang-ar");
+    document.documentElement.classList.remove("lang-en", "lang-fa");
     document.documentElement.classList.add(`lang-${base}`);
   }, [i18n.resolvedLanguage, i18n.language]);
   

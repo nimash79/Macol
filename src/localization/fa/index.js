@@ -21,6 +21,7 @@ import addDeviceModal from "./modals/addDeviceModal";
 import deviceInfoModal from "./modals/deviceInfoModal";
 import editNameModal from "./modals/editNameModal";
 import deleteDeviceModal from "./modals/deleteDeviceModal";
+import languageModal from "./modals/languageModal";
 
 export default {
   common,
@@ -46,4 +47,5 @@ export default {
   deviceInfoModal,
   editNameModal,
   deleteDeviceModal,
+  languageModal,
 };
