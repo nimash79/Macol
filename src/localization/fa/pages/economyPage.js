@@ -13,7 +13,7 @@ export default {
   temp_value: "مقدار دمای موردنظر",
   temp_guide: "مقدار دما باید بین ۱۵ تا ۳۰ درجه باشد.",
   start_from: "شروع از ساعت",
-  to_end: "شروع از ساعت",
+  to_end: "تا ساعت",
   end: "پایان",
   confirm: "تایید",
 };
